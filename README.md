@@ -49,46 +49,47 @@ This project was created as a learning exercise, focusing on **backend developme
 ---
 
 ## 🗂 Project Structure
+
 app/
-├── main.py # Application entrypoint
-├── core/ # Configuration, security, custom exceptions
-│ ├── config.py
-│ ├── security.py
-│ └── exceptions.py
-├── database/ # Database configuration, sessions, migrations
-│ ├── session.py
-│ ├── base.py
-│ └── migrations/
-├── models/ # ORM models
-│ ├── user.py
-│ ├── product.py
-│ ├── cart.py
-│ └── order.py
-├── schemas/ # Pydantic schemas
-│ ├── user.py
-│ ├── product.py
-│ ├── cart.py
-│ └── order.py
-├── repositories/ # Database CRUD operations
-│ ├── user_repository.py
-│ ├── product_repository.py
-│ ├── cart_repository.py
-│ └── order_repository.py
-├── services/ # Business logic
-│ ├── auth_service.py
-│ ├── user_service.py
-│ ├── product_service.py
-│ ├── cart_service.py
-│ └── order_service.py
-├── routers/ # API endpoints
-│ ├── auth_router.py
-│ ├── user_router.py
-│ ├── product_router.py
-│ ├── cart_router.py
-│ └── order_router.py
-└── dependencies/ # Dependency injection
-├── auth_dependencies.py
-└── database_dependencies.py
+├── main.py                  # Application entrypoint
+├── core/                    # Configuration, security, custom exceptions
+│   ├── config.py
+│   ├── security.py
+│   └── exceptions.py
+├── database/                # Database configuration, sessions, migrations
+│   ├── session.py
+│   ├── base.py
+│   └── migrations/
+├── models/                  # ORM models
+│   ├── user.py
+│   ├── product.py
+│   ├── cart.py
+│   └── order.py
+├── schemas/                 # Pydantic schemas
+│   ├── user.py
+│   ├── product.py
+│   ├── cart.py
+│   └── order.py
+├── repositories/            # Database CRUD operations
+│   ├── user_repository.py
+│   ├── product_repository.py
+│   ├── cart_repository.py
+│   └── order_repository.py
+├── services/                # Business logic
+│   ├── auth_service.py
+│   ├── user_service.py
+│   ├── product_service.py
+│   ├── cart_service.py
+│   └── order_service.py
+├── routers/                 # API endpoints
+│   ├── auth_router.py
+│   ├── user_router.py
+│   ├── product_router.py
+│   ├── cart_router.py
+│   └── order_router.py
+└── dependencies/            # Dependency injection
+    ├── auth_dependencies.py
+    └── database_dependencies.py
 
 ---
 
