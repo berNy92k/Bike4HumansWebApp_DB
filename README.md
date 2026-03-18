@@ -14,6 +14,7 @@ This project was created as a learning exercise, focusing on **backend developme
 - **Testing:** pytest  
 - **Server:** Uvicorn  
 - **Dependency management:** Poetry / pipenv / requirements.txt  
+- **Frontend for basic UI:** Jinja templates   
 - **Optional:** Docker for full-stack development  
 
 ---
@@ -45,6 +46,7 @@ This project was created as a learning exercise, focusing on **backend developme
 - Data validation with Pydantic schemas  
 - Unit and integration tests with pytest  
 - Database migrations using Alembic  
+- Basic frontend views with Jinja templates for testing backend flows  
 
 ---
 
@@ -90,6 +92,8 @@ This project was created as a learning exercise, focusing on **backend developme
   - dependencies/            # Dependency injection
     - auth_dependencies.py
     - database_dependencies.py
+  - templates/               # Jinja templates for simple frontend
+  - static/                  # CSS, JS, images for basic UI
 
 ---
 
@@ -101,6 +105,8 @@ This project was created as a learning exercise, focusing on **backend developme
 - Database migrations with Alembic  
 - Writing unit and integration tests using pytest  
 - Structuring a modular monolith backend for scalability  
+- Using Jinja templates for a simple backend-driven UI  
+- Creating a separate React frontend later to focus only on frontend development  
 
 ---
 
@@ -109,5 +115,7 @@ This project was created as a learning exercise, focusing on **backend developme
 - Implement frontend with RWD (Responsive Web Design)  
 - Dockerize the project for easier deployment  
 - Add pagination, filtering, and search functionality  
+- Dockerize the project for easier deployment  
 - Integrate external services (payment, email notifications)  
 - Add logging and monitoring for production readiness  
+- Improve UI with better styling and responsive layout
