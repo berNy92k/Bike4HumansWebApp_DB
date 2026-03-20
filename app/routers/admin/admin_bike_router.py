@@ -29,9 +29,25 @@ async def render_bikes_page(request: Request, db: db_dependency):
     bikes = service.get_all_bikes()
     return templates.TemplateResponse("admin/bikes/bikes.html", {"request": request, "bikes": bikes})
 
+
 @router.get("/create", status_code=status.HTTP_200_OK)
 async def render_create_bike(request: Request):
     return templates.TemplateResponse("admin/bikes/bike_create.html", {"request": request})
+
+
+@router.get("/{bike_id}/details", status_code=status.HTTP_200_OK)
+async def render_bike_details(request: Request, bike_id: int, db: db_dependency):
+    service = AdminBikeService(db)
+    bike = service.get_bike_by_id(bike_id)
+    return templates.TemplateResponse("admin/bikes/bike_details.html", {"request": request, "bike": bike})
+
+
+@router.get("/{bike_id}/edit", status_code=status.HTTP_200_OK)
+async def render_bike_details(request: Request, bike_id: int, db: db_dependency):
+    service = AdminBikeService(db)
+    bike = service.get_bike_by_id(bike_id)
+    return templates.TemplateResponse("admin/bikes/bike_edit.html", {"request": request, "bike": bike})
+
 
 ### ENDPOINTS ###
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[BikeReadDto])

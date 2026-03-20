@@ -9,7 +9,7 @@ class BikeRepository:
         self.db = db
 
     def get_all_bikes(self):
-        return self.db.query(Bike).all()
+        return self.db.query(Bike).order_by(Bike.created_at.desc()).all()
 
     def get_bike_by_id(self, bike_id):
         return self.db.query(Bike).where(Bike.id == bike_id).first()
