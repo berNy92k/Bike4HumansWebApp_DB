@@ -1,0 +1,67 @@
+from typing import List, Annotated
+
+from fastapi import APIRouter, Request
+from fastapi.params import Depends
+from sqlalchemy.orm import Session
+from starlette import status
+from starlette.templating import Jinja2Templates
+
+from app.database.database import get_db
+from app.schemas.admin.bike.admin_bike_create_dto import BikeCreateDto
+from app.schemas.admin.bike.admin_bike_read_dto import BikeReadDto
+from app.schemas.admin.bike.admin_bike_update_dto import BikeUpdateDto
+from app.services.admin.admin_bike_service import BikeService
+
+router = APIRouter(
+    prefix="/admin/bikes",
+    tags=["Admin - bikes"]
+)
+
+templates = Jinja2Templates(directory="app/templates")
+
+db_dependency = Annotated[Session, Depends(get_db)]
+
+
+### Pages ###
+@router.get("/list", status_code=status.HTTP_200_OK)
+async def render_todo_page(request: Request, db: db_dependency):
+    service = BikeService(db)
+    bikes = service.get_all_bikes()
+    return templates.TemplateResponse("admin/bikes/bikes.html", {"request": request, "bikes": bikes})
+
+
+### ENDPOINTS ###
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[BikeReadDto])
+async def find_all_bikes(db: db_dependency):
+    service = BikeService(db)
+    return service.get_all_bikes()
+
+
+@router.get("/{bike_id}", status_code=status.HTTP_200_OK, response_model=BikeReadDto)
+async def find_bike_by_id(bike_id: int, db: db_dependency):
+    service = BikeService(db)
+    return service.get_bike_by_id(bike_id)
+
+
+@router.post("/", status_code=status.HTTP_201_CREATED)
+async def create_bike(bike_create_dto: BikeCreateDto, db: db_dependency):
+    service = BikeService(db)
+    service.create_bike(bike_create_dto)
+
+
+@router.put("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def create_bike(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
+    service = BikeService(db)
+    service.update_bike_all_fields(bike_id, bike_update_dto)
+
+
+@router.patch("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def create_bike(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
+    service = BikeService(db)
+    service.update_bike_separate_fields(bike_id, bike_update_dto)
+
+
+@router.delete("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_bike_by_id(bike_id: int, db: db_dependency):
+    service = BikeService(db)
+    service.delete_bike_by_id(bike_id)
