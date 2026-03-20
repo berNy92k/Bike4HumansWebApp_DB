@@ -21,25 +21,6 @@
     </div>
 </div>
 
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-label">Łącznie rowerów</div>
-        <div class="stat-value">{{ bikes|length }}</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">Aktywne</div>
-        <div class="stat-value">{{ bikes | selectattr('is_active') | list | length }}</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">Na stanie</div>
-        <div class="stat-value">{{ bikes | selectattr('stock_quantity', 'gt', 0) | list | length }}</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-label">Bez zdjęcia</div>
-        <div class="stat-value">{{ bikes | rejectattr('image_url') | list | length }}</div>
-    </div>
-</div>
-
 <div class="table-card">
     <div class="table-header">
         <h3>Lista rowerów</h3>
@@ -55,9 +36,8 @@
                     <th>Marka</th>
                     <th>Kategoria</th>
                     <th>Cena</th>
-                    <th>Stan</th>
+                    <th>Zdjęcie</th>
                     <th>Status</th>
-                    <th>Slug</th>
                     <th>Akcje</th>
                 </tr>
             </thead>
@@ -80,7 +60,13 @@
                     <td>{{ bike.brand or '—' }}</td>
                     <td>{{ bike.category or '—' }}</td>
                     <td class="price">{{ "%.2f"|format(bike.price) }} zł</td>
-                    <td>{{ bike.stock_quantity }}</td>
+                    <td>
+                        {% if bike.image_url %}
+                            <a href="{{ bike.image_url }}" target="_blank" rel="noopener">Podgląd</a>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
                     <td>
                         {% if bike.is_active %}
                             <span class="badge badge-success">Aktywny</span>
@@ -88,17 +74,13 @@
                             <span class="badge badge-danger">Nieaktywny</span>
                         {% endif %}
                     </td>
-                    <td>{{ bike.slug }}</td>
                     <td>
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/bikes/{{ bike.id }}/details">Szczegóły</a>
                             <a class="action-link action-edit" href="/admin/bikes/{{ bike.id }}/edit">Edytuj</a>
-                            <button
-                                type="button"
-                                class="action-link action-delete"
-                                data-bike-id="{{ bike.id }}">
-                                Usuń
-                            </button>
+                            <a class="action-link action-delete"
+                               href="/admin/bikes/{{ bike.id }}"
+                               onclick="return confirm('Na pewno usunąć ten rower?');">Usuń</a>
                         </div>
                     </td>
                 </tr>
@@ -113,8 +95,4 @@
     </div>
     {% endif %}
 </div>
-{% endblock %}
-
-{% block extra_body %}
-<script defer src="{{ url_for('static', path='js/admin/bikes/admin_delete_bike.js') }}"></script>
 {% endblock %}

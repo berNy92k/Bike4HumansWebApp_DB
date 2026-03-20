@@ -16,8 +16,8 @@
     </div>
 
     <div class="toolbar">
-        <a class="btn btn-secondary" href="/admin/manufacturer/">Odśwież</a>
-        <a class="btn btn-primary" href="#">+ Dodaj producenta</a>
+        <a class="btn btn-secondary" href="/admin/manufacturer/list">Odśwież</a>
+        <a class="btn btn-primary" href="/admin/manufacturer/create">+ Dodaj producenta</a>
     </div>
 </div>
 
@@ -90,7 +90,7 @@
                     <td>
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}">Szczegóły</a>
-                            <a class="action-link action-edit" href="#">Edytuj</a>
+                            <a class="action-link action-edit" href="#" data-manufacturer-id="{{ manufacturer.id }}">Edytuj</a>
                             <a class="action-link action-delete"
                                href="/admin/manufacturer/{{ manufacturer.id }}"
                                onclick="return confirm('Na pewno usunąć tego producenta?');">Usuń</a>

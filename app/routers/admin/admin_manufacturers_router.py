@@ -24,10 +24,29 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 ### Pages ###
 @router.get("/list", status_code=status.HTTP_200_OK)
-async def render_todo_page(request: Request, db: db_dependency):
+async def render_manufacturer_page(request: Request, db: db_dependency):
     service = AdminManufacturerService(db)
-    bikes = service.get_all_manufacturers()
-    return templates.TemplateResponse("admin/manufacturers/manufacturers.html", {"request": request, "bikes": bikes})
+    manufacturers = service.get_all_manufacturers()
+    return templates.TemplateResponse("admin/manufacturers/manufacturers.html", {"request": request, "manufacturers": manufacturers})
+
+
+@router.get("/create", status_code=status.HTTP_200_OK)
+async def render_manufacturer_create_page(request: Request):
+    return templates.TemplateResponse("admin/manufacturers/manufacturers_create.html", {"request": request})
+
+
+@router.get("/{manufacturer_id}/details", status_code=status.HTTP_200_OK)
+async def render_manufacturer_create_page(request: Request, manufacturer_id: int, db: db_dependency):
+    service = AdminManufacturerService(db)
+    manufacturer = service.get_manufacturer_by_id(manufacturer_id)
+    return templates.TemplateResponse("admin/manufacturers/manufacturers_details.html", {"request": request, "manufacturer": manufacturer})
+
+
+@router.get("/{manufacturer_id}/edit", status_code=status.HTTP_200_OK)
+async def render_manufacturer_create_page(request: Request, manufacturer_id: int, db: db_dependency):
+    service = AdminManufacturerService(db)
+    manufacturer = service.get_manufacturer_by_id(manufacturer_id)
+    return templates.TemplateResponse("admin/manufacturers/manufacturers_edit.html", {"request": request, "manufacturer": manufacturer})
 
 
 ### ENDPOINTS ###
