@@ -6,6 +6,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/admin/bikes/admin_bikes.css') }}">
+<script defer src="{{ url_for('static', path='js/admin/bikes/admin_delete_bike.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -79,8 +80,8 @@
                             <a class="action-link action-view" href="/admin/bikes/{{ bike.id }}/details">Szczegóły</a>
                             <a class="action-link action-edit" href="/admin/bikes/{{ bike.id }}/edit">Edytuj</a>
                             <a class="action-link action-delete"
-                               href="/admin/bikes/{{ bike.id }}"
-                               onclick="return confirm('Na pewno usunąć ten rower?');">Usuń</a>
+                               href="#"
+                               data-bike-id="{{ bike.id }}">Usuń</a>
                         </div>
                     </td>
                 </tr>

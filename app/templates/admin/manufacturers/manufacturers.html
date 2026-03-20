@@ -6,6 +6,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/admin/manufacturers/admin_manufacturers.css') }}">
+<script defer src="{{ url_for('static', path='js/admin/manufacturers/admin_delete_manufacturer.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -89,11 +90,11 @@
                     <td>{{ manufacturer.updated_at }}</td>
                     <td>
                         <div class="actions">
-                            <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}">Szczegóły</a>
-                            <a class="action-link action-edit" href="#" data-manufacturer-id="{{ manufacturer.id }}">Edytuj</a>
+                            <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}/details">Szczegóły</a>
+                            <a class="action-link action-edit" href="/admin/manufacturer/{{ manufacturer.id }}/edit" data-manufacturer-id="{{ manufacturer.id }}">Edytuj</a>
                             <a class="action-link action-delete"
-                               href="/admin/manufacturer/{{ manufacturer.id }}"
-                               onclick="return confirm('Na pewno usunąć tego producenta?');">Usuń</a>
+                               href="#"
+                               data-manufacturer-id="{{ manufacturer.id }}">Usuń</a>
                         </div>
                     </td>
                 </tr>
