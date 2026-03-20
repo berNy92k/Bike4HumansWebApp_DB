@@ -1,0 +1,110 @@
+{% extends "admin/homepage/base.html" %}
+
+{% block title %}Bike4Humans | Rowery{% endblock %}
+
+{% block nav_bikes_active %}active{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin_bikes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title">
+        <h2>Rowery</h2>
+        <p>Przegląd wszystkich rowerów w panelu administracyjnym.</p>
+    </div>
+
+    <div class="toolbar">
+        <a class="btn btn-secondary" href="/admin/bikes/list">Odśwież</a>
+        <a class="btn btn-primary" href="#">+ Dodaj rower</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Łącznie rowerów</div>
+        <div class="stat-value">{{ bikes|length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Aktywne</div>
+        <div class="stat-value">{{ bikes | selectattr('is_active') | list | length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Na stanie</div>
+        <div class="stat-value">{{ bikes | selectattr('stock_quantity', 'gt', 0) | list | length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Bez zdjęcia</div>
+        <div class="stat-value">{{ bikes | rejectattr('image_url') | list | length }}</div>
+    </div>
+</div>
+
+<div class="table-card">
+    <div class="table-header">
+        <h3>Lista rowerów</h3>
+        <span class="badge badge-neutral">{{ bikes|length }} rekordów</span>
+    </div>
+
+    {% if bikes and bikes|length > 0 %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rower</th>
+                    <th>Marka</th>
+                    <th>Kategoria</th>
+                    <th>Cena</th>
+                    <th>Stan</th>
+                    <th>Status</th>
+                    <th>Slug</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bike in bikes %}
+                <tr>
+                    <td>
+                        <div class="bike-cell">
+                            {% if bike.image_url %}
+                                <img class="bike-thumb" src="{{ bike.image_url }}" alt="{{ bike.name }}">
+                            {% else %}
+                                <div class="bike-thumb-placeholder">🚲</div>
+                            {% endif %}
+                            <div>
+                                <p class="bike-title">{{ bike.name }}</p>
+                                <div class="bike-meta">ID: {{ bike.id }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ bike.brand or '—' }}</td>
+                    <td>{{ bike.category or '—' }}</td>
+                    <td class="price">{{ "%.2f"|format(bike.price) }} zł</td>
+                    <td>{{ bike.stock_quantity }}</td>
+                    <td>
+                        {% if bike.is_active %}
+                            <span class="badge badge-success">Aktywny</span>
+                        {% else %}
+                            <span class="badge badge-danger">Nieaktywny</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ bike.slug }}</td>
+                    <td>
+                        <div class="actions">
+                            <a class="action-link action-view" href="/admin/bikes/{{ bike.id }}">Szczegóły</a>
+                            <a class="action-link action-edit" href="#">Edytuj</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h3>Brak rowerów do wyświetlenia</h3>
+        <p>Dodaj pierwszy rower, aby zobaczyć go na liście.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

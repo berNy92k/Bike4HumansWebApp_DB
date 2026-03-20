@@ -1,0 +1,108 @@
+{% extends "admin/homepage/base.html" %}
+
+{% block title %}Bike4Humans | Producenci{% endblock %}
+
+{% block nav_manufacturers_active %}active{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin_manufacturers.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title">
+        <h2>Producenci</h2>
+        <p>Przegląd wszystkich producentów w panelu administracyjnym.</p>
+    </div>
+
+    <div class="toolbar">
+        <a class="btn btn-secondary" href="/admin/manufacturer/">Odśwież</a>
+        <a class="btn btn-primary" href="#">+ Dodaj producenta</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Łącznie producentów</div>
+        <div class="stat-value">{{ manufacturers|length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Z opisem</div>
+        <div class="stat-value">{{ manufacturers | selectattr('description') | list | length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Ze zdjęciem</div>
+        <div class="stat-value">{{ manufacturers | selectattr('image_url') | list | length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Bez zdjęcia</div>
+        <div class="stat-value">{{ manufacturers | rejectattr('image_url') | list | length }}</div>
+    </div>
+</div>
+
+<div class="table-card">
+    <div class="table-header">
+        <h3>Lista producentów</h3>
+        <span class="badge badge-neutral">{{ manufacturers|length }} rekordów</span>
+    </div>
+
+    {% if manufacturers and manufacturers|length > 0 %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Producent</th>
+                    <th>Opis</th>
+                    <th>Zdjęcie</th>
+                    <th>Utworzono</th>
+                    <th>Aktualizacja</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manufacturer in manufacturers %}
+                <tr>
+                    <td>
+                        <div class="item-cell">
+                            {% if manufacturer.image_url %}
+                                <img class="item-thumb" src="{{ manufacturer.image_url }}" alt="{{ manufacturer.name }}">
+                            {% else %}
+                                <div class="item-thumb-placeholder">🏭</div>
+                            {% endif %}
+                            <div>
+                                <p class="item-title">{{ manufacturer.name }}</p>
+                                <div class="item-meta">ID: {{ manufacturer.id }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="description">
+                        {{ manufacturer.description or '—' }}
+                    </td>
+                    <td>
+                        {% if manufacturer.image_url %}
+                            <a href="{{ manufacturer.image_url }}" target="_blank" rel="noopener">Podgląd</a>
+                        {% else %}
+                            —
+                        {% endif %}
+                    </td>
+                    <td>{{ manufacturer.created_at }}</td>
+                    <td>{{ manufacturer.updated_at }}</td>
+                    <td>
+                        <div class="actions">
+                            <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}">Szczegóły</a>
+                            <a class="action-link action-edit" href="#">Edytuj</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h3>Brak producentów do wyświetlenia</h3>
+        <p>Dodaj pierwszego producenta, aby zobaczyć go na liście.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
