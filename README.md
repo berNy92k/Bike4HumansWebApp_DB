@@ -27,7 +27,7 @@ Homepage:
 ## 🔑 Features
 
 ### Admin area
-- Manage bikes, frames and manufacturers  
+- Manage bikes, manufacturers and users
 - Create, update and delete records  
 - Separate admin views and forms  
 
@@ -49,7 +49,7 @@ Homepage:
 - `app/`
   - `main.py` — application entrypoint
   - `database/` — database connection setup
-  - `models/` — ORM models for bikes, frames and manufacturers
+  - `models/` — ORM models for bikes, manufacturers and users
   - `repositories/` — database access layer
   - `routers/` — route definitions
     - `admin/` — admin endpoints

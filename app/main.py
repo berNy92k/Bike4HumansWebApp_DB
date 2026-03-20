@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.database.database import Base, engine
-from app.routers.admin import admin_bike_router, admin_frames_router, admin_manufacturers_router, admin_user_router
+from app.routers.admin import admin_bike_router, admin_manufacturers_router, admin_user_router
 
 app = FastAPI()
 
@@ -11,7 +11,6 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 app.include_router(admin_user_router.router)
 app.include_router(admin_bike_router.router)
-app.include_router(admin_frames_router.router)
 app.include_router(admin_manufacturers_router.router)
 
 templates = Jinja2Templates(directory="app/templates")
