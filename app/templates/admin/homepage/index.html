@@ -1,0 +1,220 @@
+{% extends 'admin/homepage/base.html' %}
+
+{% block nav_dashboard_active %}active{% endblock %}
+
+{% block title %}Bike4Humans | Dashboard administracyjny{% endblock %}
+
+{% block content %}
+<div class="topbar">
+    <div class="topbar-left">
+        <h2>Witaj w panelu admina 👋</h2>
+        <p>Masz pełną kontrolę nad produktami, producentami i zawartością sklepu.</p>
+    </div>
+
+    <div class="topbar-actions">
+        <div class="search">
+            <span>🔎</span>
+            <input type="text" placeholder="Szukaj produktu, marki, modelu...">
+        </div>
+        <div class="avatar">A</div>
+    </div>
+</div>
+
+<section class="grid-stats">
+    <div class="card stat-card">
+        <div class="stat-label">
+            <span>Rowery</span>
+            <span class="badge green">+12%</span>
+        </div>
+        <p class="stat-value">128</p>
+        <p class="stat-note">Liczba wszystkich rowerów w bazie</p>
+    </div>
+
+    <div class="card stat-card">
+        <div class="stat-label">
+            <span>Ramy</span>
+            <span class="badge blue">+6%</span>
+        </div>
+        <p class="stat-value">74</p>
+        <p class="stat-note">Aktywne modele ram</p>
+    </div>
+
+    <div class="card stat-card">
+        <div class="stat-label">
+            <span>Producenci</span>
+            <span class="badge orange">Nowe</span>
+        </div>
+        <p class="stat-value">19</p>
+        <p class="stat-note">Firmy przypisane do oferty</p>
+    </div>
+
+    <div class="card stat-card">
+        <div class="stat-label">
+            <span>Do sprawdzenia</span>
+            <span class="badge red">Uwaga</span>
+        </div>
+        <p class="stat-value">7</p>
+        <p class="stat-note">Pozycje bez zdjęcia lub opisu</p>
+    </div>
+</section>
+
+<section class="main-grid">
+    <div class="card panel">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">Szybkie akcje</h3>
+                <p class="panel-subtitle">Najczęściej używane operacje w jednym miejscu.</p>
+            </div>
+            <span class="badge blue">Admin tools</span>
+        </div>
+
+        <div class="action-grid">
+            <a class="action-btn" href="#">
+                <div class="action-icon bg-blue">🚲</div>
+                <div>
+                    <strong>Dodaj rower</strong>
+                    <span>Utwórz nowy produkt i przypisz go do producenta.</span>
+                </div>
+            </a>
+
+            <a class="action-btn" href="#">
+                <div class="action-icon bg-green">🧩</div>
+                <div>
+                    <strong>Dodaj ramę</strong>
+                    <span>Dodaj nową ramę z parametrami technicznymi.</span>
+                </div>
+            </a>
+
+            <a class="action-btn" href="#">
+                <div class="action-icon bg-orange">🏭</div>
+                <div>
+                    <strong>Dodaj producenta</strong>
+                    <span>Rozszerz bazę marek i dostawców.</span>
+                </div>
+            </a>
+
+            <a class="action-btn" href="#">
+                <div class="action-icon bg-slate">📊</div>
+                <div>
+                    <strong>Przejdź do statystyk</strong>
+                    <span>Sprawdź najważniejsze dane o ofercie i aktywności.</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="card panel">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">Stan katalogu</h3>
+                <p class="panel-subtitle">Krótki podgląd jakości danych.</p>
+            </div>
+        </div>
+
+        <div class="progress-list">
+            <div class="progress-row">
+                <div class="progress-top">
+                    <span>Produkty kompletne</span>
+                    <span>84%</span>
+                </div>
+                <div class="progress-bar"><span style="width: 84%"></span></div>
+            </div>
+
+            <div class="progress-row">
+                <div class="progress-top">
+                    <span>Zdjęcia dodane</span>
+                    <span>71%</span>
+                </div>
+                <div class="progress-bar"><span style="width: 71%"></span></div>
+            </div>
+
+            <div class="progress-row">
+                <div class="progress-top">
+                    <span>Opisy uzupełnione</span>
+                    <span>92%</span>
+                </div>
+                <div class="progress-bar"><span style="width: 92%"></span></div>
+            </div>
+
+            <div class="progress-row">
+                <div class="progress-top">
+                    <span>Producenci aktywni</span>
+                    <span>95%</span>
+                </div>
+                <div class="progress-bar"><span style="width: 95%"></span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="main-grid">
+    <div class="card panel">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">Ostatnio dodane produkty</h3>
+                <p class="panel-subtitle">Przykładowa lista do podmiany danymi z bazy.</p>
+            </div>
+            <a class="badge green" href="#">Zobacz wszystkie</a>
+        </div>
+
+        <div class="list">
+            {% if equipmentShortList %}
+                {% for equipment in equipmentShortList %}
+                    <div class="list-item">
+                        <div class="list-left">
+                            <p class="list-title">{{ equipment.name }}</p>
+                            <p class="list-meta">ID produktu • dodany niedawno</p>
+                        </div>
+                        <div class="price">{{ equipment.price }} zł</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="hint-box">
+                    <h3>Brak danych do wyświetlenia</h3>
+                    <p>
+                        Tutaj możesz pokazać ostatnio dodane produkty, rowery, ramy albo rekordy wymagające edycji.
+                        Na ten moment to bezpieczny placeholder, żeby panel od razu wyglądał sensownie.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card panel mini-panel">
+        <div class="panel-header">
+            <div>
+                <h3 class="panel-title">Szybka uwaga</h3>
+                <p class="panel-subtitle">Co warto poprawić w katalogu.</p>
+            </div>
+        </div>
+
+        <div class="hint-box">
+            <h3>Uzupełnij rekordy bez zdjęć</h3>
+            <p>
+                Warto wyłapać produkty bez grafiki i opisu, bo to pierwsze miejsca,
+                które najlepiej poprawiają jakość panelu i oferty.
+            </p>
+        </div>
+
+        <div class="hint-box">
+            <h3>Dodaj filtry i wyszukiwarkę</h3>
+            <p>
+                Następny krok to listy z filtrowaniem po producencie, cenie i statusie.
+                Dzięki temu panel będzie naprawdę wygodny w użyciu.
+            </p>
+        </div>
+
+        <div class="hint-box">
+            <h3>Najlepszy kierunek</h3>
+            <p>
+                Z tego dashboardu możesz potem przejść do pełnych CRUD-ów dla rowerów,
+                ram i producentów bez zmiany stylu całej aplikacji.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="footer-note">
+    Bike4Humans admin dashboard • zbudowany jako lekka, czytelna baza pod dalszy rozwój
+</div>
+{% endblock %}
