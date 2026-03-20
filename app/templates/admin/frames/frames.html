@@ -65,15 +65,15 @@
                 {% for frame in frames %}
                 <tr>
                     <td>
-                        <div class="item-cell">
+                        <div class="bike-cell">
                             {% if frame.image_url %}
-                                <img class="item-thumb" src="{{ frame.image_url }}" alt="{{ frame.name }}">
+                                <img class="bike-thumb" src="{{ frame.image_url }}" alt="{{ frame.name }}">
                             {% else %}
-                                <div class="item-thumb-placeholder">🧩</div>
+                                <div class="bike-thumb-placeholder">🧩</div>
                             {% endif %}
                             <div>
-                                <p class="item-title">{{ frame.name }}</p>
-                                <div class="item-meta">ID: {{ frame.id }}</div>
+                                <p class="bike-title">{{ frame.name }}</p>
+                                <div class="bike-meta">ID: {{ frame.id }}</div>
                             </div>
                         </div>
                     </td>

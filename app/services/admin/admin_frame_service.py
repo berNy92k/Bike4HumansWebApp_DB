@@ -7,7 +7,7 @@ from app.schemas.admin.frames.admin_frame_create_dto import FrameCreateDto
 from app.schemas.admin.frames.admin_frame_update_dto import FrameUpdateDto
 
 
-class FrameService:
+class AdminFrameService:
 
     def __init__(self, db: Session):
         self.frame_repository = FrameRepository(db)

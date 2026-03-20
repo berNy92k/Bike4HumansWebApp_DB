@@ -142,16 +142,6 @@ tbody tr:hover {
     align-items: center;
 }
 
-.bike-thumb {
-    width: 72px;
-    height: 56px;
-    border-radius: 14px;
-    object-fit: cover;
-    background: #e2e8f0;
-    flex-shrink: 0;
-    border: 1px solid #cbd5e1;
-}
-
 .bike-thumb-placeholder {
     width: 72px;
     height: 56px;
@@ -199,12 +189,6 @@ tbody tr:hover {
 .badge-neutral {
     background: #e2e8f0;
     color: #334155;
-}
-
-.price {
-    font-weight: 800;
-    color: #0f172a;
-    white-space: nowrap;
 }
 
 .actions {

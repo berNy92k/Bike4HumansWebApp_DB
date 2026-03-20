@@ -7,7 +7,7 @@ from app.schemas.admin.manufacturers.admin_manufacturer_create_dto import Manufa
 from app.schemas.admin.manufacturers.admin_manufacturer_update_dto import ManufacturerUpdateDto
 
 
-class ManufacturerService:
+class AdminManufacturerService:
 
     def __init__(self, db: Session):
         self.manufacturer_repository = ManufacturerRepository(db)

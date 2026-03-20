@@ -7,7 +7,7 @@ from app.schemas.admin.bike.admin_bike_create_dto import BikeCreateDto
 from app.schemas.admin.bike.admin_bike_update_dto import BikeUpdateDto
 
 
-class BikeService:
+class AdminBikeService:
 
     def __init__(self, db: Session):
         self.bike_repository = BikeRepository(db)

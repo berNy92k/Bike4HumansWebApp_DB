@@ -63,15 +63,15 @@
                 {% for manufacturer in manufacturers %}
                 <tr>
                     <td>
-                        <div class="item-cell">
+                        <div class="bike-cell">
                             {% if manufacturer.image_url %}
-                                <img class="item-thumb" src="{{ manufacturer.image_url }}" alt="{{ manufacturer.name }}">
+                                <img class="bike-thumb" src="{{ manufacturer.image_url }}" alt="{{ manufacturer.name }}">
                             {% else %}
-                                <div class="item-thumb-placeholder">🏭</div>
+                                <div class="bike-thumb-placeholder">🏭</div>
                             {% endif %}
                             <div>
-                                <p class="item-title">{{ manufacturer.name }}</p>
-                                <div class="item-meta">ID: {{ manufacturer.id }}</div>
+                                <p class="bike-title">{{ manufacturer.name }}</p>
+                                <div class="bike-meta">ID: {{ manufacturer.id }}</div>
                             </div>
                         </div>
                     </td>

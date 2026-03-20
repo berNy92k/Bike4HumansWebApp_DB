@@ -1,0 +1,102 @@
+{% extends "admin/homepage/base.html" %}
+
+{% block title %}Bike4Humans | Użytkownicy{% endblock %}
+
+{% block nav_users_active %}active{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin_users.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title">
+        <h2>Użytkownicy</h2>
+        <p>Przegląd wszystkich użytkowników w panelu administracyjnym.</p>
+    </div>
+
+    <div class="toolbar">
+        <a class="btn btn-secondary" href="#">Odśwież</a>
+        <a class="btn btn-primary" href="#">+ Dodaj użytkownika</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Łącznie użytkowników</div>
+        <div class="stat-value">{{ users|length if users is defined else 0 }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Aktywni</div>
+        <div class="stat-value">0</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Administratorzy</div>
+        <div class="stat-value">0</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Zablokowani</div>
+        <div class="stat-value">0</div>
+    </div>
+</div>
+
+<div class="table-card">
+    <div class="table-header">
+        <h3>Lista użytkowników</h3>
+        <span class="badge badge-neutral">{{ users|length if users is defined else 0 }} rekordów</span>
+    </div>
+
+    {% if users and users|length > 0 %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Użytkownik</th>
+                    <th>Email</th>
+                    <th>Rola</th>
+                    <th>Status</th>
+                    <th>Utworzono</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>
+                        <div class="bike-cell">
+                            <div class="bike-thumb-placeholder">👤</div>
+                            <div>
+                                <p class="bike-title">{{ user.username or user.name or 'Bez nazwy' }}</p>
+                                <div class="bike-meta">ID: {{ user.id }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ user.email or '—' }}</td>
+                    <td>{{ user.role or 'Użytkownik' }}</td>
+                    <td>
+                        {% if user is defined and user.is_active %}
+                            <span class="badge badge-success">Aktywny</span>
+                        {% else %}
+                            <span class="badge badge-danger">Nieaktywny</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.created_at or '—' }}</td>
+                    <td>
+                        <div class="actions">
+                            <a class="action-link action-view" href="#">Szczegóły</a>
+                            <a class="action-link action-edit" href="#">Edytuj</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <h3>Brak użytkowników do wyświetlenia</h3>
+        <p>Dodaj pierwszego użytkownika, aby zobaczyć go na liście.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
