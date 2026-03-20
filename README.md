@@ -3,97 +3,74 @@
 Backend for an online bike and accessories store, built with **Python and FastAPI**.  
 This project was created as a learning exercise, focusing on **backend development**, business logic, and REST API design. The frontend was added only to visualize functionality and test the API.
 
+Admin panel:
+![img.png](app/static/images/readme/admin.png)
+
+Homepage:
+![img_1.png](app/static/images/readme/homepage.png)
+
 ---
 
 ## 🛠 Technologies
 
 - **Backend:** Python + FastAPI  
-- **Database:** PostgreSQL  
+- **Database:** SQLite / relational database layer via SQLAlchemy  
 - **ORM:** SQLAlchemy  
-- **Migrations:** Alembic  
 - **Testing:** pytest  
 - **Server:** Uvicorn  
-- **Dependency management:** Poetry / pipenv / requirements.txt  
-- **Frontend for basic UI:** Jinja templates   
-- **Optional:** Docker for full-stack development  
+- **Frontend for basic UI:** Jinja templates  
+- **Styling:** CSS, Bootstrap  
+- **Optional:** local virtual environment for development  
 
 ---
 
 ## 🔑 Features
 
-### Users
-- Registration and login (JWT)  
-- Roles: User/ Admin
-- User profile management  
+### Admin area
+- Manage bikes, frames and manufacturers  
+- Create, update and delete records  
+- Separate admin views and forms  
 
-### Products
-- Browse products and categories  
-- Admin CRUD operations (create, update, delete)  
-- Product filtering and sorting  
-
-### Cart
-- Add products to cart  
-- Update quantities  
-- Remove items from cart  
-
-### Orders
-- Create orders from cart  
-- User order history  
-- Order status: pending, paid, shipped, delivered, cancelled  
-- Admin can manage all orders  
+### Frontend
+- Public homepage with product presentation  
+- Basic layout with templates and reusable components  
+- Static assets for styling and images  
 
 ### Additional Components
 - Data validation with Pydantic schemas  
-- Unit and integration tests with pytest  
-- Database migrations using Alembic  
-- Basic frontend views with Jinja templates for testing backend flows  
+- Repository/service layering for cleaner code  
+- Database access separated from route logic  
+- Basic tests setup  
 
 ---
 
 ## 🗂 Project Structure
 
-- app/
-  - main.py                  # Application entrypoint
-  - core/                    # Configuration, security, custom exceptions
-    - config.py
-    - security.py
-    - exceptions.py
-  - database/                # Database configuration, sessions, migrations
-    - session.py
-    - base.py
-    - migrations/
-  - models/                  # ORM models
-    - user.py
-    - product.py
-    - cart.py
-    - order.py
-  - schemas/                 # Pydantic schemas
-    - user.py
-    - product.py
-    - cart.py
-    - order.py
-  - repositories/            # Database CRUD operations
-    - user_repository.py
-    - product_repository.py
-    - cart_repository.py
-    - order_repository.py
-  - services/                # Business logic
-    - auth_service.py
-    - user_service.py
-    - product_service.py
-    - cart_service.py
-    - order_service.py
-  - routers/                 # API endpoints
-    - auth_router.py
-    - user_router.py
-    - product_router.py
-    - cart_router.py
-    - order_router.py
-  - dependencies/            # Dependency injection
-    - auth_dependencies.py
-    - database_dependencies.py
-  - templates/               # Jinja templates for simple frontend
-  - static/                  # CSS, JS, images for basic UI
+- `app/`
+  - `main.py` — application entrypoint
+  - `database/` — database connection setup
+  - `models/` — ORM models for bikes, frames and manufacturers
+  - `repositories/` — database access layer
+  - `routers/` — route definitions
+    - `admin/` — admin endpoints
+    - `front/` — public-facing endpoints
+  - `schemas/` — Pydantic schemas
+    - `admin/` — DTOs for admin operations
+    - `front/` — DTOs for public views
+  - `services/` — business logic
+    - `admin/` — admin-related services
+    - `front/` — frontend-related services
+  - `templates/` — Jinja templates
+    - `admin/`
+    - `authentication/`
+    - `front/`
+  - `static/` — CSS, JS and images
+    - `css/`
+    - `images/`
+    - `js/`
+  - `core/` — shared project utilities
+- `tests/` — test files
+- `app.db` — local database file used during development
 
 ---
 
@@ -101,21 +78,17 @@ This project was created as a learning exercise, focusing on **backend developme
 
 - Backend development with FastAPI  
 - REST API design and implementation  
-- Database modeling with SQLAlchemy and PostgreSQL  
-- Database migrations with Alembic  
-- Writing unit and integration tests using pytest  
-- Structuring a modular monolith backend for scalability  
-- Using Jinja templates for a simple backend-driven UI  
-- Creating a separate React frontend later to focus only on frontend development  
+- Database modeling with SQLAlchemy  
+- Structuring a modular backend with repositories and services  
+- Using Jinja templates for a simple UI  
+- Separating admin and frontend concerns in the codebase  
 
 ---
 
 ## 📌 Optional Improvements
 
-- Implement frontend with RWD (Responsive Web Design)  
-- Dockerize the project for easier deployment  
-- Add pagination, filtering, and search functionality  
-- Dockerize the project for easier deployment  
-- Integrate external services (payment, email notifications)  
-- Add logging and monitoring for production readiness  
-- Improve UI with better styling and responsive layout
+- Expand automated tests  
+- Add pagination, filtering and search  
+- Improve UI and responsiveness  
+- Add better documentation for API endpoints  
+- Consider Dockerization for easier setup and deployment
