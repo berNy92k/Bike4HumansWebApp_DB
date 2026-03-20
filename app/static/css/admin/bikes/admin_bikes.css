@@ -231,6 +231,16 @@ tbody tr:hover {
     color: #92400e;
 }
 
+.action-delete {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.action-delete:hover {
+    background: #fecaca;
+    color: #7f1d1d;
+}
+
 .empty-state {
     padding: 56px 24px;
     text-align: center;

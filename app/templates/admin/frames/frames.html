@@ -5,7 +5,7 @@
 {% block nav_frames_active %}active{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ url_for('static', path='css/admin_frames.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin/frames/admin_frames.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -93,6 +93,9 @@
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/frames/{{ frame.id }}">Szczegóły</a>
                             <a class="action-link action-edit" href="#">Edytuj</a>
+                            <a class="action-link action-delete"
+                               href="/admin/frames/{{ frame.id }}"
+                               onclick="return confirm('Na pewno usunąć tę ramę?');">Usuń</a>
                         </div>
                     </td>
                 </tr>

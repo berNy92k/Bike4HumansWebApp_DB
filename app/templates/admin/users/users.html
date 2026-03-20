@@ -5,7 +5,7 @@
 {% block nav_users_active %}active{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ url_for('static', path='css/admin_users.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin/users/admin_users.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -85,6 +85,7 @@
                         <div class="actions">
                             <a class="action-link action-view" href="#">Szczegóły</a>
                             <a class="action-link action-edit" href="#">Edytuj</a>
+                            <a class="action-link action-delete" href="#" onclick="return confirm('Na pewno usunąć tego użytkownika?');">Usuń</a>
                         </div>
                     </td>
                 </tr>

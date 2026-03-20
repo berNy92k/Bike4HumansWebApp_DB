@@ -5,7 +5,7 @@
 {% block nav_manufacturers_active %}active{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ url_for('static', path='css/admin_manufacturers.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin/manufacturers/admin_manufacturers.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -91,6 +91,9 @@
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}">Szczegóły</a>
                             <a class="action-link action-edit" href="#">Edytuj</a>
+                            <a class="action-link action-delete"
+                               href="/admin/manufacturer/{{ manufacturer.id }}"
+                               onclick="return confirm('Na pewno usunąć tego producenta?');">Usuń</a>
                         </div>
                     </td>
                 </tr>

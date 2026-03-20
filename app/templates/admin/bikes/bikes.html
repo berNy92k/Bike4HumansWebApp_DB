@@ -5,7 +5,7 @@
 {% block nav_bikes_active %}active{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ url_for('static', path='css/admin_bikes.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin/bikes/admin_bikes.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
 
     <div class="toolbar">
         <a class="btn btn-secondary" href="/admin/bikes/list">Odśwież</a>
-        <a class="btn btn-primary" href="#">+ Dodaj rower</a>
+        <a class="btn btn-primary" href="/admin/bikes/create">+ Dodaj rower</a>
     </div>
 </div>
 
@@ -93,6 +93,12 @@
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/bikes/{{ bike.id }}">Szczegóły</a>
                             <a class="action-link action-edit" href="#">Edytuj</a>
+                            <button
+                                type="button"
+                                class="action-link action-delete"
+                                data-bike-id="{{ bike.id }}">
+                                Usuń
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -107,4 +113,8 @@
     </div>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block extra_body %}
+<script defer src="{{ url_for('static', path='js/admin/bikes/admin_delete_bike.js') }}"></script>
 {% endblock %}

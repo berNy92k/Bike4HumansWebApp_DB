@@ -24,11 +24,14 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 ### Pages ###
 @router.get("/list", status_code=status.HTTP_200_OK)
-async def render_todo_page(request: Request, db: db_dependency):
+async def render_bikes_page(request: Request, db: db_dependency):
     service = AdminBikeService(db)
     bikes = service.get_all_bikes()
     return templates.TemplateResponse("admin/bikes/bikes.html", {"request": request, "bikes": bikes})
 
+@router.get("/create", status_code=status.HTTP_200_OK)
+async def render_create_bike(request: Request):
+    return templates.TemplateResponse("admin/bikes/bike_create.html", {"request": request})
 
 ### ENDPOINTS ###
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[BikeReadDto])
