@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import String, Integer, Boolean, DateTime
+from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.database import Base
@@ -15,9 +15,10 @@ class User(Base):
     name: Mapped[str] = mapped_column(String(150), nullable=False, unique=False)
     surname: Mapped[str] = mapped_column(String(150), nullable=False, unique=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
-    role: Mapped[str] = mapped_column(String(50), nullable=False, default="user", index=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     last_login: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    role_id: Mapped[int] = mapped_column(ForeignKey("role.id"), nullable=False, index=True)

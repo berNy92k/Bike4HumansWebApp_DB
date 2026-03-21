@@ -10,3 +10,7 @@ class UserRepository:
 
     def get_all_users(self):
         return self.db.query(User).order_by(User.created_at.desc()).all()
+
+    def create_user(self, user: User):
+        self.db.add(user)
+        self.db.commit()

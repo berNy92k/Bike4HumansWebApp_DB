@@ -3,6 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.database.database import Base, engine
+from app.models.role import Role
+from app.models.user import User
 from app.routers.admin import admin_bike_router, admin_manufacturers_router, admin_user_router
 
 app = FastAPI()

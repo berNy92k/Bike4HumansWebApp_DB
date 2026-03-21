@@ -1,0 +1,76 @@
+{% extends "admin/homepage/base.html" %}
+
+{% block title %}Bike4Humans | Edytuj użytkownika{% endblock %}
+
+{% block nav_users_active %}active{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin/users/admin_users.css') }}">
+<script defer src="{{ url_for('static', path='js/admin/users/admin_edit_user.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title">
+        <h2>Edytuj użytkownika</h2>
+        <p>Zmodyfikuj dane użytkownika w panelu administracyjnym.</p>
+    </div>
+
+    <div class="toolbar">
+        <a class="btn btn-secondary" href="/admin/user/list">← Wróć do listy</a>
+    </div>
+</div>
+
+<div class="form-card">
+    <form id="user-edit-form" class="bike-form" autocomplete="off">
+        <div id="form-message" class="form-message" aria-live="polite"></div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="username">Nazwa użytkownika</label>
+                <input id="username" name="username" type="text" placeholder="Np. jan.kowalski" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" placeholder="Np. jan@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Imię</label>
+                <input id="name" name="name" type="text" placeholder="Np. Jan" required>
+            </div>
+
+            <div class="form-group">
+                <label for="surname">Nazwisko</label>
+                <input id="surname" name="surname" type="text" placeholder="Np. Kowalski" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Rola</label>
+                <input id="role" name="role" type="text" placeholder="Np. admin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Nowe hasło</label>
+                <input id="password" name="password" type="password" placeholder="Zostaw puste, jeśli bez zmian">
+            </div>
+
+            <div class="form-group form-group-full checkbox-row">
+                <input id="is_active" name="is_active" type="checkbox">
+                <label for="is_active">Aktywny</label>
+            </div>
+
+            <div class="form-group form-group-full checkbox-row">
+                <input id="email_verified" name="email_verified" type="checkbox">
+                <label for="email_verified">E-mail zweryfikowany</label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+            <a class="btn btn-secondary" href="/admin/user/list">Anuluj</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
