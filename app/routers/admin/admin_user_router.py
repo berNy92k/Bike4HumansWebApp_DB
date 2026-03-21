@@ -21,7 +21,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 ### Pages ###
-@router.get("/list")
+@router.get("/list", include_in_schema=False)
 async def render_user_page(request: Request, db: db_dependency):
     service = AdminUserService(db)
     users = service.get_all_users()
