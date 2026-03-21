@@ -49,14 +49,18 @@
 
     {% if manufacturers and manufacturers|length > 0 %}
     <div class="table-wrapper">
-        <table>
+        <table class="manufacturers-table">
+            <colgroup>
+                <col class="col-manufacturer">
+                <col class="col-description">
+                <col class="col-created">
+                <col class="col-actions">
+            </colgroup>
             <thead>
                 <tr>
                     <th>Producent</th>
                     <th>Opis</th>
-                    <th>Zdjęcie</th>
                     <th>Utworzono</th>
-                    <th>Aktualizacja</th>
                     <th>Akcje</th>
                 </tr>
             </thead>
@@ -79,15 +83,7 @@
                     <td class="description">
                         {{ manufacturer.description or '—' }}
                     </td>
-                    <td>
-                        {% if manufacturer.image_url %}
-                            <a href="{{ manufacturer.image_url }}" target="_blank" rel="noopener">Podgląd</a>
-                        {% else %}
-                            —
-                        {% endif %}
-                    </td>
                     <td>{{ manufacturer.created_at }}</td>
-                    <td>{{ manufacturer.updated_at }}</td>
                     <td>
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}/details">Szczegóły</a>

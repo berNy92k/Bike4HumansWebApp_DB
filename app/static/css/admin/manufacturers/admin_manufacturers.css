@@ -107,6 +107,23 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.manufacturers-table .col-manufacturer {
+    width: 28%;
+}
+
+.manufacturers-table .col-description {
+    width: 44%;
+}
+
+.manufacturers-table .col-created {
+    width: 14%;
+}
+
+.manufacturers-table .col-actions {
+    width: 14%;
 }
 
 thead {
@@ -175,6 +192,12 @@ tbody tr:hover {
     color: #64748b;
     font-size: 0.92rem;
     margin-top: 4px;
+}
+
+.description {
+    width: auto;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .badge {
@@ -265,6 +288,13 @@ tbody tr:hover {
     .page-header {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .manufacturers-table .col-manufacturer,
+    .manufacturers-table .col-description,
+    .manufacturers-table .col-created,
+    .manufacturers-table .col-actions {
+        width: auto;
     }
 }
 

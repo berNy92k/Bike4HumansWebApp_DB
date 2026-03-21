@@ -1,3 +1,6 @@
+from pathlib import Path
+from random import choice
+
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
@@ -8,6 +11,7 @@ from app.schemas.admin.manufacturers.admin_manufacturer_update_dto import Manufa
 
 
 class AdminManufacturerService:
+    PLACEHOLDER_IMAGES_DIR = Path("app/static/images/manufacturers/placeholders")
 
     def __init__(self, db: Session):
         self.manufacturer_repository = ManufacturerRepository(db)
@@ -24,7 +28,10 @@ class AdminManufacturerService:
         return manufacturer
 
     def create_manufacturer(self, manufacturer_create_dto: ManufacturerCreateDto):
-        manufacturer = Manufacturer(**manufacturer_create_dto.model_dump())
+        manufacturer_data = manufacturer_create_dto.model_dump()
+        manufacturer_data["image_url"] = self._pick_random_image()
+
+        manufacturer = Manufacturer(**manufacturer_data)
 
         self.manufacturer_repository.create_manufacturer(manufacturer)
 
@@ -50,3 +57,18 @@ class AdminManufacturerService:
         manufacturer = self.get_manufacturer_by_id(manufacturer_id)
 
         self.manufacturer_repository.delete(manufacturer)
+
+    def _pick_random_image(self) -> str | None:
+        if not self.PLACEHOLDER_IMAGES_DIR.exists():
+            return None
+
+        images = [
+            path for path in self.PLACEHOLDER_IMAGES_DIR.iterdir() if
+            path.is_file() and path.suffix.lower() in {".jpg", ".jpeg", ".png", ".webp"}
+        ]
+
+        if not images:
+            return None
+
+        chosen = choice(images)
+        return f"/static/images/manufacturers/placeholders/{chosen.name}"
