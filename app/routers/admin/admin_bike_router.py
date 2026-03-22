@@ -85,13 +85,13 @@ async def create_bike(bike_create_dto: BikeCreateDto, db: db_dependency):
 
 
 @router.put("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def create_bike(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
+async def update_bike_all_fields(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
     service = AdminBikeService(db)
     service.update_bike_all_fields(bike_id, bike_update_dto)
 
 
 @router.patch("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def create_bike(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
+async def update_bike_separate_fields(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
     service = AdminBikeService(db)
     service.update_bike_separate_fields(bike_id, bike_update_dto)
 

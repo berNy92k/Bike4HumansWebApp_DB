@@ -11,6 +11,7 @@ from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDt
 from app.schemas.admin.user.admin_user_list_response_dto import UserListResponseDto
 from app.schemas.admin.user.admin_user_read_details_dto import UserDetailsDto
 from app.schemas.admin.user.admin_user_read_dto import UserReadDto
+from app.schemas.admin.user.admin_user_update_dto import UserUpdateDto
 from app.schemas.admin.user.role.admin_role_create_dto import RoleCreateDto
 from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequestDto
 from app.schemas.admin.user.role.admin_role_list_response_dto import RoleListResponseDto
@@ -82,6 +83,18 @@ class AdminUserService:
             role_id=user_dto.role_id,
         )
         self.user_repository.create_user(user)
+
+    def update_user_all_fields(self, user_id: int, user_update_dto: UserUpdateDto):
+        user = self.user_repository.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        user_data = user_update_dto.model_dump()
+
+        for f, v in user_data.items():
+            setattr(user, f, v)
+
+        self.user_repository.update_user(user)
 
     def get_all_roles(self):
         return self.role_repository.get_all_roles()

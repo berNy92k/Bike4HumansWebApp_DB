@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showMessage("Zapisywanie zmian...", "info");
 
             const response = await fetch(`/admin/user/${userId}`, {
-                method: "PATCH",
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
                 },

@@ -8,13 +8,14 @@ from starlette.templating import Jinja2Templates
 
 from app.database.database import get_db
 from app.schemas.admin.user.admin_user_create_dto import UserCreateDto
+from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDto
 from app.schemas.admin.user.admin_user_read_dto import UserReadDto
+from app.schemas.admin.user.admin_user_update_dto import UserUpdateDto
 from app.schemas.admin.user.role.admin_role_create_dto import RoleCreateDto
 from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequestDto
 from app.schemas.admin.user.role.admin_role_list_response_dto import RoleListResponseDto
 from app.schemas.admin.user.role.admin_role_update_dto import RoleUpdateDto
 from app.services.admin.admin_user_service import AdminUserService
-from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDto
 
 router = APIRouter(
     prefix="/admin/user",
@@ -49,17 +50,20 @@ async def render_user_page(request: Request, db: db_dependency):
         },
     )
 
+
 @router.get("/create", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_user_create_page(request: Request, db: db_dependency):
     service = AdminUserService(db)
     roles = service.get_all_roles()
     return templates.TemplateResponse("admin/users/user_create.html", {"request": request, "roles": roles})
 
+
 @router.get("/{user_id}/details", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_user_details_page(request: Request, user_id: int, db: db_dependency):
     service = AdminUserService(db)
     user = service.get_user_by_id(user_id)
     return templates.TemplateResponse("admin/users/user_details.html", {"request": request, "user": user})
+
 
 @router.get("/{user_id}/edit", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_user_edit_page(request: Request, user_id: int, db: db_dependency):
@@ -123,6 +127,12 @@ async def get_all_users(db: db_dependency):
 async def create_new_user(user: UserCreateDto, db: db_dependency):
     service = AdminUserService(db)
     service.create_user(user)
+
+
+@router.put("/{user_id}", status_code=status.HTTP_200_OK)
+async def update_new_user(user_id: int, user_update_dto: UserUpdateDto, db: db_dependency):
+    service = AdminUserService(db)
+    service.update_user_all_fields(user_id, user_update_dto)
 
 
 ## ROLES ##
