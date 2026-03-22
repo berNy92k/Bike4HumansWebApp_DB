@@ -50,7 +50,9 @@
                 <label for="role_id">Rola</label>
                 <select id="role_id" name="role_id" required>
                     <option value="">Wybierz rolę</option>
-                    <!-- opcje wstawisz z backendu -->
+                    {% for role in roles %}
+                    <option value="{{ role.id }}">{{ role.name }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
