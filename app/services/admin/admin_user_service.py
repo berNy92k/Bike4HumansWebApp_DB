@@ -8,6 +8,9 @@ from app.repositories.role_repository import RoleRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.admin.user.admin_user_create_dto import UserCreateDto
 from app.schemas.admin.user.role.admin_role_create_dto import RoleCreateDto
+from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequestDto
+from app.schemas.admin.user.role.admin_role_list_response_dto import RoleListResponseDto
+from app.schemas.admin.user.role.admin_role_read_dto import RoleReadDto
 from app.schemas.admin.user.role.admin_role_update_dto import RoleUpdateDto
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -37,6 +40,20 @@ class AdminUserService:
 
     def get_all_roles(self):
         return self.role_repository.get_all_roles()
+
+    def get_roles_paginated(self, request_dto: RoleListRequestDto) -> RoleListResponseDto:
+        items, total = self.role_repository.get_roles_paginated(page=request_dto.page, size=request_dto.size)
+        pages = (total + request_dto.size - 1) // request_dto.size if total > 0 else 0
+
+        role_items = [RoleReadDto.model_validate(role) for role in items]
+
+        return RoleListResponseDto(
+            items=role_items,
+            page=request_dto.page,
+            size=request_dto.size,
+            total=total,
+            pages=pages,
+        )
 
     def get_role_by_id(self, role_id: int):
         role = self.role_repository.get_role_by_id(role_id)

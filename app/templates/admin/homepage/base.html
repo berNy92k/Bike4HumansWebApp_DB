@@ -27,11 +27,11 @@
                 <span class="nav-icon">🏠</span>
                 <span>Dashboard</span>
             </a>
-            <a class="nav-item {% block nav_bikes_active %}{% endblock %}" href="/admin/bikes/list">
+            <a class="nav-item {% block nav_bikes_active %}{% endblock %}" href="/admin/bikes/list?page=1&size=5">
                 <span class="nav-icon">🚲</span>
                 <span>Rowery</span>
             </a>
-            <a class="nav-item {% block nav_manufacturers_active %}{% endblock %}" href="/admin/manufacturer/list">
+            <a class="nav-item {% block nav_manufacturers_active %}{% endblock %}" href="/admin/manufacturer/list?page=1&size=5">
                 <span class="nav-icon">🏭</span>
                 <span>Producenci</span>
             </a>
@@ -39,11 +39,11 @@
                 <span class="nav-icon">🧾</span>
                 <span>Zamówienia</span>
             </a>
-            <a class="nav-item {% block nav_users_active %}{% endblock %}" href="/admin/user/list">
+            <a class="nav-item {% block nav_users_active %}{% endblock %}" href="/admin/user/list?page=1&size=5">
                 <span class="nav-icon">👤</span>
                 <span>Użytkownicy</span>
             </a>
-            <a class="nav-item {% block nav_roles_active %}{% endblock %}" href="/admin/user/role/list">
+            <a class="nav-item {% block nav_roles_active %}{% endblock %}" href="/admin/user/role/list?page=1&size=5">
                 <span class="nav-icon">🪪</span>
                 <span>Role</span>
             </a>
@@ -55,11 +55,11 @@
 
         <div class="nav-section-title">Szybkie opcje</div>
         <nav class="nav-list">
-            <a class="nav-item" href="#">
+            <a class="nav-item" href="/admin/bikes/create">
                 <span class="nav-icon">➕</span>
                 <span>Dodaj rower</span>
             </a>
-            <a class="nav-item" href="#">
+            <a class="nav-item" href="/admin/manufacturer/create">
                 <span class="nav-icon">➕</span>
                 <span>Dodaj producenta</span>
             </a>

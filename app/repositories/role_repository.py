@@ -11,6 +11,12 @@ class RoleRepository:
     def get_all_roles(self):
         return self.db.query(Role).order_by(Role.id.desc()).all()
 
+    def get_roles_paginated(self, page: int, size: int):
+        query = self.db.query(Role).order_by(Role.id.desc())
+        total = query.count()
+        items = query.offset((page - 1) * size).limit(size).all()
+        return items, total
+
     def get_role_by_id(self, role_id):
         return self.db.query(Role).where(Role.id == role_id).first()
 

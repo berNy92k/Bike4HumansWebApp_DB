@@ -1,6 +1,6 @@
 from typing import Annotated, List
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Query
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
 from starlette import status
@@ -10,7 +10,8 @@ from app.database.database import get_db
 from app.schemas.admin.user.admin_user_create_dto import UserCreateDto
 from app.schemas.admin.user.admin_user_read_dto import UserReadDto
 from app.schemas.admin.user.role.admin_role_create_dto import RoleCreateDto
-from app.schemas.admin.user.role.admin_role_read_dto import RoleReadDto
+from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequestDto
+from app.schemas.admin.user.role.admin_role_list_response_dto import RoleListResponseDto
 from app.schemas.admin.user.role.admin_role_update_dto import RoleUpdateDto
 from app.services.admin.admin_user_service import AdminUserService
 
@@ -37,12 +38,28 @@ async def render_user_page(request: Request, db: db_dependency):
 async def render_user_create_page(request: Request):
     return templates.TemplateResponse("admin/users/user_create.html", {"request": request})
 
+
 ## ROLES ##
 @router.get("/role/list", include_in_schema=False)
-async def render_user_page(request: Request, db: db_dependency):
+async def render_role_list_page(request: Request, db: db_dependency):
     service = AdminUserService(db)
-    roles = service.get_all_roles()
-    return templates.TemplateResponse("admin/users/roles/roles.html", {"request": request, "roles": roles})
+
+    page = int(request.query_params.get("page", 1))
+    size = int(request.query_params.get("size", 5))
+
+    pagination = service.get_roles_paginated(RoleListRequestDto(page=page, size=size))
+
+    return templates.TemplateResponse(
+        "admin/users/roles/roles.html",
+        {
+            "request": request,
+            "roles": pagination.items,
+            "page": pagination.page,
+            "size": pagination.size,
+            "total": pagination.total,
+            "pages": pagination.pages,
+        }
+    )
 
 
 @router.get("/role/create", include_in_schema=False)
@@ -77,11 +94,12 @@ async def create_new_user(user: UserCreateDto, db: db_dependency):
     service = AdminUserService(db)
     service.create_user(user)
 
+
 ## ROLES ##
-@router.get("/roles", status_code=status.HTTP_200_OK, response_model=List[RoleReadDto])
-async def get_all_roles(db: db_dependency):
+@router.get("/roles", status_code=status.HTTP_200_OK, response_model=RoleListResponseDto)
+async def get_all_roles(db: db_dependency, page: int = Query(1, ge=1), size: int = Query(10, ge=1, le=100)):
     service = AdminUserService(db)
-    return service.get_all_roles()
+    return service.get_roles_paginated(RoleListRequestDto(page=page, size=size))
 
 
 @router.post("/role", status_code=status.HTTP_201_CREATED)
