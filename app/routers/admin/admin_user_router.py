@@ -28,7 +28,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 ### Pages ###
 ## USERS ##
-@router.get("/list", include_in_schema=False)
+@router.get("/list", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_user_page(request: Request, db: db_dependency):
     service = AdminUserService(db)
 
@@ -49,12 +49,24 @@ async def render_user_page(request: Request, db: db_dependency):
         },
     )
 
-
-@router.get("/create", include_in_schema=False)
+@router.get("/create", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_user_create_page(request: Request, db: db_dependency):
     service = AdminUserService(db)
     roles = service.get_all_roles()
     return templates.TemplateResponse("admin/users/user_create.html", {"request": request, "roles": roles})
+
+@router.get("/{user_id}/details", status_code=status.HTTP_200_OK, include_in_schema=False)
+async def render_user_details_page(request: Request, user_id: int, db: db_dependency):
+    service = AdminUserService(db)
+    user = service.get_user_by_id(user_id)
+    return templates.TemplateResponse("admin/users/user_details.html", {"request": request, "user": user})
+
+@router.get("/{user_id}/edit", status_code=status.HTTP_200_OK, include_in_schema=False)
+async def render_user_edit_page(request: Request, user_id: int, db: db_dependency):
+    service = AdminUserService(db)
+    user = service.get_user_by_id(user_id)
+    roles = service.get_all_roles()
+    return templates.TemplateResponse("admin/users/user_edit.html", {"request": request, "user": user, "roles": roles})
 
 
 ## ROLES ##

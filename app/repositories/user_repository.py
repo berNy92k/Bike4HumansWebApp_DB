@@ -17,6 +17,9 @@ class UserRepository:
         items = query.offset((page - 1) * size).limit(size).all()
         return items, total
 
+    def get_user_by_id(self, user_id):
+        return self.db.query(User).where(User.id == user_id).first()
+
     def create_user(self, user: User):
         self.db.add(user)
         self.db.commit()

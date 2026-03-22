@@ -5,7 +5,7 @@
 {% block nav_users_active %}active{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{{ url_for('static', path='css/admin/users/admin_users.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/admin/users/admin_create_user.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -17,7 +17,7 @@
 
     <div class="toolbar">
         <a class="btn btn-secondary" href="/admin/user/list">← Wróć do listy</a>
-        <a class="btn btn-primary" href="/admin/users/{{ user.id }}/edit">Edytuj</a>
+        <a class="btn btn-primary" href="/admin/user/{{ user.id }}/edit">Edytuj</a>
     </div>
 </div>
 
@@ -50,7 +50,7 @@
 
         <div class="detail-item">
             <span class="detail-label">Rola</span>
-            <span class="detail-value">{{ user.role }}</span>
+            <span class="detail-value">{{ user.role_name }}</span>
         </div>
 
         <div class="detail-item">

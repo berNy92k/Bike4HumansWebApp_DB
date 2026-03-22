@@ -54,7 +54,6 @@
                 <tr>
                     <th>Użytkownik</th>
                     <th>Email</th>
-                    <th>Rola</th>
                     <th>Status</th>
                     <th>Utworzono</th>
                     <th>Akcje</th>
@@ -73,7 +72,6 @@
                         </div>
                     </td>
                     <td>{{ user.email or '—' }}</td>
-                    <td>{{ user.role or 'Użytkownik' }}</td>
                     <td>
                         {% if user is defined and user.is_active %}
                             <span class="badge badge-success">Aktywny</span>
@@ -84,8 +82,8 @@
                     <td>{{ user.created_at or '—' }}</td>
                     <td>
                         <div class="actions">
-                            <a class="action-link action-view" href="#">Szczegóły</a>
-                            <a class="action-link action-edit" href="#">Edytuj</a>
+                            <a class="action-link action-view" href="/admin/user/{{ user.id }}/details">Szczegóły</a>
+                            <a class="action-link action-edit" href="/admin/user/{{ user.id }}/edit">Edytuj</a>
                             <a class="action-link action-delete" href="#" onclick="return confirm('Na pewno usunąć tego użytkownika?');">Usuń</a>
                         </div>
                     </td>

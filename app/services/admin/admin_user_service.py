@@ -9,6 +9,7 @@ from app.repositories.user_repository import UserRepository
 from app.schemas.admin.user.admin_user_create_dto import UserCreateDto
 from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDto
 from app.schemas.admin.user.admin_user_list_response_dto import UserListResponseDto
+from app.schemas.admin.user.admin_user_read_details_dto import UserDetailsDto
 from app.schemas.admin.user.admin_user_read_dto import UserReadDto
 from app.schemas.admin.user.role.admin_role_create_dto import RoleCreateDto
 from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequestDto
@@ -45,6 +46,29 @@ class AdminUserService:
             pages=pages,
         )
 
+    def get_user_by_id(self, user_id: int) -> UserDetailsDto:
+        user = self.user_repository.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        role = self.role_repository.get_role_by_id(user.role_id)
+        if not role:
+            raise HTTPException(status_code=404, detail="Role not found")
+
+        return UserDetailsDto(
+            id=user.id,
+            username=user.username,
+            email=user.email,
+            name=user.name,
+            surname=user.surname,
+            role_id=user.role_id,
+            role_name=role.name,
+            is_active=user.is_active,
+            email_verified=user.email_verified,
+            last_login=user.last_login,
+            created_at=user.created_at,
+            updated_at=user.updated_at,
+        )
 
     def create_user(self, user_dto: UserCreateDto):
         user = User(
