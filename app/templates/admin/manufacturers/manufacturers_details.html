@@ -44,6 +44,7 @@
             <p><strong>Zdjęcie:</strong> {{ manufacturer.image_url or 'Brak zdjęcia' }}</p>
             <p><strong>Utworzono:</strong> {{ manufacturer.created_at }}</p>
             <p><strong>Aktualizacja:</strong> {{ manufacturer.updated_at }}</p>
+            <a href="/admin/user/{{ manufacturer.created_by }}/details"> <p><strong>Utworzono przez (id):</strong> {{ manufacturer.created_by }}</p> </a>
         </div>
     </div>
 </div>

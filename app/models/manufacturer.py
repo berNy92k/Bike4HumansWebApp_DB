@@ -14,6 +14,5 @@ class Manufacturer(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow,
-                                                 nullable=False)
-    # created_by: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False, index=True)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    created_by: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)

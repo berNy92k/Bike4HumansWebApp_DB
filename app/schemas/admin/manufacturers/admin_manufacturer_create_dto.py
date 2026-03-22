@@ -5,3 +5,4 @@ class ManufacturerCreateDto(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
     description: str | None = Field(default=None, max_length=2000)
     image_url: str | None = Field(default=None, max_length=500)
+    created_by: int = Field(default=2, max_length=500)
