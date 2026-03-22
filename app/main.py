@@ -17,9 +17,9 @@ app.include_router(admin_manufacturers_router.router)
 
 templates = Jinja2Templates(directory="app/templates")
 
-@app.on_event("startup")
-def on_startup():
-    Base.metadata.create_all(bind=engine)
+# @app.on_event("startup")
+# def on_startup():
+#     Base.metadata.create_all(bind=engine)
 
 @app.get("/")
 async def render_homepage(request: Request):
