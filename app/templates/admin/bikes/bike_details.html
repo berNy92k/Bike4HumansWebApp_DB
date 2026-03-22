@@ -41,9 +41,6 @@
 
         <div>
             <p><strong>Nazwa:</strong> {{ bike.name }}</p>
-            <p><strong>Slug:</strong> {{ bike.slug }}</p>
-            <p><strong>Marka:</strong> {{ bike.brand or '—' }}</p>
-            <p><strong>Kategoria:</strong> {{ bike.category or '—' }}</p>
             <p><strong>Cena:</strong> {{ "%.2f"|format(bike.price) }} zł</p>
             <p><strong>Stan magazynowy:</strong> {{ bike.stock_quantity }}</p>
             <p><strong>Status:</strong> {% if bike.is_active %}Aktywny{% else %}Nieaktywny{% endif %}</p>

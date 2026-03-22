@@ -54,8 +54,6 @@
             <thead>
                 <tr>
                     <th>Rower</th>
-                    <th>Marka</th>
-                    <th>Kategoria</th>
                     <th>Cena</th>
                     <th>Zdjęcie</th>
                     <th>Status</th>
@@ -78,8 +76,6 @@
                             </div>
                         </div>
                     </td>
-                    <td>{{ bike.brand or '—' }}</td>
-                    <td>{{ bike.category or '—' }}</td>
                     <td class="price">{{ "%.2f"|format(bike.price) }} zł</td>
                     <td>{% if bike.image_url %}<a href="{{ bike.image_url }}" target="_blank" rel="noopener">Podgląd</a>{% else %}—{% endif %}</td>
                     <td>{% if bike.is_active %}<span class="badge badge-success">Aktywny</span>{% else %}<span class="badge badge-danger">Nieaktywny</span>{% endif %}</td>

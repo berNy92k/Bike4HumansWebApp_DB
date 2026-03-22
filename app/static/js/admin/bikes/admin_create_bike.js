@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("test")
     const form = document.getElementById("bike-create-form");
     const messageBox = document.getElementById("form-message");
 
@@ -22,17 +23,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const payload = {
             name: document.getElementById("name").value.trim(),
-            slug: document.getElementById("slug").value.trim(),
             description: toNullableString(document.getElementById("description").value),
-            brand: toNullableString(document.getElementById("brand").value),
-            category: toNullableString(document.getElementById("category").value),
             price: Number(document.getElementById("price").value),
             stock_quantity: Number(document.getElementById("stock_quantity").value || 0),
-            is_active: document.getElementById("is_active").checked
+            is_active: document.getElementById("is_active").checked,
+            brand_id: Number(document.getElementById("brand_id").value)
         };
 
-        if (!payload.name || !payload.slug) {
-            showMessage("Uzupełnij nazwę i slug.", "error");
+        if (!payload.name) {
+            showMessage("Uzupełnij nazwę.", "error");
             return;
         }
 
@@ -43,6 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!Number.isInteger(payload.stock_quantity) || payload.stock_quantity < 0) {
             showMessage("Stan magazynowy musi być liczbą całkowitą >= 0.", "error");
+            return;
+        }
+
+        if (!Number.isInteger(payload.brand_id) || payload.brand_id <= 0) {
+            showMessage("Nieprawidłowe brand_id.", "error");
             return;
         }
 

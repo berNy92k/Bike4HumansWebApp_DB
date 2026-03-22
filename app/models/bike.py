@@ -11,10 +11,7 @@ class Bike(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
-    slug: Mapped[str] = mapped_column(String(255), nullable=False, unique=True, index=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
-    brand: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
-    category: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
     price: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     stock_quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
@@ -22,3 +19,4 @@ class Bike(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     created_by: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    brand_id: Mapped[int] = mapped_column(ForeignKey("manufacturer.id"), nullable=False)
