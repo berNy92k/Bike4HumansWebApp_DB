@@ -24,6 +24,7 @@
 <div class="table-card">
     <div class="table-header">
         <h3>{{ manufacturer.name }}</h3>
+        <a href="/admin/user/{{ manufacturer.created_by }}/details"><span class="badge badge-neutral">created by: {{ manufacturer.created_by }}</span></a>
         <span class="badge badge-neutral">ID: {{ manufacturer.id }}</span>
     </div>
 
@@ -44,7 +45,6 @@
             <p><strong>Zdjęcie:</strong> {{ manufacturer.image_url or 'Brak zdjęcia' }}</p>
             <p><strong>Utworzono:</strong> {{ manufacturer.created_at }}</p>
             <p><strong>Aktualizacja:</strong> {{ manufacturer.updated_at }}</p>
-            <a href="/admin/user/{{ manufacturer.created_by }}/details"> <p><strong>Utworzono przez (id):</strong> {{ manufacturer.created_by }}</p> </a>
         </div>
     </div>
 </div>

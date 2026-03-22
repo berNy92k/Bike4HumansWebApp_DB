@@ -13,3 +13,4 @@ class BikeCreateDto(BaseModel):
     stock_quantity: int = Field(default=0, ge=0)
     image_url: str | None = Field(default=None, max_length=500)
     is_active: bool = Field(default=True)
+    created_by: int = Field(default=2)

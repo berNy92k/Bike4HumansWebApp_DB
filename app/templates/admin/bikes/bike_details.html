@@ -24,6 +24,7 @@
 <div class="table-card">
     <div class="table-header">
         <h3>{{ bike.name }}</h3>
+        <a href="/admin/user/{{ bike.created_by }}/details"><span class="badge badge-neutral">created by: {{ bike.created_by }}</span></a>
         <span class="badge badge-neutral">ID: {{ bike.id }}</span>
     </div>
 
