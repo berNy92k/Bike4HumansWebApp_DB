@@ -11,6 +11,12 @@ class UserRepository:
     def get_all_users(self):
         return self.db.query(User).order_by(User.created_at.desc()).all()
 
+    def get_users_paginated(self, page: int, size: int):
+        query = self.db.query(User).order_by(User.id.desc())
+        total = query.count()
+        items = query.offset((page - 1) * size).limit(size).all()
+        return items, total
+
     def create_user(self, user: User):
         self.db.add(user)
         self.db.commit()

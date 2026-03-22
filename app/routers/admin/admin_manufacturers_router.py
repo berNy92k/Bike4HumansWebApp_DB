@@ -1,3 +1,5 @@
+from app.schemas.admin.manufacturers.admin_manufacturer_list_request_dto import ManufacturerListRequestDto
+
 from typing import List, Annotated
 
 from fastapi import APIRouter, Request
@@ -26,8 +28,25 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @router.get("/list", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_manufacturer_page(request: Request, db: db_dependency):
     service = AdminManufacturerService(db)
-    manufacturers = service.get_all_manufacturers()
-    return templates.TemplateResponse("admin/manufacturers/manufacturers.html", {"request": request, "manufacturers": manufacturers})
+
+    page = int(request.query_params.get("page", 1))
+    size = int(request.query_params.get("size", 5))
+
+    pagination = service.get_manufacturers_paginated(
+        ManufacturerListRequestDto(page=page, size=size)
+    )
+
+    return templates.TemplateResponse(
+        "admin/manufacturers/manufacturers.html",
+        {
+            "request": request,
+            "manufacturers": pagination.items,
+            "page": pagination.page,
+            "size": pagination.size,
+            "total": pagination.total,
+            "pages": pagination.pages,
+        },
+    )
 
 
 @router.get("/create", status_code=status.HTTP_200_OK, include_in_schema=False)

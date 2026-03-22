@@ -6,6 +6,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/admin/manufacturers/admin_manufacturers.css') }}">
+<script defer src="{{ url_for('static', path='js/admin/admin_pagination.js') }}"></script>
 <script defer src="{{ url_for('static', path='js/admin/manufacturers/admin_delete_manufacturer.js') }}"></script>
 {% endblock %}
 
@@ -17,7 +18,7 @@
     </div>
 
     <div class="toolbar">
-        <a class="btn btn-secondary" href="/admin/manufacturer/list">Odśwież</a>
+        <a class="btn btn-secondary" href="/admin/manufacturer/list?page={{ page }}&size={{ size }}">Odśwież</a>
         <a class="btn btn-primary" href="/admin/manufacturer/create">+ Dodaj producenta</a>
     </div>
 </div>
@@ -25,19 +26,19 @@
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-label">Łącznie producentów</div>
-        <div class="stat-value">{{ manufacturers|length }}</div>
+        <div class="stat-value">{{ total }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Z opisem</div>
-        <div class="stat-value">{{ manufacturers | selectattr('description') | list | length }}</div>
+        <div class="stat-label">Strona</div>
+        <div class="stat-value">{{ page }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Ze zdjęciem</div>
-        <div class="stat-value">{{ manufacturers | selectattr('image_url') | list | length }}</div>
+        <div class="stat-label">Na stronie</div>
+        <div class="stat-value">{{ size }}</div>
     </div>
     <div class="stat-card">
-        <div class="stat-label">Bez zdjęcia</div>
-        <div class="stat-value">{{ manufacturers | rejectattr('image_url') | list | length }}</div>
+        <div class="stat-label">Wszystkie strony</div>
+        <div class="stat-value">{{ pages }}</div>
     </div>
 </div>
 
@@ -50,12 +51,6 @@
     {% if manufacturers and manufacturers|length > 0 %}
     <div class="table-wrapper">
         <table class="manufacturers-table">
-            <colgroup>
-                <col class="col-manufacturer">
-                <col class="col-description">
-                <col class="col-created">
-                <col class="col-actions">
-            </colgroup>
             <thead>
                 <tr>
                     <th>Producent</th>
@@ -80,23 +75,46 @@
                             </div>
                         </div>
                     </td>
-                    <td class="description">
-                        {{ manufacturer.description or '—' }}
-                    </td>
+                    <td class="description">{{ manufacturer.description or '—' }}</td>
                     <td>{{ manufacturer.created_at }}</td>
                     <td>
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/manufacturer/{{ manufacturer.id }}/details">Szczegóły</a>
                             <a class="action-link action-edit" href="/admin/manufacturer/{{ manufacturer.id }}/edit" data-manufacturer-id="{{ manufacturer.id }}">Edytuj</a>
-                            <a class="action-link action-delete"
-                               href="#"
-                               data-manufacturer-id="{{ manufacturer.id }}">Usuń</a>
+                            <a class="action-link action-delete" href="#" data-manufacturer-id="{{ manufacturer.id }}">Usuń</a>
                         </div>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="pagination-card">
+        <div class="pagination-info">
+            Pokazano {{ manufacturers|length }} z {{ total }} rekordów
+        </div>
+
+        <div class="pagination-controls">
+            <label class="page-size-label" for="page-size">Na stronie:</label>
+            <select id="page-size" class="page-size-select">
+                <option value="5" {% if size == 5 %}selected{% endif %}>5</option>
+                <option value="10" {% if size == 10 %}selected{% endif %}>10</option>
+                <option value="20" {% if size == 20 %}selected{% endif %}>20</option>
+                <option value="50" {% if size == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if size == 100 %}selected{% endif %}>100</option>
+            </select>
+
+            <div class="pagination-buttons">
+                <a class="btn btn-secondary {% if page <= 1 %}is-disabled{% endif %}"
+                   href="/admin/manufacturer/list?page={{ page - 1 if page > 1 else 1 }}&size={{ size }}">Poprzednia</a>
+
+                <span class="pagination-current">Strona {{ page }} z {{ pages }}</span>
+
+                <a class="btn btn-secondary {% if page >= pages %}is-disabled{% endif %}"
+                   href="/admin/manufacturer/list?page={{ page + 1 if page < pages else pages }}&size={{ size }}">Następna</a>
+            </div>
+        </div>
     </div>
     {% else %}
     <div class="empty-state">

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class UserReadDto(BaseModel):
@@ -15,3 +15,5 @@ class UserReadDto(BaseModel):
     last_login: datetime | None = None
     created_at: datetime
     updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

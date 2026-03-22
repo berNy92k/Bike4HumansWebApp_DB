@@ -7,6 +7,9 @@ from app.models.user import User
 from app.repositories.role_repository import RoleRepository
 from app.repositories.user_repository import UserRepository
 from app.schemas.admin.user.admin_user_create_dto import UserCreateDto
+from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDto
+from app.schemas.admin.user.admin_user_list_response_dto import UserListResponseDto
+from app.schemas.admin.user.admin_user_read_dto import UserReadDto
 from app.schemas.admin.user.role.admin_role_create_dto import RoleCreateDto
 from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequestDto
 from app.schemas.admin.user.role.admin_role_list_response_dto import RoleListResponseDto
@@ -24,6 +27,24 @@ class AdminUserService:
 
     def get_all_users(self):
         return self.user_repository.get_all_users()
+
+    def get_users_paginated(self, request_dto: UserListRequestDto) -> UserListResponseDto:
+        items, total = self.user_repository.get_users_paginated(
+            page=request_dto.page,
+            size=request_dto.size,
+        )
+        pages = (total + request_dto.size - 1) // request_dto.size if total > 0 else 0
+
+        user_items = [UserReadDto.model_validate(user) for user in items]
+
+        return UserListResponseDto(
+            items=user_items,
+            page=request_dto.page,
+            size=request_dto.size,
+            total=total,
+            pages=pages,
+        )
+
 
     def create_user(self, user_dto: UserCreateDto):
         user = User(

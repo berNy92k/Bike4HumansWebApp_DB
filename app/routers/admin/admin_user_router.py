@@ -14,6 +14,7 @@ from app.schemas.admin.user.role.admin_role_list_request_dto import RoleListRequ
 from app.schemas.admin.user.role.admin_role_list_response_dto import RoleListResponseDto
 from app.schemas.admin.user.role.admin_role_update_dto import RoleUpdateDto
 from app.services.admin.admin_user_service import AdminUserService
+from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDto
 
 router = APIRouter(
     prefix="/admin/user",
@@ -30,8 +31,23 @@ templates = Jinja2Templates(directory="app/templates")
 @router.get("/list", include_in_schema=False)
 async def render_user_page(request: Request, db: db_dependency):
     service = AdminUserService(db)
-    users = service.get_all_users()
-    return templates.TemplateResponse("admin/users/users.html", {"request": request, "users": users})
+
+    page = int(request.query_params.get("page", 1))
+    size = int(request.query_params.get("size", 5))
+
+    pagination = service.get_users_paginated(UserListRequestDto(page=page, size=size))
+
+    return templates.TemplateResponse(
+        "admin/users/users.html",
+        {
+            "request": request,
+            "users": pagination.items,
+            "page": pagination.page,
+            "size": pagination.size,
+            "total": pagination.total,
+            "pages": pagination.pages,
+        },
+    )
 
 
 @router.get("/create", include_in_schema=False)

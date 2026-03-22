@@ -11,6 +11,12 @@ class ManufacturerRepository:
     def get_all_manufacturers(self):
         return self.db.query(Manufacturer).all()
 
+    def get_manufacturers_paginated(self, page: int, size: int):
+        query = self.db.query(Manufacturer).order_by(Manufacturer.id.desc())
+        total = query.count()
+        items = query.offset((page - 1) * size).limit(size).all()
+        return items, total
+
     def get_manufacturer_by_id(self, manufacturer_id):
         return self.db.query(Manufacturer).where(Manufacturer.id == manufacturer_id).first()
 

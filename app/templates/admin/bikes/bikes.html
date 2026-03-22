@@ -6,6 +6,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/admin/bikes/admin_bikes.css') }}">
+<script defer src="{{ url_for('static', path='js/admin/admin_pagination.js') }}"></script>
 <script defer src="{{ url_for('static', path='js/admin/bikes/admin_delete_bike.js') }}"></script>
 {% endblock %}
 
@@ -17,8 +18,27 @@
     </div>
 
     <div class="toolbar">
-        <a class="btn btn-secondary" href="/admin/bikes/list">Odśwież</a>
+        <a class="btn btn-secondary" href="/admin/bikes/list?page={{ page }}&size={{ size }}">Odśwież</a>
         <a class="btn btn-primary" href="/admin/bikes/create">+ Dodaj rower</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-label">Łącznie rowerów</div>
+        <div class="stat-value">{{ total }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Strona</div>
+        <div class="stat-value">{{ page }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Na stronie</div>
+        <div class="stat-value">{{ size }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">Wszystkie strony</div>
+        <div class="stat-value">{{ pages }}</div>
     </div>
 </div>
 
@@ -61,33 +81,46 @@
                     <td>{{ bike.brand or '—' }}</td>
                     <td>{{ bike.category or '—' }}</td>
                     <td class="price">{{ "%.2f"|format(bike.price) }} zł</td>
-                    <td>
-                        {% if bike.image_url %}
-                            <a href="{{ bike.image_url }}" target="_blank" rel="noopener">Podgląd</a>
-                        {% else %}
-                            —
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if bike.is_active %}
-                            <span class="badge badge-success">Aktywny</span>
-                        {% else %}
-                            <span class="badge badge-danger">Nieaktywny</span>
-                        {% endif %}
-                    </td>
+                    <td>{% if bike.image_url %}<a href="{{ bike.image_url }}" target="_blank" rel="noopener">Podgląd</a>{% else %}—{% endif %}</td>
+                    <td>{% if bike.is_active %}<span class="badge badge-success">Aktywny</span>{% else %}<span class="badge badge-danger">Nieaktywny</span>{% endif %}</td>
                     <td>
                         <div class="actions">
                             <a class="action-link action-view" href="/admin/bikes/{{ bike.id }}/details">Szczegóły</a>
                             <a class="action-link action-edit" href="/admin/bikes/{{ bike.id }}/edit">Edytuj</a>
-                            <a class="action-link action-delete"
-                               href="#"
-                               data-bike-id="{{ bike.id }}">Usuń</a>
+                            <a class="action-link action-delete" href="#" data-bike-id="{{ bike.id }}">Usuń</a>
                         </div>
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="pagination-card">
+        <div class="pagination-info">
+            Pokazano {{ bikes|length }} z {{ total }} rekordów
+        </div>
+
+        <div class="pagination-controls">
+            <label class="page-size-label" for="page-size">Na stronie:</label>
+            <select id="page-size" class="page-size-select">
+                <option value="5" {% if size == 5 %}selected{% endif %}>5</option>
+                <option value="10" {% if size == 10 %}selected{% endif %}>10</option>
+                <option value="20" {% if size == 20 %}selected{% endif %}>20</option>
+                <option value="50" {% if size == 50 %}selected{% endif %}>50</option>
+                <option value="100" {% if size == 100 %}selected{% endif %}>100</option>
+            </select>
+
+            <div class="pagination-buttons">
+                <a class="btn btn-secondary {% if page <= 1 %}is-disabled{% endif %}"
+                   href="/admin/bikes/list?page={{ page - 1 if page > 1 else 1 }}&size={{ size }}">Poprzednia</a>
+
+                <span class="pagination-current">Strona {{ page }} z {{ pages }}</span>
+
+                <a class="btn btn-secondary {% if page >= pages %}is-disabled{% endif %}"
+                   href="/admin/bikes/list?page={{ page + 1 if page < pages else pages }}&size={{ size }}">Następna</a>
+            </div>
+        </div>
     </div>
     {% else %}
     <div class="empty-state">

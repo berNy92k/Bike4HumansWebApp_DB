@@ -8,6 +8,9 @@ from app.models.bike import Bike
 from app.repositories.bike_repository import BikeRepository
 from app.schemas.admin.bike.admin_bike_create_dto import BikeCreateDto
 from app.schemas.admin.bike.admin_bike_update_dto import BikeUpdateDto
+from app.schemas.admin.bike.admin_bike_list_request_dto import BikeListRequestDto
+from app.schemas.admin.bike.admin_bike_list_response_dto import BikeListResponseDto
+from app.schemas.admin.bike.admin_bike_read_dto import BikeReadDto
 
 
 class AdminBikeService:
@@ -18,6 +21,23 @@ class AdminBikeService:
 
     def get_all_bikes(self):
         return self.bike_repository.get_all_bikes()
+
+    def get_bikes_paginated(self, request_dto: BikeListRequestDto) -> BikeListResponseDto:
+        items, total = self.bike_repository.get_bikes_paginated(
+            page=request_dto.page,
+            size=request_dto.size,
+        )
+        pages = (total + request_dto.size - 1) // request_dto.size if total > 0 else 0
+
+        bike_items = [BikeReadDto.model_validate(bike) for bike in items]
+
+        return BikeListResponseDto(
+            items=bike_items,
+            page=request_dto.page,
+            size=request_dto.size,
+            total=total,
+            pages=pages,
+        )
 
     def get_bike_by_id(self, bike_id):
         bike = self.bike_repository.get_bike_by_id(bike_id)

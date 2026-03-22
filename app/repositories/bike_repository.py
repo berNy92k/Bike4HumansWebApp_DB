@@ -11,6 +11,12 @@ class BikeRepository:
     def get_all_bikes(self):
         return self.db.query(Bike).order_by(Bike.created_at.desc()).all()
 
+    def get_bikes_paginated(self, page: int, size: int):
+        query = self.db.query(Bike).order_by(Bike.id.desc())
+        total = query.count()
+        items = query.offset((page - 1) * size).limit(size).all()
+        return items, total
+
     def get_bike_by_id(self, bike_id):
         return self.db.query(Bike).where(Bike.id == bike_id).first()
 
