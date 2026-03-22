@@ -34,6 +34,7 @@ def upgrade() -> None:
     default_roles = [
         {"name": "super_admin", "description": "Super Admin serwisu. Może dokonywać każdą zmianę", "created_at": now, "updated_at": now},
         {"name": "admin", "description": "Admin serwisu. Może dokonywać większość zmian, oprócz dodawania użytkowników.", "created_at": now, "updated_at": now},
+        {"name": "manager", "description": "Rola podobna do admina. Moze dodawac produkty.", "created_at": now, "updated_at": now},
         {"name": "user", "description": "Podstawowa rola dla nowo utworzonego użytkownika. Nie może edytować treści.", "created_at": now, "updated_at": now},
         {"name": "guest", "description": "Konto użytkownika stworzone w trakcie dokonywania zamówienia jako gość/ guest", "created_at": now, "updated_at": now},
     ]

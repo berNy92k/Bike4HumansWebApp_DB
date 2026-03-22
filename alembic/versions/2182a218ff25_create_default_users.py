@@ -41,6 +41,11 @@ def upgrade() -> None:
         {"name": "user"}
     ).scalar_one()
 
+    biznes_role_id = conn.execute(
+        sa.text("SELECT id FROM role WHERE name = :name"),
+        {"name": "manager"}
+    ).scalar_one()
+
     user_table = sa.table(
         "user",
         sa.Column("username", sa.String),
@@ -92,6 +97,18 @@ def upgrade() -> None:
             "created_at": now,
             "updated_at": now,
             "role_id": normal_role_id
+        },
+        {
+            "username":"biznes",
+            "email": "biznes@bike4humans.pl",
+            "name": "Biznes",
+            "surname": "Dodawacze",
+            "hashed_password": crypt_context.hash("biznes"), # test only
+            "is_active": True,
+            "email_verified": True,
+            "created_at": now,
+            "updated_at": now,
+            "role_id": biznes_role_id
         }
     ]
 
