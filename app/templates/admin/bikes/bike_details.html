@@ -41,6 +41,13 @@
 
         <div>
             <p><strong>Nazwa:</strong> {{ bike.name }}</p>
+            <p><strong>Producent:</strong>
+                {% for manufacturer in manufacturers %}
+                    {% if manufacturer.id == bike.brand_id %}
+                        {{ manufacturer.name }}
+                    {% endif %}
+                {% endfor %}
+            </p>
             <p><strong>Cena:</strong> {{ "%.2f"|format(bike.price) }} zł</p>
             <p><strong>Stan magazynowy:</strong> {{ bike.stock_quantity }}</p>
             <p><strong>Status:</strong> {% if bike.is_active %}Aktywny{% else %}Nieaktywny{% endif %}</p>

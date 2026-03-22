@@ -54,6 +54,7 @@
             <thead>
                 <tr>
                     <th>Rower</th>
+                    <th>Producent</th>
                     <th>Cena</th>
                     <th>Zdjęcie</th>
                     <th>Status</th>
@@ -75,6 +76,13 @@
                                 <div class="bike-meta">ID: {{ bike.id }}</div>
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        {% for manufacturer in manufacturers %}
+                            {% if manufacturer.id == bike.brand_id %}
+                                {{ manufacturer.name }}
+                            {% endif %}
+                        {% endfor %}
                     </td>
                     <td class="price">{{ "%.2f"|format(bike.price) }} zł</td>
                     <td>{% if bike.image_url %}<a href="{{ bike.image_url }}" target="_blank" rel="noopener">Podgląd</a>{% else %}—{% endif %}</td>

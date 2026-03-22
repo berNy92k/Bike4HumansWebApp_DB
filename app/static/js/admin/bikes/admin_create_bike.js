@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("test")
     const form = document.getElementById("bike-create-form");
     const messageBox = document.getElementById("form-message");
 
@@ -45,8 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (!Number.isInteger(payload.brand_id) || payload.brand_id <= 0) {
-            showMessage("Nieprawidłowe brand_id.", "error");
+        if (!payload.brand_id || !Number.isInteger(payload.brand_id) || payload.brand_id <= 0) {
+            showMessage("Wybierz producenta.", "error");
             return;
         }
 

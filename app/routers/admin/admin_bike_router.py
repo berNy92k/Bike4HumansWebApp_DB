@@ -12,6 +12,7 @@ from app.schemas.admin.bike.admin_bike_create_dto import BikeCreateDto
 from app.schemas.admin.bike.admin_bike_read_dto import BikeReadDto
 from app.schemas.admin.bike.admin_bike_update_dto import BikeUpdateDto
 from app.services.admin.admin_bike_service import AdminBikeService
+from app.services.admin.admin_manufacturer_service import AdminManufacturerService
 
 router = APIRouter(
     prefix="/admin/bikes",
@@ -26,18 +27,21 @@ db_dependency = Annotated[Session, Depends(get_db)]
 ### Pages ###
 @router.get("/list", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_bikes_page(request: Request, db: db_dependency):
-    service = AdminBikeService(db)
+    bike_service = AdminBikeService(db)
+    manufacturer_service = AdminManufacturerService(db)
 
     page = int(request.query_params.get("page", 1))
     size = int(request.query_params.get("size", 5))
 
-    pagination = service.get_bikes_paginated(BikeListRequestDto(page=page, size=size))
+    pagination = bike_service.get_bikes_paginated(BikeListRequestDto(page=page, size=size))
+    manufacturers = manufacturer_service.get_all_manufacturers()
 
     return templates.TemplateResponse(
         "admin/bikes/bikes.html",
         {
             "request": request,
             "bikes": pagination.items,
+            "manufacturers": manufacturers,
             "page": pagination.page,
             "size": pagination.size,
             "total": pagination.total,
@@ -47,22 +51,53 @@ async def render_bikes_page(request: Request, db: db_dependency):
 
 
 @router.get("/create", status_code=status.HTTP_200_OK, include_in_schema=False)
-async def render_create_bike(request: Request):
-    return templates.TemplateResponse("admin/bikes/bike_create.html", {"request": request})
+async def render_create_bike(request: Request, db: db_dependency):
+    manufacturer_service = AdminManufacturerService(db)
+    manufacturers = manufacturer_service.get_all_manufacturers()
+
+    return templates.TemplateResponse(
+        "admin/bikes/bike_create.html",
+        {
+            "request": request,
+            "manufacturers": manufacturers,
+        },
+    )
 
 
 @router.get("/{bike_id}/details", status_code=status.HTTP_200_OK, include_in_schema=False)
 async def render_bike_details(request: Request, bike_id: int, db: db_dependency):
-    service = AdminBikeService(db)
-    bike = service.get_bike_by_id(bike_id)
-    return templates.TemplateResponse("admin/bikes/bike_details.html", {"request": request, "bike": bike})
+    bike_service = AdminBikeService(db)
+    manufacturer_service = AdminManufacturerService(db)
+
+    bike = bike_service.get_bike_by_id(bike_id)
+    manufacturers = manufacturer_service.get_all_manufacturers()
+
+    return templates.TemplateResponse(
+        "admin/bikes/bike_details.html",
+        {
+            "request": request,
+            "bike": bike,
+            "manufacturers": manufacturers,
+        },
+    )
 
 
 @router.get("/{bike_id}/edit", status_code=status.HTTP_200_OK, include_in_schema=False)
-async def render_bike_details(request: Request, bike_id: int, db: db_dependency):
-    service = AdminBikeService(db)
-    bike = service.get_bike_by_id(bike_id)
-    return templates.TemplateResponse("admin/bikes/bike_edit.html", {"request": request, "bike": bike})
+async def render_bike_edit(request: Request, bike_id: int, db: db_dependency):
+    bike_service = AdminBikeService(db)
+    manufacturer_service = AdminManufacturerService(db)
+
+    bike = bike_service.get_bike_by_id(bike_id)
+    manufacturers = manufacturer_service.get_all_manufacturers()
+
+    return templates.TemplateResponse(
+        "admin/bikes/bike_edit.html",
+        {
+            "request": request,
+            "bike": bike,
+            "manufacturers": manufacturers,
+        },
+    )
 
 
 ### ENDPOINTS ###

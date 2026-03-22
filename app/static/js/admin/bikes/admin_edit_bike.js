@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        if (!Number.isInteger(payload.brand_id) || payload.brand_id <= 0) {
-            showMessage("Nieprawidłowe brand_id.", "error");
+        if (!payload.brand_id || !Number.isInteger(payload.brand_id) || payload.brand_id <= 0) {
+            showMessage("Wybierz producenta.", "error");
             return;
         }
 

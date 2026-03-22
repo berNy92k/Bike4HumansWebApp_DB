@@ -36,7 +36,15 @@
                 <textarea id="description" name="description" rows="5" placeholder="Krótki opis roweru..."></textarea>
             </div>
 
-            <input id="brand_id" name="brand_id" type="hidden" value="1">
+            <div class="form-group">
+                <label for="brand_id">Producent</label>
+                <select id="brand_id" name="brand_id" required>
+                    <option value="">Wybierz producenta</option>
+                    {% for manufacturer in manufacturers %}
+                    <option value="{{ manufacturer.id }}">{{ manufacturer.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
             <div class="form-group">
                 <label for="price">Cena</label>
