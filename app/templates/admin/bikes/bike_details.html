@@ -44,7 +44,7 @@
             <p><strong>Producent:</strong>
                 {% for manufacturer in manufacturers %}
                     {% if manufacturer.id == bike.brand_id %}
-                        {{ manufacturer.name }}
+                        <a href="/admin/manufacturer/{{ manufacturer.id }}/details">{{ manufacturer.name }}</a>
                     {% endif %}
                 {% endfor %}
             </p>
