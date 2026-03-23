@@ -1,7 +1,13 @@
 # 🚴 Bike Shop API
 
 Backend for an online bike and accessories store, built with **Python and FastAPI**.  
-This project was created as a learning exercise, focusing on **backend development**, business logic, and REST API design. The frontend was added only to visualize functionality and test the API.
+This project was created as a practical portfolio piece to demonstrate skills in **backend development**, API design, data modeling, and modular application architecture.
+
+The application combines:
+- **REST API / backend**
+- **admin panel**
+- **simple Jinja-based frontend**
+- **layered architecture** with clear separation of `routers`, `services`, `repositories`, `schemas`, and `models`
 
 Admin panel:
 ![img.png](app/static/images/readme/admin.png)
@@ -24,12 +30,42 @@ Homepage:
 
 ---
 
+## ✨ Highlights
+
+- **Dedicated admin panel** for managing bikes, manufacturers, and users
+- **Modular architecture** with clear separation of concerns
+- **DTO-based admin workflows** with request/response schemas
+- **Data validation** powered by Pydantic
+- **Database migrations** handled with Alembic
+- **Seeded starter data** for easier development and testing
+- **Simple frontend** for presenting store content and validating functionality
+- **Clean project structure** designed for easy extension
+
+---
+
+## 🛠 Technologies
+
+- **Backend:** Python + FastAPI
+- **Database:** SQLite
+- **ORM:** SQLAlchemy
+- **Migrations:** Alembic
+- **Validation / DTOs:** Pydantic
+- **Testing:** pytest
+- **Server:** Uvicorn
+- **Frontend for basic UI:** Jinja templates
+- **Styling:** CSS, Bootstrap
+- **Development environment:** local virtual environment
+
+---
+
 ## 🔑 Features
 
 ### Admin area
-- Manage bikes, manufacturers and users
-- Create, update and delete records  
-- Separate admin views and forms  
+- Manage **bikes**, **manufacturers**, and **users**
+- Full CRUD operations: **create / read / update / delete**
+- Separate views, forms, and DTOs for admin workflows
+- List, details, edit, and create pages for records
+- Clear separation between HTTP handling and business logic
 
 ### Frontend
 - Public homepage with product presentation  
@@ -37,10 +73,15 @@ Homepage:
 - Static assets for styling and images  
 
 ### Additional Components
-- Data validation with Pydantic schemas  
-- Repository/service layering for cleaner code  
-- Database access separated from route logic  
-- Basic tests setup  
+- Data validation with Pydantic
+- Layered structure:
+  - `routers` — HTTP layer
+  - `services` — business logic
+  - `repositories` — database access layer
+  - `schemas` — input/output DTOs
+  - `models` — ORM entities
+- Database schema evolution through Alembic migrations
+- Structure ready for additional features without mixing responsibilities
 
 ---
 
@@ -64,31 +105,49 @@ Homepage:
     - `admin/`
     - `authentication/`
     - `front/`
-  - `static/` — CSS, JS and images
+  - `static/` — CSS, JS, and images
     - `css/`
     - `images/`
     - `js/`
   - `core/` — shared project utilities
-- `tests/` — test files
-- `app.db` — local database file used during development
+- `alembic/` — database migrations
+- `tests/` — automated tests
+- `app.db` — local development database
 
 ---
 
-## 🎯 Learning Goals
+## 🗃 Database & Migrations
 
-- Backend development with FastAPI  
-- REST API design and implementation  
-- Database modeling with SQLAlchemy  
-- Structuring a modular backend with repositories and services  
-- Using Jinja templates for a simple UI  
-- Separating admin and frontend concerns in the codebase  
+The project uses **SQLite** and **Alembic** for schema migrations.  
+The repository includes migrations for:
+- the initial database schema
+- default roles
+- default users
+- default manufacturers
+- default bikes
+- additional admin-related columns
+
+This makes it easier to run the project locally and keep the database structure consistent.
 
 ---
 
-## 📌 Optional Improvements
+## 🎯 Learning / Portfolio Goals
 
-- Expand automated tests  
-- Add pagination, filtering and search  
-- Improve UI and responsiveness  
-- Add better documentation for API endpoints  
-- Consider Dockerization for easier setup and deployment
+- Backend development with FastAPI
+- REST API design
+- Data modeling with SQLAlchemy
+- Layered application architecture
+- Separating business logic from HTTP handling
+- Using Jinja templates for a simple UI
+- Building a project that looks strong in a portfolio and is easy to extend
+
+---
+
+## 📌 Possible Next Improvements
+
+- Expand automated tests
+- Add filtering, search, and sorting
+- Improve API documentation
+- Enhance frontend responsiveness and UX
+- Add Docker-based deployment
+- Introduce a more advanced admin dashboard
