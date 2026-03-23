@@ -96,6 +96,13 @@ class AdminUserService:
 
         self.user_repository.update_user(user)
 
+    def delete_user_by_id(self, user_id):
+        user = self.user_repository.get_user_by_id(user_id)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        self.user_repository.delete_user(user)
+
     def get_all_roles(self):
         return self.role_repository.get_all_roles()
 

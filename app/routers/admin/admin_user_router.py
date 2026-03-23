@@ -135,6 +135,11 @@ async def update_new_user(user_id: int, user_update_dto: UserUpdateDto, db: db_d
     service.update_user_all_fields(user_id, user_update_dto)
 
 
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user_by_id(user_id: int, db: db_dependency):
+    service = AdminUserService(db)
+    service.delete_user_by_id(user_id)
+
 ## ROLES ##
 @router.get("/roles", status_code=status.HTTP_200_OK, response_model=RoleListResponseDto)
 async def get_all_roles(db: db_dependency, page: int = Query(1, ge=1), size: int = Query(10, ge=1, le=100)):
