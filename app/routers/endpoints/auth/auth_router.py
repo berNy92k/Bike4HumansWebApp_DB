@@ -32,7 +32,7 @@ async def create_token(db: db_dependency, form_data: Annotated[OAuth2PasswordReq
     service = AuthService(db)
     user: User = service.authenticate_user(form_data.username, form_data.password)
 
-    minutes: int = 5
+    minutes: int = 20
     token = generate_jwt_token(form_data.username, user.id, user.role_id, timedelta(minutes=minutes))
 
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
