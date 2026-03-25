@@ -7,6 +7,7 @@ from starlette import status
 from starlette.templating import Jinja2Templates
 
 from app.database.database import get_db
+from app.routers.auth.auth_router import get_current_user
 from app.schemas.admin.user.admin_user_create_dto import UserCreateDto
 from app.schemas.admin.user.admin_user_list_request_dto import UserListRequestDto
 from app.schemas.admin.user.admin_user_read_dto import UserReadDto
@@ -23,6 +24,7 @@ router = APIRouter(
 )
 
 db_dependency = Annotated[Session, Depends(get_db)]
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 templates = Jinja2Templates(directory="app/templates")
 

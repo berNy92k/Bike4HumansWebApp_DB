@@ -27,3 +27,10 @@ class UserRepository:
     def update_user(self, user: User):
         self.db.add(user)
         self.db.commit()
+
+    def delete_user(self, user: User):
+        self.db.delete(user)
+        self.db.commit()
+
+    def find_user_by_username(self, username):
+        return self.db.query(User).where(User.username == username).first()

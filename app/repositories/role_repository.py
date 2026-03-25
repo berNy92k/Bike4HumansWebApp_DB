@@ -17,7 +17,7 @@ class RoleRepository:
         items = query.offset((page - 1) * size).limit(size).all()
         return items, total
 
-    def get_role_by_id(self, role_id):
+    def get_role_by_id(self, role_id) -> Role | None:
         return self.db.query(Role).where(Role.id == role_id).first()
 
     def create_role(self, role: Role):
