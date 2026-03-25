@@ -34,6 +34,14 @@ class UserService:
         )
         self.user_repository.create_user(user)
 
+    def find_user_by_id(self, user_id: int) -> User:
+        user: User = self.user_repository.get_user_by_id(user_id)
+
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        return user
+
     def find_user_by_username(self, username: str) -> User:
         user: User = self.user_repository.find_user_by_username(username)
 
