@@ -6,6 +6,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/admin/users/admin_users.css') }}">
+<script defer src="{{ url_for('static', path='js/utils/cookie_auth.js') }}"></script>
 <script defer src="{{ url_for('static', path='js/admin/admin_pagination.js') }}"></script>
 <script defer src="{{ url_for('static', path='js/admin/users/roles/admin_delete_role.js') }}"></script>
 {% endblock %}

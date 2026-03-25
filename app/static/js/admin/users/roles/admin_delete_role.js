@@ -11,13 +11,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            const token = window.getCookieValue?.("access_token");
+            if (!token) {
+                window.location.href = "/auth/login";
+                return;
+            }
+
             try {
                 const response = await fetch(`/admin/user/role/${roleId}`, {
-                    method: "DELETE"
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
                 });
 
                 if (response.ok) {
                     window.location.reload();
+                    return;
+                }
+
+                if (response.status === 401 || response.status === 403) {
+                    window.location.href = "/auth/login";
                     return;
                 }
 

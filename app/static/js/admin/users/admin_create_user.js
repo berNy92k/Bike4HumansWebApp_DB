@@ -20,6 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     clearMessage();
 
+    const token = window.getCookieValue?.("access_token");
+    if (!token) {
+      window.location.href = "/auth/login";
+      return;
+    }
+
     const formData = new FormData(form);
 
     const payload = {
@@ -38,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });

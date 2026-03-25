@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
+        const token = window.getCookieValue?.("access_token");
+        if (!token) {
+            window.location.href = "/auth/login";
+            return;
+        }
+
         const payload = {
             username: document.getElementById("username").value.trim(),
             email: document.getElementById("email").value.trim(),
@@ -51,7 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`/admin/user/${userId}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(payload)
             });

@@ -21,12 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const roleId = roleIdMatch ? roleIdMatch[1] : null;
 
     if (!roleId) {
-        showMessage("Nie udało się odczytać ID roli.", "error");
+        showMessage("Nie udało się ustalić ID roli.", "error");
         return;
     }
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
+
+        const token = window.getCookieValue?.("access_token");
+        if (!token) {
+            window.location.href = "/auth/login";
+            return;
+        }
 
         const payload = {
             name: document.getElementById("name").value.trim(),
@@ -44,7 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`/admin/user/role/${roleId}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(payload)
             });

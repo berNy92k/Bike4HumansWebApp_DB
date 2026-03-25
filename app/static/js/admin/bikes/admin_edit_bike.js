@@ -28,6 +28,12 @@ document.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
+        const token = window.getCookieValue?.("access_token");
+        if (!token) {
+            window.location.href = "/auth/login";
+            return;
+        }
+
         const payload = {
             name: document.getElementById("name").value.trim(),
             description: toNullableString(document.getElementById("description").value),
@@ -64,7 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`/admin/bikes/${bikeId}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify(payload)
             });
