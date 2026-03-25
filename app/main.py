@@ -1,8 +1,11 @@
 from fastapi import FastAPI
 
-from app.routers.init_routers import init_routers
+from app.routers.init_routers import init_routers, init_pre_requested_methods, init_pages
 
 app = FastAPI()
+
+init_pre_requested_methods(app)
+init_pages(app)
 init_routers(app)
 
 

@@ -1,22 +1,43 @@
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from app.routers.admin import admin_bike_router, admin_manufacturers_router, admin_user_router, admin_router
-from app.routers.auth import auth_router
-from app.routers.front import homepage_router
+from app.routers.endpoints.admin import admin_bike_router
+from app.routers.endpoints.admin import admin_user_router, admin_manufacturers_router
+from app.routers.endpoints.auth import auth_router
+from app.routers.endpoints.front import homepage_router
+from app.routers.render_pages.admin import admin_render_router, admin_render_user_router, admin_render_bike_router, \
+    admin_render_manufacturers_router
+from app.routers.render_pages.auth import auth_render_router
+from app.routers.render_pages.front import homepage_render_routers
+
+
+def init_pre_requested_methods(app: FastAPI):
+    app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
 def init_routers(app: FastAPI):
-    app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
+    ## ENDPOINTS
     # front
     app.include_router(homepage_router.router)
 
     # auth
     app.include_router(auth_router.router)
 
-    # front
-    app.include_router(admin_router.router)
+    # admin
     app.include_router(admin_user_router.router)
     app.include_router(admin_bike_router.router)
     app.include_router(admin_manufacturers_router.router)
+
+
+def init_pages(app: FastAPI):
+    # front
+    app.include_router(homepage_render_routers.router)
+
+    # auth
+    app.include_router(auth_render_router.router)
+
+    # admin
+    app.include_router(admin_render_router.router)
+    app.include_router(admin_render_user_router.router)
+    app.include_router(admin_render_bike_router.router)
+    app.include_router(admin_render_manufacturers_router.router)
