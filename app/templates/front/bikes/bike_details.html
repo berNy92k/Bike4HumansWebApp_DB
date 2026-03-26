@@ -10,9 +10,15 @@
 <div class="homepage-shell">
     <section class="section bike-detail-section">
         <div class="section__heading">
-            <span class="section__label">Rowery</span>
+            <a href="/bikes"> <span class="section__label">Rowery</span> </a>
             <h2>{{ bike.name }}</h2>
-            <p>{{ bike.manufacturer_name }}</p>
+            <p>
+                {% for manufacturer in manufacturers %}
+                    {% if manufacturer.id == bike.brand_id %}
+                        {{ manufacturer.name }}
+                    {% endif %}
+                {% endfor %}
+            </p>
         </div>
 
         <div class="bike-detail-layout">
@@ -33,11 +39,13 @@
                     <div class="detail-grid detail-grid--side">
                         <div class="detail-item">
                             <span class="detail-label">Producent</span>
-                            <span class="detail-value">{{ bike.manufacturer_name }}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Kategoria</span>
-                            <span class="detail-value">{{ bike.category }}</span>
+                            <span class="detail-value">
+                                {% for manufacturer in manufacturers %}
+                                    {% if manufacturer.id == bike.brand_id %}
+                                        {{ manufacturer.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Rama</span>
@@ -70,7 +78,7 @@
 
                 <div class="hero__actions">
                     <a href="/bikes/create" class="site-btn site-btn--primary">Dodaj rower</a>
-                    <a href="/manufacturers/{{ bike.manufacturer_id }}" class="site-btn site-btn--secondary">Zobacz producenta</a>
+                    <a href="/manufacturers/{{ bike.brand_id }}" class="site-btn site-btn--secondary">Zobacz producenta</a>
                     <a href="/bikes" class="site-btn site-btn--secondary">Wróć do listy</a>
                 </div>
             </aside>
