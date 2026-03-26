@@ -18,7 +18,9 @@
         </div>
 
         <div class="avatar-menu">
-            <button class="avatar" id="avatarToggle" type="button">A</button>
+            <button class="avatar" id="avatarToggle" type="button" aria-haspopup="true" aria-expanded="false">
+                A
+            </button>
 
             <div class="avatar-dropdown" id="avatarDropdown" role="menu" aria-hidden="true">
                 <a class="avatar-dropdown-item danger" href="/auth/logout" role="menuitem">
@@ -78,7 +80,7 @@
         </div>
 
         <div class="action-grid">
-            <a class="action-btn" href="#">
+            <a class="action-btn" href="/admin/bikes/create">
                 <div class="action-icon bg-blue">🚲</div>
                 <div>
                     <strong>Dodaj rower</strong>
@@ -86,27 +88,11 @@
                 </div>
             </a>
 
-            <a class="action-btn" href="#">
-                <div class="action-icon bg-green">🧩</div>
-                <div>
-                    <strong>Dodaj ramę</strong>
-                    <span>Dodaj nową ramę z parametrami technicznymi.</span>
-                </div>
-            </a>
-
-            <a class="action-btn" href="#">
+            <a class="action-btn" href="/admin/manufacturer/create">
                 <div class="action-icon bg-orange">🏭</div>
                 <div>
                     <strong>Dodaj producenta</strong>
                     <span>Rozszerz bazę marek i dostawców.</span>
-                </div>
-            </a>
-
-            <a class="action-btn" href="#">
-                <div class="action-icon bg-slate">📊</div>
-                <div>
-                    <strong>Przejdź do statystyk</strong>
-                    <span>Sprawdź najważniejsze dane o ofercie i aktywności.</span>
                 </div>
             </a>
         </div>
@@ -182,7 +168,7 @@
                     <h3>Brak danych do wyświetlenia</h3>
                     <p>
                         Tutaj możesz pokazać ostatnio dodane produkty, rowery albo rekordy wymagające edycji.
-                        Na ten moment to bezpieczny placeholder, żeby panel od razu wyglądał sensownie.
+                        Na ten moment to bezpieczny placeholder.
                     </p>
                 </div>
             {% endif %}
@@ -193,38 +179,46 @@
         <div class="panel-header">
             <div>
                 <h3 class="panel-title">Szybka uwaga</h3>
-                <p class="panel-subtitle">Co warto poprawić w katalogu.</p>
+                <p class="panel-subtitle">Co warto sprawdzić podczas pracy w panelu.</p>
             </div>
         </div>
 
         <div class="hint-box">
-            <h3>Uzupełnij rekordy bez zdjęć</h3>
+            <h3>Sprawdzaj kompletność danych</h3>
             <p>
-                Warto wyłapać produkty bez grafiki i opisu, bo to pierwsze miejsca,
-                które najlepiej poprawiają jakość panelu i oferty.
+                Zanim zapiszesz produkt, upewnij się, że ma nazwę, producenta, cenę i sensowny opis.
+                Braki w tych polach najszybciej psują jakość katalogu.
             </p>
         </div>
 
         <div class="hint-box">
-            <h3>Dodaj filtry i wyszukiwarkę</h3>
+            <h3>Dbaj o zdjęcia i opisy</h3>
             <p>
-                Następny krok to listy z filtrowaniem po producencie, cenie i statusie.
-                Dzięki temu panel będzie naprawdę wygodny w użyciu.
+                Produkty bez zdjęć albo z bardzo krótkim opisem warto uzupełniać w pierwszej kolejności.
+                To właśnie one najbardziej wpływają na odbiór oferty.
             </p>
         </div>
 
         <div class="hint-box">
-            <h3>Najlepszy kierunek</h3>
+            <h3>Uważaj na poprawność przypisań</h3>
             <p>
-                Z tego dashboardu możesz potem przejść do pełnych CRUD-ów dla rowerów,
-                ram i producentów bez zmiany stylu całej aplikacji.
+                Sprawdź, czy rower jest przypisany do właściwego producenta i czy dane nie dublują się
+                pod podobnymi nazwami. To później oszczędza dużo ręcznej poprawy.
+            </p>
+        </div>
+
+        <div class="hint-box">
+            <h3>Porządkuj katalog regularnie</h3>
+            <p>
+                Jeśli widzisz nieaktualne, niepełne albo przypadkowe rekordy, poprawiaj je na bieżąco.
+                Panel najlepiej działa wtedy, gdy dane są czyste i spójne.
             </p>
         </div>
     </div>
 </section>
 
 <div class="footer-note">
-    Bike4Humans admin dashboard • zbudowany jako lekka, czytelna baza pod dalszy rozwój
+    Bike4Humans admin dashboard • zbudowany jako lekka, czytelna baza.
 </div>
 <script defer src="{{ url_for('static', path='js/admin/homepage/avatar_dropdown.js') }}"></script>
 {% endblock %}

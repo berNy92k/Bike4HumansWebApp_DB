@@ -24,6 +24,8 @@ async def render_admin_homepage(request: Request, db: db_dependency):
     try:
         await AuthService(db).validate_access(request)
 
+
+
         return templates.TemplateResponse("admin/homepage/index.html", {"request": request})
     except HTTPException:
         return redirect_to_login()
