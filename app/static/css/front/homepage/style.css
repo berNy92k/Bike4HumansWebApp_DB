@@ -601,6 +601,7 @@ main {
     }
 }
 
+@media (max-width: 768px) {
     .stats-grid,
     .categories-grid,
     .benefits-grid,
@@ -804,4 +805,145 @@ main {
     .homepage-products-grid {
         grid-template-columns: 1fr;
     }
+}
+.bike-detail-section {
+    margin-top: 40px;
+}
+
+.bike-detail-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.bike-detail-main,
+.bike-detail-side {
+    padding: 24px;
+}
+
+.bike-detail-main .detail-block:first-of-type {
+    margin-top: 0;
+}
+
+.bike-detail-side {
+    display: grid;
+    gap: 18px;
+}
+
+.bike-detail-side .hero__actions {
+    display: grid;
+    gap: 12px;
+}
+
+.bike-detail-side .site-btn {
+    width: 100%;
+}
+
+.bike-detail-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #f8fafc;
+    margin-bottom: 22px;
+}
+
+.bike-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.detail-block {
+    margin-top: 18px;
+}
+
+.detail-block h3,
+.bike-detail-side h3 {
+    margin: 0 0 14px;
+    font-size: 1.15rem;
+}
+
+.detail-text {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 0.98rem;
+}
+
+.detail-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.detail-grid--side {
+    margin-top: 4px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #ffffff, #f8fafc);
+}
+
+.detail-label {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.detail-value {
+    color: var(--text);
+    font-weight: 700;
+    text-align: right;
+}
+
+@media (max-width: 980px) {
+    .bike-detail-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .bike-detail-main,
+    .bike-detail-side {
+        padding: 18px;
+    }
+
+    .bike-detail-image {
+        aspect-ratio: 4 / 3;
+    }
+
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .detail-value {
+        text-align: left;
+    }
+}
+.bike-detail-side .hero__actions {
+    display: grid;
+    gap: 12px;
+}
+
+.bike-detail-side .site-btn {
+    width: 100%;
+}
+
+.bike-detail-side .site-btn--primary {
+    min-height: 50px;
+    font-size: 0.98rem;
+}
+
+.bike-detail-side .site-btn--secondary {
+    min-height: 46px;
 }
