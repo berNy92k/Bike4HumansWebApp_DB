@@ -44,7 +44,11 @@
 
             <div class="pagination-controls">
                 <label class="page-size-label" for="page-size">Na stronie:</label>
-                <select id="page-size" class="page-size-select">
+                <select
+                    id="page-size"
+                    class="page-size-select"
+                    onchange="window.location.href='/bikes?page=1&size=' + this.value"
+                >
                     <option value="4" {% if size == 4 %}selected{% endif %}>4</option>
                     <option value="8" {% if size == 8 %}selected{% endif %}>8</option>
                     <option value="12" {% if size == 12 %}selected{% endif %}>12</option>

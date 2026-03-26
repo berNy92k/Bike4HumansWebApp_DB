@@ -23,7 +23,7 @@ templates = Jinja2Templates(directory="app/templates")
 async def render_bikes(request: Request, db: db_dependency):
 
     page = int(request.query_params.get("page", 1))
-    size = int(request.query_params.get("size", 4))
+    size = int(request.query_params.get("size", 16))
 
     pagination = BikeService(db).get_bikes_paginated(BikeListRequestDto(page=page, size=size))
     return templates.TemplateResponse(
