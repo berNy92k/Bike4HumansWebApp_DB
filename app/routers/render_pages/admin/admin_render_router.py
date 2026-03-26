@@ -9,7 +9,8 @@ from app.routers.utils.admin_utils_router import redirect_to_login
 from app.services.auth.auth_service import AuthService
 
 router = APIRouter(
-    prefix="/admin"
+    prefix="/admin",
+    include_in_schema=False
 )
 
 db_dependency = Annotated[Session, Depends(get_db)]
