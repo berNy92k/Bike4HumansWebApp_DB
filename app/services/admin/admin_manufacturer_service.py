@@ -7,10 +7,10 @@ from sqlalchemy.orm import Session
 from app.models.manufacturer import Manufacturer
 from app.repositories.manufacturer_repository import ManufacturerRepository
 from app.schemas.admin.manufacturers.admin_manufacturer_create_dto import ManufacturerCreateDto
-from app.schemas.admin.manufacturers.admin_manufacturer_update_dto import ManufacturerUpdateDto
 from app.schemas.admin.manufacturers.admin_manufacturer_list_request_dto import ManufacturerListRequestDto
 from app.schemas.admin.manufacturers.admin_manufacturer_list_response_dto import ManufacturerListResponseDto
 from app.schemas.admin.manufacturers.admin_manufacturer_read_dto import ManufacturerReadDto
+from app.schemas.admin.manufacturers.admin_manufacturer_update_dto import ManufacturerUpdateDto
 
 
 class AdminManufacturerService:
@@ -47,11 +47,13 @@ class AdminManufacturerService:
 
         return manufacturer
 
-    def create_manufacturer(self, manufacturer_create_dto: ManufacturerCreateDto):
-        manufacturer_data = manufacturer_create_dto.model_dump()
-        manufacturer_data["image_url"] = self._pick_random_image()
-
-        manufacturer = Manufacturer(**manufacturer_data)
+    def create_manufacturer(self, manufacturer_create_dto: ManufacturerCreateDto, current_user: dict):
+        manufacturer = Manufacturer(
+            name=manufacturer_create_dto.name,
+            description=manufacturer_create_dto.description,
+            image_url=self._pick_random_image(),
+            created_by=current_user["user_id"]
+        )
 
         self.manufacturer_repository.create_manufacturer(manufacturer)
 

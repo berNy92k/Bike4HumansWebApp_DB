@@ -7,10 +7,10 @@ from sqlalchemy.orm import Session
 from app.models.bike import Bike
 from app.repositories.bike_repository import BikeRepository
 from app.schemas.admin.bike.admin_bike_create_dto import BikeCreateDto
-from app.schemas.admin.bike.admin_bike_update_dto import BikeUpdateDto
 from app.schemas.admin.bike.admin_bike_list_request_dto import BikeListRequestDto
 from app.schemas.admin.bike.admin_bike_list_response_dto import BikeListResponseDto
 from app.schemas.admin.bike.admin_bike_read_dto import BikeReadDto
+from app.schemas.admin.bike.admin_bike_update_dto import BikeUpdateDto
 
 
 class AdminBikeService:
@@ -47,11 +47,17 @@ class AdminBikeService:
 
         return bike
 
-    def create_bike(self, bike_create_dto: BikeCreateDto):
-        bike_data = bike_create_dto.model_dump()
-        bike_data["image_url"] = self._pick_random_image()
-
-        bike = Bike(**bike_data)
+    def create_bike(self, bike_create_dto: BikeCreateDto, current_user: dict):
+        bike = Bike(
+            name=bike_create_dto.name,
+            description=bike_create_dto.description,
+            price=bike_create_dto.price,
+            stock_quantity=bike_create_dto.stock_quantity,
+            image_url=self._pick_random_image(),
+            is_active=bike_create_dto.is_active,
+            created_by=current_user["user_id"],
+            brand_id=bike_create_dto.brand_id,
+        )
         self.bike_repository.create_bike(bike)
 
     def update_bike_all_fields(self, bike_id: int, bike_update_dto: BikeUpdateDto):

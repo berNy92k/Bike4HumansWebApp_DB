@@ -1,4 +1,4 @@
-from typing import List, Annotated
+from typing import Annotated, List
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
@@ -14,21 +14,21 @@ from app.services.auth.auth_service import get_current_user
 db_dependency = Annotated[Session, Depends(get_db)]
 current_user_dependency = Annotated[dict, Depends(get_current_user)]
 
-
 router = APIRouter(
     prefix="/admin/bikes",
-    tags=["Admin - bikes"]
+    tags=["Admin - bikes"],
+    dependencies=[Depends(get_current_user)],
 )
 
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[BikeReadDto])
-async def find_all_bikes(db: db_dependency, current_user: current_user_dependency):
+async def find_all_bikes(db: db_dependency):
     service = AdminBikeService(db)
     return service.get_all_bikes()
 
 
 @router.get("/{bike_id}", status_code=status.HTTP_200_OK, response_model=BikeReadDto)
-async def find_bike_by_id(bike_id: int, db: db_dependency, current_user: current_user_dependency):
+async def find_bike_by_id(bike_id: int, db: db_dependency):
     service = AdminBikeService(db)
     return service.get_bike_by_id(bike_id)
 
@@ -36,24 +36,22 @@ async def find_bike_by_id(bike_id: int, db: db_dependency, current_user: current
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_bike(bike_create_dto: BikeCreateDto, db: db_dependency, current_user: current_user_dependency):
     service = AdminBikeService(db)
-    service.create_bike(bike_create_dto)
+    service.create_bike(bike_create_dto, current_user)
 
 
 @router.put("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_bike_all_fields(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency,
-                                 current_user: current_user_dependency):
+async def update_bike_all_fields(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
     service = AdminBikeService(db)
     service.update_bike_all_fields(bike_id, bike_update_dto)
 
 
 @router.patch("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def update_bike_separate_fields(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency,
-                                      current_user: current_user_dependency):
+async def update_bike_separate_fields(bike_id: int, bike_update_dto: BikeUpdateDto, db: db_dependency):
     service = AdminBikeService(db)
     service.update_bike_separate_fields(bike_id, bike_update_dto)
 
 
 @router.delete("/{bike_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_bike_by_id(bike_id: int, db: db_dependency, current_user: current_user_dependency):
+async def delete_bike_by_id(bike_id: int, db: db_dependency):
     service = AdminBikeService(db)
     service.delete_bike_by_id(bike_id)
