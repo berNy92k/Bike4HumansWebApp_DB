@@ -46,3 +46,9 @@ async def create_token(db: db_dependency, form_data: Annotated[OAuth2PasswordReq
         path="/",
     )
     return response
+
+@router.get("/logout", status_code=status.HTTP_200_OK)
+async def logout():
+    response = RedirectResponse(url="/auth/login", status_code=status.HTTP_303_SEE_OTHER)
+    response.delete_cookie("access_token", path="/")
+    return response

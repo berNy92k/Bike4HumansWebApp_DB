@@ -16,7 +16,16 @@
             <span>🔎</span>
             <input type="text" placeholder="Szukaj produktu, marki, modelu...">
         </div>
-        <div class="avatar">A</div>
+
+        <div class="avatar-menu">
+            <button class="avatar" id="avatarToggle" type="button">A</button>
+
+            <div class="avatar-dropdown" id="avatarDropdown" role="menu" aria-hidden="true">
+                <a class="avatar-dropdown-item danger" href="/auth/logout" role="menuitem">
+                    🚪 Wyloguj
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -217,4 +226,5 @@
 <div class="footer-note">
     Bike4Humans admin dashboard • zbudowany jako lekka, czytelna baza pod dalszy rozwój
 </div>
+<script defer src="{{ url_for('static', path='js/admin/homepage/avatar_dropdown.js') }}"></script>
 {% endblock %}
