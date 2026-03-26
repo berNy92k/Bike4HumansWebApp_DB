@@ -1,5 +1,6 @@
 from pathlib import Path
 from random import choice
+from typing import List
 
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
@@ -21,6 +22,11 @@ class AdminBikeService:
 
     def get_all_bikes(self):
         return self.bike_repository.get_all_bikes()
+
+    def get_last_x_bikes(self, size: int) -> List[BikeReadDto]:
+        bikes = self.bike_repository.get_last_x_bikes(size)
+
+        return [BikeReadDto.model_validate(bike) for bike in bikes]
 
     def get_bikes_paginated(self, request_dto: BikeListRequestDto) -> BikeListResponseDto:
         items, total = self.bike_repository.get_bikes_paginated(

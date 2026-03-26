@@ -6,6 +6,7 @@ from starlette.templating import Jinja2Templates
 
 from app.database.database import get_db
 from app.routers.utils.admin_utils_router import redirect_to_login
+from app.services.admin.admin_bike_service import AdminBikeService
 from app.services.auth.auth_service import AuthService
 
 router = APIRouter(
@@ -24,8 +25,9 @@ async def render_admin_homepage(request: Request, db: db_dependency):
     try:
         await AuthService(db).validate_access(request)
 
+        bikes_short_list = AdminBikeService(db).get_last_x_bikes(10)
 
-
-        return templates.TemplateResponse("admin/homepage/index.html", {"request": request})
+        return templates.TemplateResponse("admin/homepage/index.html",
+                                          {"request": request, "bikesShortList": bikes_short_list})
     except HTTPException:
         return redirect_to_login()
