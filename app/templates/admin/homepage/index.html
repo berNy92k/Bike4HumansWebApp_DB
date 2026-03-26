@@ -35,37 +35,37 @@
     <div class="card stat-card">
         <div class="stat-label">
             <span>Rowery</span>
-            <span class="badge green">+12%</span>
+            <span class="nav-icon">🚲</span>
         </div>
-        <p class="stat-value">128</p>
+        <p class="stat-value">{{ bikeSize }}</p>
         <p class="stat-note">Liczba wszystkich rowerów w bazie</p>
     </div>
 
     <div class="card stat-card">
         <div class="stat-label">
             <span>Producenci</span>
-            <span class="badge orange">Nowe</span>
+            <span class="nav-icon">🏭</span>
         </div>
-        <p class="stat-value">19</p>
-        <p class="stat-note">Firmy przypisane do oferty</p>
+        <p class="stat-value">{{ manufacturerSize }}</p>
+        <p class="stat-note">Ilość producentów w systemie</p>
     </div>
 
     <div class="card stat-card">
         <div class="stat-label">
             <span>Użytkownicy</span>
-            <span class="badge blue">+6%</span>
+            <span class="nav-icon">👤</span>
         </div>
-        <p class="stat-value">74</p>
+        <p class="stat-value">{{ userSize }}</p>
         <p class="stat-note">Ilość użytkowników w systemie</p>
     </div>
 
     <div class="card stat-card">
         <div class="stat-label">
-            <span>Do sprawdzenia</span>
-            <span class="badge red">Uwaga</span>
+            <span>Role</span>
+            <span class="nav-icon">⚙️</span>
         </div>
-        <p class="stat-value">7</p>
-        <p class="stat-note">Pozycje bez zdjęcia lub opisu</p>
+        <p class="stat-value">{{ roleSize }}</p>
+        <p class="stat-note">Ilość roli w systemie</p>
     </div>
 </section>
 
