@@ -1,0 +1,54 @@
+{% extends "front/homepage/layout.html" %}
+
+{% block title %}Bike4Humans | Szczegóły roweru{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/front/homepage/style.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section__heading">
+        <span class="section__label">Rowery</span>
+        <h2>{{ bike.name }}</h2>
+        <p>{{ bike.manufacturer_name }}</p>
+    </div>
+
+    <div class="hero" style="grid-template-columns: 1fr 0.9fr; background: #fff; color: var(--text);">
+        <div class="detail-panel" style="padding: 0; box-shadow: none; border: none;">
+            <div class="detail-image">
+                <img src="{{ bike.image_url }}" alt="{{ bike.name }}">
+            </div>
+
+            <h3>Opis</h3>
+            <p>{{ bike.description }}</p>
+
+            <ul class="info-list">
+                <li><strong>Producent</strong><span>{{ bike.manufacturer_name }}</span></li>
+                <li><strong>Kategoria</strong><span>{{ bike.category }}</span></li>
+                <li><strong>Rama</strong><span>{{ bike.frame_size }}</span></li>
+                <li><strong>Koła</strong><span>{{ bike.wheel_size }}</span></li>
+                <li><strong>Cena</strong><span>{{ bike.price }} zł</span></li>
+            </ul>
+
+            <div class="hero__actions">
+                <a href="/bikes/create" class="site-btn site-btn--primary">Dodaj rower</a>
+                <a href="/bikes" class="site-btn site-btn--secondary">Wróć do listy</a>
+            </div>
+        </div>
+
+        <aside class="product-card" style="padding: 22px;">
+            <h3 style="margin-top: 0;">Dodatkowe informacje</h3>
+            <div class="info-list" style="margin-top: 16px;">
+                <li><strong>Dostępność</strong><span>{{ bike.availability }}</span></li>
+                <li><strong>Kolor</strong><span>{{ bike.color }}</span></li>
+                <li><strong>Kod produktu</strong><span>{{ bike.sku }}</span></li>
+            </div>
+
+            <div class="hero__actions" style="margin-top: 22px;">
+                <a href="/manufacturers/{{ bike.manufacturer_id }}" class="site-btn site-btn--secondary">Zobacz producenta</a>
+            </div>
+        </aside>
+    </div>
+</section>
+{% endblock %}

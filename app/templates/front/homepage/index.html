@@ -69,14 +69,18 @@
 
         <div class="categories-grid">
             <article class="category-card">
-                <div class="category-card__icon">🚲</div>
-                <h3>Rowery</h3>
-                <p>Modele miejskie, trekkingowe i sportowe.</p>
+                <a href="/bikes" class="category-card__link">
+                    <div class="category-card__icon">🚲</div>
+                    <h3>Rowery</h3>
+                    <p>Modele miejskie, trekkingowe i sportowe.</p>
+                </a>
             </article>
             <article class="category-card">
-                <div class="category-card__icon">🏭</div>
-                <h3>Producenci</h3>
-                <p>Sprawdzone marki i renomowani dostawcy.</p>
+                <a href="/manufacturers" class="category-card__link">
+                    <div class="category-card__icon">🏭</div>
+                    <h3>Producenci</h3>
+                    <p>Sprawdzone marki i renomowani dostawcy.</p>
+                </a>
             </article>
         </div>
     </section>
@@ -109,27 +113,30 @@
             <h2>Przykładowe pozycje z oferty</h2>
         </div>
 
-        <div class="products-grid">
-            {% if equipmentShortList %}
-                {% for equipment in equipmentShortList %}
-                    <article class="product-card">
+        <div class="homepage-products-grid">
+            {% if equipmentShortList and equipmentShortList.items %}
+                {% for bike in equipmentShortList.items %}
+                    <a class="product-card" href="/bikes/{{ bike.id }}">
                         <div class="product-card__image">
-                            <img src="data:image/jpg;base64,{{ equipment.base64Image }}" alt="{{ equipment.name }}">
+                            <img src="{{ bike.image_url }}" alt="{{ bike.name }}">
                         </div>
                         <div class="product-card__body">
-                            <h3>{{ equipment.name }}</h3>
-                            <p>Solidny produkt rowerowy z oferty Bike4Humans.</p>
+                            <div class="badge">{{ bike.manufacturer_name }}</div>
+                            <h3 style="margin: 12px 0 8px;">{{ bike.name }}</h3>
+                            <p style="margin: 0; color: var(--muted); line-height: 1.6;">
+                                {{ bike.short_description }}
+                            </p>
                             <div class="product-card__footer">
-                                <strong>{{ equipment.price }} zł</strong>
-                                <a href="#">Szczegóły →</a>
+                                <strong>{{ bike.price }} zł</strong>
+                                <span>Szczegóły →</span>
                             </div>
                         </div>
-                    </article>
+                    </a>
                 {% endfor %}
             {% else %}
                 <div class="empty-state">
                     <h3>Brak produktów do wyświetlenia</h3>
-                    <p>Gdy podłączysz dane z bazy, tutaj pojawią się polecane produkty.</p>
+                    <p>Gdy podłączysz dane z bazy, tutaj pojawią się polecane rowery.</p>
                 </div>
             {% endif %}
         </div>

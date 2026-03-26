@@ -8,7 +8,7 @@ from app.routers.endpoints.front import homepage_router
 from app.routers.render_pages.admin import admin_render_router, admin_render_user_router, admin_render_bike_router, \
     admin_render_manufacturers_router
 from app.routers.render_pages.auth import auth_render_router
-from app.routers.render_pages.front import homepage_render_routers
+from app.routers.render_pages.front import homepage_render_routers, homepage_bike_router
 
 
 def init_pre_requested_methods(app: FastAPI):
@@ -19,6 +19,7 @@ def init_routers(app: FastAPI):
     ## ENDPOINTS
     # front
     app.include_router(homepage_router.router)
+    app.include_router(homepage_bike_router.router)
 
     # auth
     app.include_router(auth_router.router)
