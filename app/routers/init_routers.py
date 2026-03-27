@@ -4,7 +4,7 @@ from starlette.staticfiles import StaticFiles
 from app.routers.endpoints.admin import admin_bike_router, admin_add_item_to_cart_router
 from app.routers.endpoints.admin import admin_user_router, admin_manufacturers_router
 from app.routers.endpoints.auth import auth_router
-from app.routers.endpoints.front import homepage_router, add_item_to_cart_router
+from app.routers.endpoints.front import homepage_router, shopping_cart_router, checkout_router
 from app.routers.render_pages.admin import admin_render_router, admin_render_user_router, admin_render_bike_router, \
     admin_render_manufacturers_router, admin_render_cart_router
 from app.routers.render_pages.auth import auth_render_router
@@ -19,7 +19,8 @@ def init_routers(app: FastAPI):
     ## ENDPOINTS
     # front
     app.include_router(homepage_router.router)
-    app.include_router(add_item_to_cart_router.router)
+    app.include_router(shopping_cart_router.router)
+    app.include_router(checkout_router.router)
 
     # auth
     app.include_router(auth_router.router)

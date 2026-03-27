@@ -24,10 +24,7 @@ router = APIRouter(
 async def add_item_to_cart(add_cart_item_dto: AddCartItemDto, logged_user: current_user_dependency, db: db_dependency):
     service = CartService(db)
     service.add_item_to_cart(logged_user.get("user_id"), add_cart_item_dto.bike_id)
-    print(add_cart_item_dto)
-    print(logged_user)
-    # Na razie tylko przyjmujemy ID roweru.
-    # Docelowo tutaj możesz zapisać koszyk w sesji / bazie / cookie.
+
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

@@ -4,3 +4,4 @@ from app.models.cart_item import CartItem
 from app.models.manufacturer import Manufacturer
 from app.models.role import Role
 from app.models.user import User
+from app.models.checkout import Checkout, CheckoutItem
