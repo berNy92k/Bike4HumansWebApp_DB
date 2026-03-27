@@ -76,13 +76,80 @@
                     </div>
                 </div>
 
-                <div class="hero__actions">
-                    <a href="/bikes/create" class="site-btn site-btn--primary">Dodaj rower</a>
-                    <a href="/manufacturers/{{ bike.brand_id }}" class="site-btn site-btn--secondary">Zobacz producenta</a>
-                    <a href="/bikes" class="site-btn site-btn--secondary">Wróć do listy</a>
-                </div>
-            </aside>
+        <div class="hero__actions">
+            <form id="add-to-cart-form">
+                <input type="hidden" name="bike_id" value="{{ bike.id }}">
+                <button type="submit" class="site-btn site-btn--primary">Dodaj do koszyka</button>
+            </form>
         </div>
     </section>
 </div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("add-to-cart-form");
+
+    if (!form) {
+        console.error("Nie znaleziono formularza add-to-cart-form");
+        return;
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const token = getCookie("access_token");
+        if (!token) {
+            window.location.href = "/auth/login-page";
+            return;
+        }
+
+        const bikeId = form.querySelector('input[name="bike_id"]')?.value;
+
+        if (!bikeId) {
+            console.error("Nie znaleziono bike_id w formularzu");
+            return;
+        }
+
+        const response = await fetch("/cart/item", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                bike_id: Number(bikeId)
+            })
+        });
+
+        if (response.status === 401 || response.status === 403) {
+            window.location.href = "/auth/login-page";
+            return;
+        }
+
+        if (!response.ok) {
+            alert("Nie udało się dodać roweru do koszyka.");
+            return;
+        }
+
+        window.location.href = "/cart/step1";
+    });
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
 {% endblock %}

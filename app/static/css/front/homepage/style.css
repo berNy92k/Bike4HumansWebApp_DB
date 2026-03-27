@@ -730,7 +730,69 @@ main {
     font-weight: 600;
 }
 
+.pagination-btn {
+    all: unset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+    text-decoration: none !important;
+    box-sizing: border-box;
+}
+
+.pagination-btn--nav {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+.pagination-btn--nav:hover {
+    background: #f8fafc !important;
+    color: #2563eb !important;
+    transform: translateY(-2px);
+}
+
+.pagination-btn.is-disabled {
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+.pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.pagination-current {
+    color: #64748b;
+    font-weight: 600;
+}
+
 .is-disabled {
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+.pagination-card .site-btn--secondary {
+    background: #fff;
+    color: var(--text);
+    border-color: var(--line);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.pagination-card .site-btn--secondary:hover {
+    background: #f8fafc;
+    color: var(--primary);
+}
+
+.pagination-card .site-btn--secondary.is-disabled {
     pointer-events: none;
     opacity: 0.45;
 }

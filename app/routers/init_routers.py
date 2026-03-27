@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 
-from app.routers.endpoints.admin import admin_bike_router
+from app.routers.endpoints.admin import admin_bike_router, admin_add_item_to_cart_router
 from app.routers.endpoints.admin import admin_user_router, admin_manufacturers_router
 from app.routers.endpoints.auth import auth_router
-from app.routers.endpoints.front import homepage_router
+from app.routers.endpoints.front import homepage_router, add_item_to_cart_router
 from app.routers.render_pages.admin import admin_render_router, admin_render_user_router, admin_render_bike_router, \
-    admin_render_manufacturers_router
+    admin_render_manufacturers_router, admin_render_cart_router
 from app.routers.render_pages.auth import auth_render_router
-from app.routers.render_pages.front import homepage_render_routers, homepage_bike_router
+from app.routers.render_pages.front import homepage_render_routers, homepage_render_bike_router, cart_steps_render_router
 
 
 def init_pre_requested_methods(app: FastAPI):
@@ -19,7 +19,7 @@ def init_routers(app: FastAPI):
     ## ENDPOINTS
     # front
     app.include_router(homepage_router.router)
-    app.include_router(homepage_bike_router.router)
+    app.include_router(add_item_to_cart_router.router)
 
     # auth
     app.include_router(auth_router.router)
@@ -28,11 +28,14 @@ def init_routers(app: FastAPI):
     app.include_router(admin_user_router.router)
     app.include_router(admin_bike_router.router)
     app.include_router(admin_manufacturers_router.router)
+    app.include_router(admin_add_item_to_cart_router.router)
 
 
 def init_pages(app: FastAPI):
     # front
     app.include_router(homepage_render_routers.router)
+    app.include_router(homepage_render_bike_router.router)
+    app.include_router(cart_steps_render_router.router)
 
     # auth
     app.include_router(auth_render_router.router)
@@ -42,3 +45,4 @@ def init_pages(app: FastAPI):
     app.include_router(admin_render_user_router.router)
     app.include_router(admin_render_bike_router.router)
     app.include_router(admin_render_manufacturers_router.router)
+    app.include_router(admin_render_cart_router.router)

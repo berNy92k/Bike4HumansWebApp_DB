@@ -1,9 +1,10 @@
 from datetime import datetime
 
 from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.database import Base
+from app.models.cart import Cart
 
 
 class User(Base):
@@ -22,3 +23,5 @@ class User(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     role_id: Mapped[int] = mapped_column(ForeignKey("role.id"), nullable=False, index=True)
+
+    cart: Mapped[Cart] = relationship("Cart", back_populates="user")

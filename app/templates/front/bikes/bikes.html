@@ -57,14 +57,14 @@
 
                 <div class="pagination-buttons">
                     <a
-                        class="site-btn site-btn--secondary {% if page <= 1 %}is-disabled{% endif %}"
+                        class="pagination-btn pagination-btn--nav {% if page <= 1 %}is-disabled{% endif %}"
                         href="/bikes?page={{ page - 1 if page > 1 else 1 }}&size={{ size }}"
                     >Poprzednia</a>
 
                     <span class="pagination-current">Strona {{ page }} z {{ pages }}</span>
 
                     <a
-                        class="site-btn site-btn--secondary {% if page >= pages %}is-disabled{% endif %}"
+                        class="pagination-btn pagination-btn--nav {% if page >= pages %}is-disabled{% endif %}"
                         href="/bikes?page={{ page + 1 if page < pages else pages }}&size={{ size }}"
                     >Następna</a>
                 </div>

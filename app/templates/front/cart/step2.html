@@ -1,0 +1,38 @@
+{% extends "front/homepage/layout.html" %}
+
+{% block title %}Bike4Humans | Koszyk - krok 2{% endblock %}
+
+{% block content %}
+<div class="homepage-shell">
+    <section class="section">
+        <div class="section__heading">
+            <span class="section__label">Koszyk</span>
+            <h2>Krok 2: podatki, rabat i płatność</h2>
+        </div>
+
+        <div class="product-card">
+            <form method="get" action="/cart/step3">
+                <label for="tax">Tax</label>
+                <select id="tax" name="tax">
+                    <option value="standard">Standard</option>
+                    <option value="reduced">Obniżony</option>
+                </select>
+
+                <label for="discount_code">Kod zniżkowy</label>
+                <input id="discount_code" name="discount_code" type="text" placeholder="Wpisz kod">
+
+                <label for="payment_method">Metoda płatności</label>
+                <select id="payment_method" name="payment_method">
+                    <option value="blik">BLIK</option>
+                    <option value="card">Karta</option>
+                    <option value="transfer">Przelew</option>
+                </select>
+
+                <div style="margin-top: 16px;">
+                    <button type="submit" class="site-btn site-btn--primary">Przejdź do kroku 3</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+{% endblock %}

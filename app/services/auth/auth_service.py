@@ -77,3 +77,5 @@ class AuthService:
 
         if not (user.role_id == 1 or user.role_id == 2 or user.role_id == 3):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="User is forbidden")
+
+        return user
