@@ -8,7 +8,7 @@
         <div class="section__heading">
             <span class="section__label">Payment provider</span>
             <h2>Fake provider płatności</h2>
-            <p>Wybierz, czy płatność została zakończona, czy anulowana.</p>
+            <p>Wybierz, czy płatność została zakończona, anulowana albo zakończyła się błędem.</p>
         </div>
 
         <div class="checkout-step2">
@@ -58,20 +58,20 @@
                 <div class="checkout-sidebar product-card">
                     <h3>Fake provider</h3>
 
-                    <form method="get" action="/cart/payment-result" class="checkout-sidebar__form">
+                    <form id="payment-provider-form" class="checkout-sidebar__form">
                         <input type="hidden" name="checkout_id" value="{{ checkout.id }}">
                         <input type="hidden" name="payment_method_id" value="{{ payment_method_id }}">
                         <input type="hidden" name="tax" value="{{ tax }}">
 
-                        <button type="submit" name="payment_status" value="paid" class="site-btn site-btn--primary checkout-sidebar__button">
+                        <button type="button" data-status="delivery" class="site-btn site-btn--primary checkout-sidebar__button">
                             Zapłacone
                         </button>
 
-                        <button type="submit" name="payment_status" value="cancel" class="site-btn site-btn--secondary checkout-sidebar__button">
+                        <button type="button" data-status="canceled" class="site-btn site-btn--secondary checkout-sidebar__button">
                             Anuluj
                         </button>
 
-                        <button type="submit" name="payment_status" value="failed" class="site-btn site-btn--error checkout-sidebar__button">
+                        <button type="button" data-status="failed" class="site-btn site-btn--error checkout-sidebar__button">
                             Błąd płatności
                         </button>
                     </form>
@@ -80,4 +80,49 @@
         </div>
     </section>
 </div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll("#payment-provider-form button[data-status]");
+
+    const getCookieValue = (name) => {
+        const cookie = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith(`${name}=`));
+
+        return cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : "";
+    };
+
+    const redirectToOrderPage = async (status) => {
+        const token = getCookieValue("access_token");
+
+        try {
+            const updateResponse = await fetch(`/order?status=${encodeURIComponent(status)}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token ? `Bearer ${token}` : ""
+                }
+            });
+
+            if (!updateResponse.ok) {
+                throw new Error(`PUT /order failed with status ${updateResponse.status}`);
+            }
+
+            window.location.href = `/order/details`;
+        } catch (error) {
+            console.error("Payment provider flow failed:", error);
+        }
+    };
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const status = button.dataset.status;
+            redirectToOrderPage(status);
+        });
+    });
+});
+</script>
 {% endblock %}

@@ -1,15 +1,16 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Request, HTTPException, Query
+from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.templating import Jinja2Templates
 
 from app.database.database import get_db
-from app.models import User, Checkout
+from app.models import User
+from app.models.order import Order
 from app.routers.utils.admin_utils_router import redirect_to_login
 from app.services.auth.auth_service import AuthService
-from app.services.front.checkout_service import CheckoutService
+from app.services.front.order_service import OrderService
 
 router = APIRouter(
     prefix="/order",
@@ -20,22 +21,22 @@ db_dependency = Annotated[Session, Depends(get_db)]
 templates = Jinja2Templates(directory="app/templates")
 
 
-@router.get("/order", status_code=status.HTTP_200_OK)
+@router.get("/details", status_code=status.HTTP_200_OK)
 async def render_payment_result(db: db_dependency, request: Request):
     try:
         user: User = await AuthService(db).validate_access(request)
 
-        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+        order: Order = OrderService(db).get_order_by_user_id(user.id)
 
         return templates.TemplateResponse(
             "front/order/order.html",
             {
                 "request": request,
-                "checkout": checkout,
-                "checkout_id": checkout.id,
+                "order": order,
+                "order_id": order.id,
                 "tax": 0,
-                "payment_method_id": checkout.payment_method_id,
-                "payment_status": payment_status
+                "payment_method_id": order.payment_method_id,
+                "payment_status": order.status
             },
         )
     except HTTPException:

@@ -10,6 +10,8 @@ from app.database.database import Base
 class OrderStatus(str, enum.Enum):
     PENDING = "pending"
     DELIVERY = "delivery"
+    CANCELED = "canceled"
+    FAILED = "failed"
     COMPLETED = "completed"
 
 

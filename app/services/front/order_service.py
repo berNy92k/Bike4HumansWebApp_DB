@@ -1,11 +1,8 @@
-from decimal import Decimal
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.models import Cart, Bike
-from app.models.cart import CartStatus
-from app.models.checkout import Checkout, CheckoutItem
+from app.models.checkout import Checkout, CheckoutStatus
+from app.models.order import OrderItem, Order, OrderStatus
 from app.repositories.bike_repository import BikeRepository
 from app.repositories.checkout_repository import CheckoutRepository
 from app.repositories.order_repository import OrderRepository
@@ -15,43 +12,46 @@ class OrderService:
 
     def __init__(self, db: Session):
         self.bike_repository = BikeRepository(db)
-        self.checkout_repository = CheckoutRepository(db)
         self.order_repository = OrderRepository(db)
+        self.checkout_repository = CheckoutRepository(db)
 
     def create_order(self, user_id: int):
-        cart: Cart = self.cart_repository.get_cart_by_user_id(user_id)
-        if not cart or not cart.items or len(cart.items) == 0:
-            raise HTTPException(status_code=404, detail="Cart not found or empty")
+        checkout: Checkout = self.checkout_repository.get_checkout_by_user_id(user_id)
+        if not checkout or not checkout.items or len(checkout.items) == 0:
+            raise HTTPException(status_code=404, detail="Checkout not found or empty")
 
-        total_price: Decimal = Decimal("0.0")
-        checkout_items: list[CheckoutItem] = []
-
-        for item in cart.items:
-            bike: Bike = self.bike_repository.get_bike_by_id(item.bike_id)
-            total_price += bike.price * item.quantity
-
-            checkout_items.append(CheckoutItem(
-                bike_id=bike.id,
+        order_items: list[OrderItem] = []
+        for item in checkout.items:
+            order_items.append(OrderItem(
+                bike_id=item.bike_id,
                 quantity=item.quantity
             ))
 
-        checkout = Checkout(
-            user_id=cart.user_id,
-            currency=cart.currency,
+        order = Order(
+            user_id=checkout.user_id,
+            currency=checkout.currency,
             payment_method_id=1,
-            total_price=float(total_price),
+            total_price=checkout.total_price,
         )
-        checkout.items = checkout_items
+        order.items = order_items
 
+        self.order_repository.create_or_update(order)
+
+        checkout.status = CheckoutStatus.COMPLETED.name
         self.checkout_repository.create_or_update(checkout)
 
-        cart.status = CartStatus.COMPLETED.name
-        self.cart_repository.create_or_update(cart)
+    def update_status(self, user_id: int, status: OrderStatus):
+        order: Order = self.order_repository.get_order_by_user_id(user_id)
+        if not order or not order.items or len(order.items) == 0:
+            raise HTTPException(status_code=404, detail="Order not found or empty")
+
+        order.status = status
+        self.order_repository.create_or_update(order)
 
     def get_order_by_user_id(self, user_id: int):
-        checkout: Checkout = self.checkout_repository.get_checkout_by_user_id(user_id)
+        order: Order = self.order_repository.get_order_by_user_id(user_id)
 
-        if not checkout:
+        if not order:
             raise HTTPException(status_code=404, detail="Checkout not found")
 
-        return checkout
+        return order

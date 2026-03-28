@@ -95,7 +95,7 @@
                 <div class="checkout-sidebar product-card">
                     <h3>Kod zniżkowy i tax</h3>
 
-                    <form method="get" action="/cart/payment-provider" class="checkout-sidebar__form">
+                    <form id="checkout-step2-form" class="checkout-sidebar__form">
                         <input type="hidden" name="payment_method_id" id="payment_method_id" value="{{ checkout.payment_method_id }}">
 
                         <div class="checkout-field">
@@ -121,7 +121,7 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="site-btn site-btn--primary checkout-sidebar__button">Złóż zamówienie</button>
+                        <button type="submit" class="site-btn site-btn--primary checkout-sidebar__button">Opłać i złóż zamówienie</button>
                     </form>
                 </div>
             </aside>
@@ -135,6 +135,15 @@
 document.addEventListener("DOMContentLoaded", () => {
     const radios = document.querySelectorAll('input[name="payment_method"]');
     const hiddenPaymentMethodId = document.getElementById("payment_method_id");
+    const checkoutForm = document.getElementById("checkout-step2-form");
+
+    const getCookieValue = (name) => {
+        const cookie = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith(`${name}=`));
+
+        return cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : "";
+    };
 
     const syncSelectedPaymentMethod = () => {
         const selected = document.querySelector('input[name="payment_method"]:checked');
@@ -145,6 +154,39 @@ document.addEventListener("DOMContentLoaded", () => {
     radios.forEach((radio) => {
         radio.addEventListener("change", syncSelectedPaymentMethod);
     });
+
+    if (checkoutForm) {
+        checkoutForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            syncSelectedPaymentMethod();
+
+            const token = getCookieValue("access_token");
+
+            try {
+                const response = await fetch("/order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": token ? `Bearer ${token}` : ""
+                    },
+                    body: JSON.stringify({
+                        payment_method_id: hiddenPaymentMethodId ? hiddenPaymentMethodId.value : null,
+                        tax: document.getElementById("tax") ? document.getElementById("tax").value : 0,
+                        discount_code: document.getElementById("discount_code") ? document.getElementById("discount_code").value : ""
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`POST /order failed with status ${response.status}`);
+                }
+
+                window.location.href = "/cart/payment-provider";
+            } catch (error) {
+                console.error("Order request failed:", error);
+            }
+        });
+    }
 
     syncSelectedPaymentMethod();
 });

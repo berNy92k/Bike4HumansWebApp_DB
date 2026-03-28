@@ -1,8 +1,8 @@
 {% extends "admin/homepage/base.html" %}
 
-{% block title %}Bike4Humans | Checkouty{% endblock %}
+{% block title %}Bike4Humans | Zamówienia{% endblock %}
 
-{% block nav_checkouts_active %}active{% endblock %}
+{% block nav_orders_active %}active{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/admin/manufacturers/admin_manufacturers.css') }}">
@@ -101,13 +101,13 @@
             });
         });
 
-        document.querySelectorAll("[data-delete-checkout]").forEach((button) => {
+        document.querySelectorAll("[data-delete-order]").forEach((button) => {
             button.addEventListener("click", async (event) => {
                 event.preventDefault();
                 event.stopPropagation();
 
-                const checkoutId = button.getAttribute("data-checkout-id");
-                if (!checkoutId) return;
+                const orderId = button.getAttribute("data-order-id");
+                if (!orderId) return;
 
                 const confirmed = confirm("Na pewno usunąć ten koszyk?");
                 if (!confirmed) return;
@@ -118,7 +118,7 @@
                     return;
                 }
 
-                const response = await fetch(`/admin/checkouts/${checkoutId}`, {
+                const response = await fetch(`/admin/orders/${orderId}`, {
                     method: "DELETE",
                     headers: {
                         "Accept": "application/json",
@@ -141,18 +141,18 @@
 {% block content %}
 <div class="page-header">
     <div class="page-title">
-        <h2>Checkouty</h2>
-        <p>Przegląd wszystkich checkoutów zakupowych w panelu administracyjnym.</p>
+        <h2>Zamówienia</h2>
+        <p>Przegląd wszystkich zamówień w panelu administracyjnym.</p>
     </div>
 
     <div class="toolbar">
-        <a class="btn btn-secondary" href="/admin/checkouts/list?page={{ page }}&size={{ size }}">Odśwież</a>
+        <a class="btn btn-secondary" href="/admin/orders/list?page={{ page }}&size={{ size }}">Odśwież</a>
     </div>
 </div>
 
 <div class="stats-grid">
     <div class="stat-card">
-        <div class="stat-label">Łącznie koszyków</div>
+        <div class="stat-label">Łącznie zamówień</div>
         <div class="stat-value">{{ total }}</div>
     </div>
     <div class="stat-card">
@@ -172,10 +172,10 @@
 <div class="table-card">
     <div class="table-header">
         <h3>Lista koszyków</h3>
-        <span class="badge badge-neutral">{{ checkouts|length }} rekordów</span>
+        <span class="badge badge-neutral">{{ orders|length }} rekordów</span>
     </div>
 
-    {% if checkouts and checkouts|length > 0 %}
+    {% if orders and orders|length > 0 %}
     <div class="table-wrapper">
         <table class="manufacturers-table">
             <thead>
@@ -192,29 +192,29 @@
                 </tr>
             </thead>
             <tbody>
-                {% for checkout in checkouts %}
-                <tr class="cart-row" data-cart-row data-cart-target="cart-items-{{ checkout.id }}">
+                {% for order in orders %}
+                <tr class="cart-row" data-cart-row data-cart-target="cart-items-{{ order.id }}">
                     <td>
                         <div class="bike-cell">
                             <div>
-                                <div class="bike-meta">ID: {{ checkout.id }}</div>
+                                <div class="bike-meta">ID: {{ order.id }}</div>
                             </div>
                         </div>
                     </td>
-                    <td>{{ checkout.user_id }}</td>
-                    <td>{{ checkout.total_price }}</td>
-                    <td>{{ checkout.currency }}</td>
-                    <td>{{ checkout.payment_method_id }}</td>
-                    <td>{{ checkout.status }}</td>
-                    <td>{{ checkout.created_at }}</td>
-                    <td>{{ checkout.updated_at }}</td>
+                    <td>{{ order.user_id }}</td>
+                    <td>{{ order.total_price }}</td>
+                    <td>{{ order.currency }}</td>
+                    <td>{{ order.payment_method_id }}</td>
+                    <td>{{ order.status }}</td>
+                    <td>{{ order.created_at }}</td>
+                    <td>{{ order.updated_at }}</td>
                     <td>
                         <div class="actions">
                             <button
                                 type="button"
                                 class="action-link action-delete"
-                                data-delete-checkout
-                                data-checkout-id="{{ checkout.id }}"
+                                data-delete-order
+                                data-order-id="{{ order.id }}"
                                 style="background: none; border: 0; padding: 0; cursor: pointer;"
                             >
                                 Usuń
@@ -223,19 +223,19 @@
                     </td>
                 </tr>
 
-                <tr id="cart-items-{{ checkout.id }}" class="cart-items-row">
+                <tr id="cart-items-{{ order.id }}" class="cart-items-row">
                     <td colspan="8">
                         <div class="cart-items-box">
                             <div class="table-header" style="margin-bottom: 12px;">
-                                <h3 style="margin: 0;">Elementy koszyka #{{ checkout.id }}</h3>
+                                <h3 style="margin: 0;">Elementy koszyka #{{ order.id }}</h3>
                                 <span class="badge badge-neutral">
-                                    {{ checkout.items|length if checkout.items else 0 }} produktów
+                                    {{ order.items|length if order.items else 0 }} produktów
                                 </span>
                             </div>
 
-                            {% if checkout.items and checkout.items|length > 0 %}
+                            {% if order.items and order.items|length > 0 %}
                             <div class="cart-items-list">
-                                {% for item in checkout.items %}
+                                {% for item in order.items %}
                                 <div class="cart-item-card">
                                     <div class="cart-item-meta" style="display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; white-space: nowrap;">
                                         <span style="padding: 4px 10px; border-radius: 999px; background: #f3f4f6;">Id: <strong style="color: #111827;">{{ item.id }}</strong></span>
