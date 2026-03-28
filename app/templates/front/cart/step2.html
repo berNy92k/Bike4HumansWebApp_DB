@@ -7,31 +7,118 @@
     <section class="section">
         <div class="section__heading">
             <span class="section__label">Koszyk</span>
-            <h2>Krok 2: podatki, rabat i płatność</h2>
+            <h2>Krok 2: kwota całkowita, podatki, rabat i płatność</h2>
+            <p>Sprawdź podsumowanie zamówienia, wybierz metodę płatności i opcjonalnie dodaj kod zniżkowy oraz tax.</p>
         </div>
 
-        <div class="product-card">
-            <form method="get" action="/cart/step3">
-                <label for="tax">Tax</label>
-                <select id="tax" name="tax">
-                    <option value="standard">Standard</option>
-                    <option value="reduced">Obniżony</option>
-                </select>
+        {% set ns = namespace(selected_payment_method=None) %}
+        {% for payment_method in payment_methods %}
+            {% if payment_method.id == checkout.payment_method_id %}
+                {% set ns.selected_payment_method = payment_method %}
+            {% endif %}
+        {% endfor %}
 
-                <label for="discount_code">Kod zniżkowy</label>
-                <input id="discount_code" name="discount_code" type="text" placeholder="Wpisz kod">
+        <div class="checkout-step2">
+            <div class="checkout-step2__main">
+                <div class="checkout-summary product-card">
+                    <div class="checkout-summary__header">
+                        <h3>Podsumowanie checkouta</h3>
+                        <span class="checkout-summary__badge">Wyliczone wcześniej</span>
+                    </div>
 
-                <label for="payment_method">Metoda płatności</label>
-                <select id="payment_method" name="payment_method">
-                    <option value="blik">BLIK</option>
-                    <option value="card">Karta</option>
-                    <option value="transfer">Przelew</option>
-                </select>
-
-                <div style="margin-top: 16px;">
-                    <button type="submit" class="site-btn site-btn--primary">Przejdź do kroku 3</button>
+                    <div class="checkout-summary__grid">
+                        <div class="checkout-summary__item">
+                            <span>Suma</span>
+                            <strong>{{checkout.total_price}} {{checkout.currency}}</strong>
+                        </div>
+                        <div class="checkout-summary__item">
+                            <span>Dostawa</span>
+                            <strong>
+                                {% if ns.selected_payment_method %}
+                                    ${{ "%.2f"|format(ns.selected_payment_method.price) }}
+                                {% else %}
+                                    $0.00
+                                {% endif %}
+                            </strong>
+                        </div>
+                        <div class="checkout-summary__item">
+                            <span>Rabat</span>
+                            <strong>-$0.00</strong>
+                        </div>
+                        <div class="checkout-summary__item checkout-summary__item--total">
+                            <span>Razem</span>
+                                {% if ns.selected_payment_method %}
+                                    <strong>{{checkout.total_price + ns.selected_payment_method.price}} {{checkout.currency}}</strong>
+                                {% else %}
+                                    <strong>{{checkout.total_price}} {{checkout.currency}}</strong>
+                                {% endif %}
+                        </div>
+                    </div>
                 </div>
-            </form>
+
+                <div class="product-card payment-methods">
+                    <div class="checkout-summary__header">
+                        <h3>Metody płatności</h3>
+                        <span class="checkout-summary__badge">Dostępne opcje</span>
+                    </div>
+
+                    <div class="payment-methods__list">
+                        {% for payment_method in payment_methods %}
+                        <label class="payment-tile" for="payment_method_{{ payment_method.id }}">
+                            <input
+                                id="payment_method_{{ payment_method.id }}"
+                                name="payment_method"
+                                type="radio"
+                                value="{{ payment_method.id }}"
+                                {% if payment_method.id == checkout.payment_method_id %}checked{% elif loop.first and not checkout.payment_method_id %}checked{% endif %}
+                            >
+                            <div class="payment-tile__content">
+                                <div class="payment-tile__top">
+                                    <span class="payment-tile__icon {% if payment_method.id == checkout.payment_method_id %}payment-tile__icon--alt{% endif %}">
+                                        {% if payment_method.id == checkout.payment_method_id %}✓{% else %}!{% endif %}
+                                    </span>
+                                    <strong>{{ payment_method.name }}</strong>
+                                </div>
+                                <p>Cena metody: ${{ "%.2f"|format(payment_method.price) }}</p>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <aside class="checkout-step2__side">
+                <div class="checkout-sidebar product-card">
+                    <h3>Kod zniżkowy i tax</h3>
+
+                    <form method="get" action="/cart/step3" class="checkout-sidebar__form">
+                        <div class="checkout-field">
+                            <label for="discount_code">Kod zniżkowy</label>
+                            <input
+                                id="discount_code"
+                                name="discount_code"
+                                type="text"
+                                placeholder="Wpisz kod"
+                                disabled
+                                title="Dla tego zamówienia nie da się wpisać zniżki"
+                                aria-disabled="true"
+                            >
+                        </div>
+
+                        <div class="checkout-field">
+                            <label for="tax">Tax</label>
+                            <select id="tax" name="tax">
+                                <option value="0" selected>0% — brak taxu</option>
+                                <option value="5">5% — przykładowo kraj A</option>
+                                <option value="8">8% — przykładowo kraj B</option>
+                                <option value="23">23% — przykładowo kraj C</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="site-btn site-btn--primary checkout-sidebar__button">Przejdź do kroku 3</button>
+                    </form>
+                </div>
+            </aside>
         </div>
     </section>
 </div>

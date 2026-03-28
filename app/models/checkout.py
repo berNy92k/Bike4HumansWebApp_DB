@@ -18,6 +18,7 @@ class Checkout(Base):
     currency: Mapped[str] = mapped_column(String, default="PLN", nullable=False)
     status: Mapped[str] = mapped_column(String, default="PENDING", nullable=False)
     total_price: Mapped[float] = mapped_column(Float, default=0, nullable=False)
+    payment_method_id: Mapped[int] = mapped_column(ForeignKey("payment_methods.id"), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 

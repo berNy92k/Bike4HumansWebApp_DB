@@ -60,16 +60,12 @@
 
             <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding-top: 20px; border-top: 1px solid #e5e7eb;">
                 <div>
-                    <p style="margin: 0; color: #6b7280;">Po kliknięciu przejdziesz do kolejnego kroku zamówienia.</p>
+                    <p style="margin: 0; color: #6b7280;">Po kliknięciu najpierw utworzymy checkout, a potem przejdziesz do kolejnego kroku.</p>
                 </div>
 
-                <form method="get" action="/cart/step2" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                    <input type="hidden" name="bike_id" value="{{ cart.items[0].bike.id }}">
-                    <input type="hidden" name="quantity" value="{{ cart.items[0].quantity }}">
-                    <button type="submit" class="site-btn site-btn--primary">
-                        Przejdź do kroku 2
-                    </button>
-                </form>
+                <button type="button" class="site-btn site-btn--primary" id="go-to-step2-btn">
+                    Przejdź do kroku 2
+                </button>
             </div>
         </div>
         {% else %}
@@ -81,4 +77,45 @@
         {% endif %}
     </section>
 </div>
+
+<script>
+    const checkoutButton = document.getElementById("go-to-step2-btn");
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(";").map(cookie => cookie.trim());
+        const found = cookies.find(cookie => cookie.startsWith(name + "="));
+        return found ? decodeURIComponent(found.substring(name.length + 1)) : null;
+    }
+
+    if (checkoutButton) {
+        checkoutButton.addEventListener("click", async () => {
+            checkoutButton.disabled = true;
+
+            try {
+                const token = getCookie("access_token");
+
+                if (!token) {
+                    throw new Error("Brak tokenu dostępu.");
+                }
+
+                const response = await fetch("/checkout", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("Nie udało się utworzyć checkoutu.");
+                }
+
+                window.location.href = "/cart/step2";
+            } catch (error) {
+                console.error(error);
+                checkoutButton.disabled = false;
+                alert("Wystąpił problem podczas tworzenia checkoutu. Spróbuj ponownie.");
+            }
+        });
+    }
+</script>
 {% endblock %}

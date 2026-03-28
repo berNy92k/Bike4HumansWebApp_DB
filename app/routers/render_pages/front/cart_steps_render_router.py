@@ -6,11 +6,12 @@ from starlette import status
 from starlette.templating import Jinja2Templates
 
 from app.database.database import get_db
-from app.models import User, Cart, CartItem
+from app.models import User, Cart, Checkout, PaymentMethod
 from app.routers.utils.admin_utils_router import redirect_to_login
 from app.services.auth.auth_service import AuthService
-from app.services.front.bike_service import BikeService
 from app.services.front.cart_service import CartService
+from app.services.front.checkout_service import CheckoutService
+from app.services.front.payment_methods_service import PaymentMethodService
 
 router = APIRouter(
     prefix="/cart",
@@ -27,13 +28,11 @@ async def render_cart_step1(request: Request, db: db_dependency):
         user: User = await AuthService(db).validate_access(request)
 
         cart: Cart = CartService(db).get_cart_by_user_id(user.id)
-        bike = BikeService(db).get_bike_by_id(cart.items[0].bike_id)
 
         return templates.TemplateResponse(
             "front/cart/step1.html",
             {
                 "request": request,
-                "bike": bike,
                 "cart": cart,
             },
         )
@@ -42,11 +41,23 @@ async def render_cart_step1(request: Request, db: db_dependency):
 
 
 @router.get("/step2", status_code=status.HTTP_200_OK)
-async def render_cart_step2(request: Request):
-    return templates.TemplateResponse(
-        "front/cart/step2.html",
-        {"request": request},
-    )
+async def render_cart_step2(request: Request, db: db_dependency):
+    try:
+        user: User = await AuthService(db).validate_access(request)
+
+        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+        methods: PaymentMethod = PaymentMethodService(db).get_methods()
+
+        return templates.TemplateResponse(
+            "front/cart/step2.html",
+            {
+                "request": request,
+                "checkout": checkout,
+                "payment_methods": methods,
+            },
+        )
+    except HTTPException:
+        return redirect_to_login()
 
 
 @router.get("/step3", status_code=status.HTTP_200_OK)

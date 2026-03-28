@@ -15,7 +15,7 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 router = APIRouter(
     prefix="/cart",
-    include_in_schema=False,
+    tags=["Cart"],
     dependencies=[Depends(get_current_user)]
 )
 
