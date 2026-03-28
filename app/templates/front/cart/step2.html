@@ -33,6 +33,10 @@
                         </div>
                         <div class="checkout-summary__item">
                             <span>Dostawa</span>
+                            <strong> Darmowa </strong>
+                        </div>
+                        <div class="checkout-summary__item">
+                            <span>Opłata serwisowa</span>
                             <strong>
                                 {% if ns.selected_payment_method %}
                                     ${{ "%.2f"|format(ns.selected_payment_method.price) }}

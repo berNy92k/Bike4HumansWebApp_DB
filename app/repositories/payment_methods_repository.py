@@ -10,3 +10,6 @@ class PaymentMethodRepository:
 
     def get_methods(self):
         return self.db.query(PaymentMethod).all()
+
+    def get_method_by_id(self, payment_method_id: int):
+        return self.db.query(PaymentMethod).where(PaymentMethod.id == payment_method_id).first()

@@ -1,3 +1,4 @@
+import enum
 from datetime import datetime
 
 from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey
@@ -20,8 +21,37 @@ class User(Base):
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     last_login: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow,
+                                                 nullable=False)
 
     role_id: Mapped[int] = mapped_column(ForeignKey("role.id"), nullable=False, index=True)
+    address_id: Mapped[int] = mapped_column(ForeignKey("addresses.id"), nullable=False, index=True)
 
     cart: Mapped[Cart] = relationship("Cart", back_populates="user")
+    address: Mapped[Cart] = relationship("Address", back_populates="users")
+
+
+class AddressType(str, enum.Enum):
+    SHIPPING = "shipping"
+    BILLING = "billing"
+
+
+class Address(Base):
+    __tablename__ = "addresses"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    type: Mapped[str] = mapped_column(String, default=AddressType.SHIPPING.name, nullable=False)
+    company_name: Mapped[str] = mapped_column(String, nullable=True)
+    vat_number: Mapped[str] = mapped_column(String, nullable=True)
+    address_line_1: Mapped[str] = mapped_column(String, nullable=False)
+    address_line_2: Mapped[str] = mapped_column(String, nullable=True)
+    city: Mapped[str] = mapped_column(String, nullable=False)
+    postal_code: Mapped[str] = mapped_column(String, nullable=False)
+    country_code: Mapped[str] = mapped_column(String, nullable=False)
+    state_province: Mapped[str] = mapped_column(String, nullable=False)
+    is_default: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow,
+                                                 nullable=False)
+
+    users: Mapped[User] = relationship("User", back_populates="address")

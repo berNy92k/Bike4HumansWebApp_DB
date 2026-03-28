@@ -24,12 +24,32 @@
                         <strong>{{ checkout.id }}</strong>
                     </div>
                     <div class="checkout-summary__item">
-                        <span>Payment method ID</span>
-                        <strong>{{ payment_method_id }}</strong>
+                        <span>Name</span>
+                        <strong>{{ user.name }}</strong>
+                    </div>
+                    <div class="checkout-summary__item">
+                        <span>Surname</span>
+                        <strong>{{ user.surname }}</strong>
+                    </div>
+                    <div class="checkout-summary__item">
+                        <span>Email</span>
+                        <strong>{{ user.email }}</strong>
+                    </div>
+                    <div class="checkout-summary__item">
+                        <span>Payment method</span>
+                        <strong>{{ method.name }}</strong>
+                    </div>
+                    <div class="checkout-summary__item">
+                        <span>Opłata serwisowa</span>
+                        <strong>{{ method.price }} {{ checkout.currency }}</strong>
                     </div>
                     <div class="checkout-summary__item">
                         <span>Tax</span>
                         <strong>{{ tax }}%</strong>
+                    </div>
+                    <div class="checkout-summary__item checkout-summary__item--total">
+                        <span>Total price</span>
+                        <strong>{{ checkout.total_price +  method.price}} {{ checkout.currency }}</strong>
                     </div>
                 </div>
             </div>
@@ -49,6 +69,10 @@
 
                         <button type="submit" name="payment_status" value="cancel" class="site-btn site-btn--secondary checkout-sidebar__button">
                             Anuluj
+                        </button>
+
+                        <button type="submit" name="payment_status" value="failed" class="site-btn site-btn--error checkout-sidebar__button">
+                            Błąd płatności
                         </button>
                     </form>
                 </div>

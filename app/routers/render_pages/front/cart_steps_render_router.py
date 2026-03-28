@@ -66,13 +66,15 @@ async def render_payment_provider(request: Request, db: db_dependency):
         user: User = await AuthService(db).validate_access(request)
 
         checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+        method : PaymentMethod = PaymentMethodService(db).get_method_by_id(checkout.payment_method_id)
 
         return templates.TemplateResponse(
             "front/cart/payment_provider.html",
             {
                 "request": request,
+                "user": user, # change for DTO and send only required fields
                 "checkout": checkout,
-                "payment_method_id": checkout.payment_method_id,
+                "method": method,
                 "tax": 0,
             },
         )
@@ -87,15 +89,15 @@ async def render_payment_result(db: db_dependency, request: Request, payment_sta
 
         checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
 
-        status_value = "Delivery" if payment_status == "paid" else "Cancel"
-
         return templates.TemplateResponse(
             "front/cart/step3.html",
             {
                 "request": request,
-                "checkout_status": status_value,
-                "payment_method_id": checkout.payment_method_id,
+                "checkout": checkout,
+                "checkout_id": checkout.id,
                 "tax": 0,
+                "payment_method_id": checkout.payment_method_id,
+                "payment_status": payment_status
             },
         )
     except HTTPException:
