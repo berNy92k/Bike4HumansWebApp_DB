@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Request, HTTPException
+from fastapi import APIRouter, Depends, Request, HTTPException, Query
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.templating import Jinja2Templates
@@ -60,9 +60,43 @@ async def render_cart_step2(request: Request, db: db_dependency):
         return redirect_to_login()
 
 
-@router.get("/step3", status_code=status.HTTP_200_OK)
-async def render_cart_step3(request: Request):
-    return templates.TemplateResponse(
-        "front/cart/step3.html",
-        {"request": request},
-    )
+@router.get("/payment-provider", status_code=status.HTTP_200_OK)
+async def render_payment_provider(request: Request, db: db_dependency):
+    try:
+        user: User = await AuthService(db).validate_access(request)
+
+        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+
+        return templates.TemplateResponse(
+            "front/cart/payment_provider.html",
+            {
+                "request": request,
+                "checkout": checkout,
+                "payment_method_id": checkout.payment_method_id,
+                "tax": 0,
+            },
+        )
+    except HTTPException:
+        return redirect_to_login()
+
+
+@router.get("/payment-result", status_code=status.HTTP_200_OK)
+async def render_payment_result(db: db_dependency, request: Request, payment_status: str = Query(...)):
+    try:
+        user: User = await AuthService(db).validate_access(request)
+
+        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+
+        status_value = "Delivery" if payment_status == "paid" else "Cancel"
+
+        return templates.TemplateResponse(
+            "front/cart/step3.html",
+            {
+                "request": request,
+                "checkout_status": status_value,
+                "payment_method_id": checkout.payment_method_id,
+                "tax": 0,
+            },
+        )
+    except HTTPException:
+        return redirect_to_login()

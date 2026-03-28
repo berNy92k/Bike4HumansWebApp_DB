@@ -29,7 +29,7 @@
                     <div class="checkout-summary__grid">
                         <div class="checkout-summary__item">
                             <span>Suma</span>
-                            <strong>{{checkout.total_price}} {{checkout.currency}}</strong>
+                            <strong>{{ checkout.total_price }} {{ checkout.currency }}</strong>
                         </div>
                         <div class="checkout-summary__item">
                             <span>Dostawa</span>
@@ -47,11 +47,11 @@
                         </div>
                         <div class="checkout-summary__item checkout-summary__item--total">
                             <span>Razem</span>
-                                {% if ns.selected_payment_method %}
-                                    <strong>{{checkout.total_price + ns.selected_payment_method.price}} {{checkout.currency}}</strong>
-                                {% else %}
-                                    <strong>{{checkout.total_price}} {{checkout.currency}}</strong>
-                                {% endif %}
+                            {% if ns.selected_payment_method %}
+                                <strong>{{ checkout.total_price + ns.selected_payment_method.price }} {{ checkout.currency }}</strong>
+                            {% else %}
+                                <strong>{{ checkout.total_price }} {{ checkout.currency }}</strong>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,9 @@
                 <div class="checkout-sidebar product-card">
                     <h3>Kod zniżkowy i tax</h3>
 
-                    <form method="get" action="/cart/step3" class="checkout-sidebar__form">
+                    <form method="get" action="/cart/payment-provider" class="checkout-sidebar__form">
+                        <input type="hidden" name="payment_method_id" id="payment_method_id" value="{{ checkout.payment_method_id }}">
+
                         <div class="checkout-field">
                             <label for="discount_code">Kod zniżkowy</label>
                             <input
@@ -115,11 +117,32 @@
                             </select>
                         </div>
 
-                        <button type="submit" class="site-btn site-btn--primary checkout-sidebar__button">Przejdź do kroku 3</button>
+                        <button type="submit" class="site-btn site-btn--primary checkout-sidebar__button">Złóż zamówienie</button>
                     </form>
                 </div>
             </aside>
         </div>
     </section>
 </div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const radios = document.querySelectorAll('input[name="payment_method"]');
+    const hiddenPaymentMethodId = document.getElementById("payment_method_id");
+
+    const syncSelectedPaymentMethod = () => {
+        const selected = document.querySelector('input[name="payment_method"]:checked');
+        if (!selected || !hiddenPaymentMethodId) return;
+        hiddenPaymentMethodId.value = selected.value;
+    };
+
+    radios.forEach((radio) => {
+        radio.addEventListener("change", syncSelectedPaymentMethod);
+    });
+
+    syncSelectedPaymentMethod();
+});
+</script>
 {% endblock %}

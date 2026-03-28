@@ -1,0 +1,59 @@
+{% extends "front/homepage/layout.html" %}
+
+{% block title %}Bike4Humans | Provider płatności{% endblock %}
+
+{% block content %}
+<div class="homepage-shell">
+    <section class="section">
+        <div class="section__heading">
+            <span class="section__label">Payment provider</span>
+            <h2>Fake provider płatności</h2>
+            <p>Wybierz, czy płatność została zakończona, czy anulowana.</p>
+        </div>
+
+        <div class="checkout-step2">
+            <div class="checkout-summary product-card">
+                <div class="checkout-summary__header">
+                    <h3>Informacje o płatności</h3>
+                    <span class="checkout-summary__badge">Symulacja</span>
+                </div>
+
+                <div class="checkout-summary__grid">
+                    <div class="checkout-summary__item">
+                        <span>Checkout ID</span>
+                        <strong>{{ checkout.id }}</strong>
+                    </div>
+                    <div class="checkout-summary__item">
+                        <span>Payment method ID</span>
+                        <strong>{{ payment_method_id }}</strong>
+                    </div>
+                    <div class="checkout-summary__item">
+                        <span>Tax</span>
+                        <strong>{{ tax }}%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="checkout-step2__side">
+                <div class="checkout-sidebar product-card">
+                    <h3>Fake provider</h3>
+
+                    <form method="get" action="/cart/payment-result" class="checkout-sidebar__form">
+                        <input type="hidden" name="checkout_id" value="{{ checkout.id }}">
+                        <input type="hidden" name="payment_method_id" value="{{ payment_method_id }}">
+                        <input type="hidden" name="tax" value="{{ tax }}">
+
+                        <button type="submit" name="payment_status" value="paid" class="site-btn site-btn--primary checkout-sidebar__button">
+                            Zapłacone
+                        </button>
+
+                        <button type="submit" name="payment_status" value="cancel" class="site-btn site-btn--secondary checkout-sidebar__button">
+                            Anuluj
+                        </button>
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </section>
+</div>
+{% endblock %}
