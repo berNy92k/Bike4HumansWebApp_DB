@@ -6,11 +6,12 @@ from starlette import status
 from starlette.templating import Jinja2Templates
 
 from app.database.database import get_db
-from app.models import User
+from app.models import User, PaymentMethod
 from app.models.order import Order
 from app.routers.utils.admin_utils_router import redirect_to_login
 from app.services.auth.auth_service import AuthService
 from app.services.front.order_service import OrderService
+from app.services.front.payment_methods_service import PaymentMethodService
 
 router = APIRouter(
     prefix="/order",
@@ -27,6 +28,7 @@ async def render_payment_result(db: db_dependency, request: Request):
         user: User = await AuthService(db).validate_access(request)
 
         order: Order = OrderService(db).get_order_by_user_id(user.id)
+        method: PaymentMethod = PaymentMethodService(db).get_method_by_id(order.payment_method_id)
 
         return templates.TemplateResponse(
             "front/order/order.html",
@@ -35,7 +37,7 @@ async def render_payment_result(db: db_dependency, request: Request):
                 "order": order,
                 "order_id": order.id,
                 "tax": 0,
-                "payment_method_id": order.payment_method_id,
+                "payment_method_name": method.name,
                 "payment_status": order.status
             },
         )

@@ -1,5 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
+from datetime import datetime
+import secrets
+import string
 
 from app.models.checkout import Checkout, CheckoutStatus
 from app.models.order import OrderItem, Order, OrderStatus
@@ -15,6 +18,10 @@ class OrderService:
         self.order_repository = OrderRepository(db)
         self.checkout_repository = CheckoutRepository(db)
 
+    def _generate_order_id(self, length: int = 11) -> str:
+        alphabet = string.ascii_uppercase + string.digits
+        return "".join(secrets.choice(alphabet) for _ in range(length))
+
     def create_order(self, user_id: int):
         checkout: Checkout = self.checkout_repository.get_checkout_by_user_id(user_id)
         if not checkout or not checkout.items or len(checkout.items) == 0:
@@ -28,6 +35,7 @@ class OrderService:
             ))
 
         order = Order(
+            order_id=self._generate_order_id(11),
             user_id=checkout.user_id,
             currency=checkout.currency,
             payment_method_id=1,
