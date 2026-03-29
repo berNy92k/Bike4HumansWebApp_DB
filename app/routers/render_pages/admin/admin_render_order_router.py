@@ -29,7 +29,38 @@ async def render_user_page(request: Request, db: db_dependency):
 
         page = int(request.query_params.get("page", 1))
         size = int(request.query_params.get("size", 5))
-        pagination = AdminOrderService(db).get_orders_paginated(OrderListRequestDto(page=page, size=size))
+        order_id = request.query_params.get("order_id") or None
+        user_id_raw = request.query_params.get("user_id")
+        status_raw = request.query_params.get("status") or None
+        total_price_min_raw = request.query_params.get("total_price_min")
+        total_price_max_raw = request.query_params.get("total_price_max")
+        created_at_min_raw = request.query_params.get("created_at_min")
+        created_at_max_raw = request.query_params.get("created_at_max")
+        sort_by = request.query_params.get("sort_by", "created_at")
+        sort_direction = request.query_params.get("sort_direction", "desc")
+
+        user_id = int(user_id_raw) if user_id_raw else None
+        total_price_min = float(total_price_min_raw) if total_price_min_raw else None
+        total_price_max = float(total_price_max_raw) if total_price_max_raw else None
+
+        created_at_min = created_at_min_raw if created_at_min_raw else None
+        created_at_max = created_at_max_raw if created_at_max_raw else None
+
+        pagination = AdminOrderService(db).get_orders_paginated(
+            OrderListRequestDto(
+                page=page,
+                size=size,
+                order_id=order_id,
+                user_id=user_id,
+                status=status_raw,
+                total_price_min=total_price_min,
+                total_price_max=total_price_max,
+                created_at_min=created_at_min,
+                created_at_max=created_at_max,
+                sort_by=sort_by,
+                sort_direction=sort_direction,
+            )
+        )
 
         return templates.TemplateResponse(
             "admin/orders/orders.html",

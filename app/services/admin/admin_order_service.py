@@ -17,6 +17,15 @@ class AdminOrderService:
         items, total = self.order_repository.get_orders_paginated(
             page=request_dto.page,
             size=request_dto.size,
+            order_id=request_dto.order_id,
+            user_id=request_dto.user_id,
+            status=request_dto.status,
+            total_price_min=request_dto.total_price_min,
+            total_price_max=request_dto.total_price_max,
+            created_at_min=request_dto.created_at_min,
+            created_at_max=request_dto.created_at_max,
+            sort_by=request_dto.sort_by,
+            sort_direction=request_dto.sort_direction,
         )
         pages = (total + request_dto.size - 1) // request_dto.size if total > 0 else 0
 
