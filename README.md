@@ -208,11 +208,10 @@ This makes it easier to run the project locally and keep the database structure 
 - Using Jinja templates for a simple UI
 - Building a project that looks strong in a portfolio and is easy to extend
 - Practicing filtering, sorting, and admin data management patterns
+- Expand automated tests
 
 ---
 
-## 📌 Possible Next Improvements
-
-- Expand automated tests
+## 📌 Possible Next Improvements in next repositories
 - Add Docker-based deployment
 - Add AI logic / RAG features
