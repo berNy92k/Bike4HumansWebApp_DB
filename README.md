@@ -16,7 +16,7 @@ The application combines:
 Admin panel:
 ![admin_homepage.png](app/static/images/readme/admin_homepage.png)
 
-Admin panel -> Zamówienia (z filtrowaniem/ sortowaniem):
+Admin panel -> Orders (filters/ sort by):
 ![img.png](app/static/images/readme/admin_orders.png)
 
 Homepage:
@@ -49,10 +49,11 @@ Order page:
 
 ## ✨ Highlights
 
-- **Dedicated admin panel** for managing bikes, manufacturers, and users
+- **Dedicated admin panel** for managing bikes, manufacturers, users, carts, checkouts, and orders
 - **Authentication-based frontend flow** with login/logout state handling
 - **Shopping cart and checkout flow** for logged-in users
 - **Order creation with custom `order_id`**
+- **Admin order list with filtering and sorting**
 - **Payment provider step** simulating payment status changes
 - **Modular architecture** with clear separation of concerns
 - **DTO-based admin workflows** with request/response schemas
@@ -61,6 +62,7 @@ Order page:
 - **Seeded starter data** for easier development and testing
 - **Simple frontend** for presenting store content and validating functionality
 - **Clean project structure** designed for easy extension
+- **Shared `BaseModel`** for common ORM fields like `id`, `created_at`, and `updated_at`
 
 ---
 
@@ -88,6 +90,13 @@ Orders now use a custom business identifier:
 - `order_id` is a short random string
 - it is intended to be human-friendly and suitable for display in URLs and views
 
+The admin order list supports:
+- filtering by `order_id`
+- filtering by `user_id`
+- filtering by `status`
+- filtering by `total_price` range
+- filtering by `created_at` range
+- sorting by `created_at` or `status`
 ---
 
 ## 🛠 Technologies
@@ -102,13 +111,12 @@ Orders now use a custom business identifier:
 - **Frontend for basic UI:** Jinja templates
 - **Styling:** CSS, Bootstrap
 - **Development environment:** local virtual environment
-
 ---
 
 ## 🔑 Features
 
 ### Admin area
-- Manage **bikes**, **manufacturers**, and **users**
+- Manage **bikes**, **manufacturers**, **users**, **orders**, **checkouts**, and **carts**
 - Full CRUD operations: **create / read / update / delete**
 - Separate views, forms, and DTOs for admin workflows
 - List, details, edit, and create pages for records
@@ -132,6 +140,7 @@ Orders now use a custom business identifier:
   - `repositories` — database access layer
   - `schemas` — input/output DTOs
   - `models` — ORM entities
+- Shared ORM base model for common columns
 - Database schema evolution through Alembic migrations
 - Structure ready for additional features without mixing responsibilities
 
@@ -196,12 +205,12 @@ This makes it easier to run the project locally and keep the database structure 
 - Separating business logic from HTTP handling
 - Using Jinja templates for a simple UI
 - Building a project that looks strong in a portfolio and is easy to extend
+- Practicing filtering, sorting, and admin data management patterns
 
 ---
 
 ## 📌 Possible Next Improvements
 
 - Expand automated tests
-- Add filtering, search, and sorting
 - Add Docker-based deployment
-- Add AI logic/ RAG etc
+- Add AI logic / RAG features
