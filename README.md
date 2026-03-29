@@ -16,6 +16,9 @@ The application combines:
 Admin panel:
 ![admin_homepage.png](app/static/images/readme/admin_homepage.png)
 
+Admin panel -> Zamówienia (z filtrowaniem/ sortowaniem):
+![img.png](app/static/images/readme/admin_orders.png)
+
 Homepage:
 ![homepage.png](app/static/images/readme/homepage.png)
 
