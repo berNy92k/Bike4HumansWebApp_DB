@@ -176,6 +176,8 @@ The admin order list supports:
 - `alembic/` — database migrations
 - `tests/` — automated tests
 - `app.db` — local development database
+- `README.md` — readme file
+- `requirements.txt` — required libs
 
 ---
 
