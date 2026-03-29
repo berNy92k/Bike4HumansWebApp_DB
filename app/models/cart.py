@@ -1,24 +1,33 @@
 import enum
-from datetime import datetime
 
-from sqlalchemy import Integer, DateTime, ForeignKey, String
+from sqlalchemy import Integer, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database.database import Base
+from app.models.base_model import BaseModel
+
 
 class CartStatus(str, enum.Enum):
     PENDING = "pending"
     COMPLETED = "completed"
 
-class Cart(Base):
+
+class Cart(BaseModel):
     __tablename__ = "carts"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False, index=True)
     currency: Mapped[str] = mapped_column(String, default="PLN", nullable=False)
     status: Mapped[str] = mapped_column(String, default=CartStatus.PENDING.name, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     user = relationship("User", back_populates="cart")
     items = relationship("CartItem", back_populates="cart", cascade="all, delete-orphan")
+
+
+class CartItem(BaseModel):
+    __tablename__ = "cart_items"
+
+    cart_id: Mapped[int] = mapped_column(ForeignKey("carts.id"), nullable=False, index=True)
+    bike_id: Mapped[int] = mapped_column(ForeignKey("bikes.id"), nullable=False, index=True)
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
+
+    cart = relationship("Cart", back_populates="items")
+    bike = relationship("Bike")
