@@ -20,7 +20,7 @@ def db_session():
 
 
 @pytest.fixture
-def client(db_session):
+def client():
     # Given
     app.dependency_overrides[get_current_user] = lambda: {"user_id": 1, "role_id": 1}
     client = TestClient(app)
