@@ -134,6 +134,41 @@
                 alert("Nie udało się usunąć koszyka.");
             });
         });
+
+        document.querySelectorAll("[data-delivered-order]").forEach((button) => {
+            button.addEventListener("click", async (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                const orderId = button.getAttribute("data-order-id");
+                if (!orderId) return;
+
+                const confirmed = confirm("Na pewno zmienić status na COMPLETED?");
+                if (!confirmed) return;
+
+                const token = getAccessToken();
+                if (!token) {
+                    alert("Brak tokenu logowania.");
+                    return;
+                }
+
+                const status = "completed"
+                const updateResponse = await fetch(`/admin/orders/${orderId}?status=${encodeURIComponent(status)}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`,
+                    }
+                });
+
+                if (updateResponse.ok) {
+                    window.location.reload();
+                    return;
+                }
+
+                alert("Nie udało się zmienić statusu.");
+            });
+        });
     });
 </script>
 {% endblock %}
@@ -220,6 +255,15 @@
                                 style="background: none; border: 0; padding: 0; cursor: pointer;"
                             >
                                 Usuń
+                            </button>
+                            <button
+                                type="button"
+                                class="action-link action-delivered"
+                                data-delivered-order
+                                data-order-id="{{ order.id }}"
+                                style="background: none; border: 0; padding: 0; cursor: pointer;"
+                            >
+                                Dostarczono
                             </button>
                         </div>
                     </td>

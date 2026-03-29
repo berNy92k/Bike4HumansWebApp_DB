@@ -1,5 +1,7 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from app.models.order import Order, OrderStatus
 from app.repositories.order_repository import OrderRepository
 from app.schemas.admin.order.admin_order_list_request_dto import OrderListRequestDto
 from app.schemas.admin.order.admin_order_list_response_dto import OrderListResponseDto
@@ -27,6 +29,14 @@ class AdminOrderService:
             total=total,
             pages=pages,
         )
+
+    def update_status_by_id(self, user_id: int, status: OrderStatus, order_id: int):
+        order: Order = self.order_repository.get_order_by_user_id_and_order_id(user_id, order_id)
+        if not order or not order.items or len(order.items) == 0:
+            raise HTTPException(status_code=404, detail="Order not found or empty")
+
+        order.status = status
+        self.order_repository.create_or_update(order)
 
     def delete_order_by_id(self, order_id):
         order = self.order_repository.get_order_by_id(order_id)

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.models.order import Order
+from app.models.order import Order, OrderStatus
 
 
 class OrderRepository:
@@ -13,6 +13,24 @@ class OrderRepository:
 
     def get_order_by_user_id(self, user_id: int):
         return self.db.query(Order).where(Order.user_id == user_id).first()
+
+    def get_order_by_user_id_and_status(self, user_id: int, status: OrderStatus):
+        return (self.db.query(Order)
+                .where(Order.user_id == user_id)
+                .where(Order.status == status)
+                .first())
+
+    def get_order_by_user_id_and_order_id(self, user_id: int, order_id: int):
+        return (self.db.query(Order)
+                .where(Order.user_id == user_id)
+                .where(Order.id == order_id)
+                .first())
+
+    def get_order_by_order_id_and_user_id(self, order_id: str, user_id: int):
+        return (self.db.query(Order)
+                .where(Order.user_id == user_id)
+                .where(Order.order_id == order_id)
+                .first())
 
     def get_orders_paginated(self, page: int, size: int):
         query = self.db.query(Order).order_by(Order.id.desc())

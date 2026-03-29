@@ -23,11 +23,11 @@ templates = Jinja2Templates(directory="app/templates")
 
 
 @router.get("/details", status_code=status.HTTP_200_OK)
-async def render_payment_result(db: db_dependency, request: Request):
+async def render_payment_result(db: db_dependency, request: Request, orderId: str):
     try:
         user: User = await AuthService(db).validate_access(request)
 
-        order: Order = OrderService(db).get_order_by_user_id(user.id)
+        order: Order = OrderService(db).get_order_by_user_id_and_order_id(user.id, orderId)
         method: PaymentMethod = PaymentMethodService(db).get_method_by_id(order.payment_method_id)
 
         return templates.TemplateResponse(

@@ -99,7 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const token = getCookieValue("access_token");
 
         try {
-            const updateResponse = await fetch(`/order?status=${encodeURIComponent(status)}`, {
+            const previousStatus = "pending"
+            const updateResponse = await fetch(`/order?status=${encodeURIComponent(status)}&statusPrevious=${encodeURIComponent(previousStatus)}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -111,7 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(`PUT /order failed with status ${updateResponse.status}`);
             }
 
-            window.location.href = `/order/details`;
+            const data = await updateResponse.json();
+            window.location.href = `/order/details?orderId=${encodeURIComponent(data.order_id)}`;
         } catch (error) {
             console.error("Payment provider flow failed:", error);
         }

@@ -1,8 +1,8 @@
-from fastapi import HTTPException
-from sqlalchemy.orm import Session
-from datetime import datetime
 import secrets
 import string
+
+from fastapi import HTTPException
+from sqlalchemy.orm import Session
 
 from app.models.checkout import Checkout, CheckoutStatus
 from app.models.order import OrderItem, Order, OrderStatus
@@ -48,16 +48,17 @@ class OrderService:
         checkout.status = CheckoutStatus.COMPLETED.name
         self.checkout_repository.create_or_update(checkout)
 
-    def update_status(self, user_id: int, status: OrderStatus):
-        order: Order = self.order_repository.get_order_by_user_id(user_id)
+    def update_status(self, user_id: int, status: OrderStatus, statusPrevious: OrderStatus):
+        order: Order = self.order_repository.get_order_by_user_id_and_status(user_id, statusPrevious)
         if not order or not order.items or len(order.items) == 0:
             raise HTTPException(status_code=404, detail="Order not found or empty")
 
         order.status = status
         self.order_repository.create_or_update(order)
+        return order
 
-    def get_order_by_user_id(self, user_id: int):
-        order: Order = self.order_repository.get_order_by_user_id(user_id)
+    def get_order_by_user_id_and_order_id(self, user_id: int, orderId: str):
+        order: Order = self.order_repository.get_order_by_order_id_and_user_id(orderId, user_id)
 
         if not order:
             raise HTTPException(status_code=404, detail="Checkout not found")
