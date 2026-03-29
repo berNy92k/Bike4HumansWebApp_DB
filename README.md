@@ -14,11 +14,19 @@ The application combines:
 - **layered architecture** with clear separation of `routers`, `services`, `repositories`, `schemas`, and `models`
 
 Admin panel:
-![img.png](app/static/images/readme/admin.png)
+![admin_homepage.png](app/static/images/readme/admin_homepage.png)
 
 Homepage:
-![img_1.png](app/static/images/readme/homepage.png)
+![homepage.png](app/static/images/readme/homepage.png)
 
+Bikes:
+![homepage_bikes.png](app/static/images/readme/homepage_bikes.png)
+
+Shopping cart:
+![homepage_shopping_cart.png](app/static/images/readme/homepage_shopping_cart.png)
+
+Order page:
+![homepage_orders.png](app/static/images/readme/homepage_orders.png)
 ---
 
 ## 🛠 Technologies
