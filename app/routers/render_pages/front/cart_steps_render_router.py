@@ -34,6 +34,9 @@ async def render_cart_step1(request: Request, db: db_dependency):
             {
                 "request": request,
                 "cart": cart,
+                "logged_user": user,
+                "has_cart": True,
+                "has_checkout": False,
             },
         )
     except HTTPException:
@@ -54,6 +57,9 @@ async def render_cart_step2(request: Request, db: db_dependency):
                 "request": request,
                 "checkout": checkout,
                 "payment_methods": methods,
+                "logged_user": user,
+                "has_cart": False,
+                "has_checkout": True,
             },
         )
     except HTTPException:

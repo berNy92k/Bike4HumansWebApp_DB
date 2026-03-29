@@ -15,7 +15,17 @@
         </nav>
 
         <div class="site-header__actions">
-            <a href="/auth/login" class="site-btn site-btn--primary">Zaloguj się</a>
+            {% if logged_user %}
+                {% if has_checkout %}
+                    <a href="/cart/step2" class="site-btn site-btn--secondary">Checkout</a>
+                {% elif has_cart %}
+                    <a href="/cart/step1" class="site-btn site-btn--secondary">Koszyk</a>
+                {% endif %}
+
+                <a href="/auth/logout" class="site-btn site-btn--primary">Wyloguj się</a>
+            {% else %}
+                <a href="/auth/login" class="site-btn site-btn--primary">Zaloguj się</a>
+            {% endif %}
         </div>
     </div>
 </header>
