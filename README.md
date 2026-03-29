@@ -1,11 +1,15 @@
 # 🚴 Bike Shop API
 
 Backend for an online bike and accessories store, built with **Python and FastAPI**.  
-This project was created as a practical portfolio piece to demonstrate skills in **backend development**, API design, data modeling, and modular application architecture.
+This project was created as a practical portfolio piece to demonstrate skills in **backend development**, API design, data modeling, modular application architecture, and a simple server-rendered frontend.
 
 The application combines:
 - **REST API / backend**
 - **admin panel**
+- **authentication flow**
+- **shopping cart / checkout flow**
+- **orders with custom `order_id`**
+- **payment provider**
 - **simple Jinja-based frontend**
 - **layered architecture** with clear separation of `routers`, `services`, `repositories`, `schemas`, and `models`
 
@@ -19,20 +23,26 @@ Homepage:
 
 ## 🛠 Technologies
 
-- **Backend:** Python + FastAPI  
-- **Database:** SQLite / relational database layer via SQLAlchemy  
-- **ORM:** SQLAlchemy  
-- **Testing:** pytest  
-- **Server:** Uvicorn  
-- **Frontend for basic UI:** Jinja templates  
-- **Styling:** CSS, Bootstrap  
-- **Optional:** local virtual environment for development  
+- **Backend:** Python + FastAPI
+- **Database:** SQLite / relational database layer via SQLAlchemy
+- **ORM:** SQLAlchemy
+- **Migrations:** Alembic
+- **Validation / DTOs:** Pydantic
+- **Testing:** pytest
+- **Server:** Uvicorn
+- **Frontend for basic UI:** Jinja templates
+- **Styling:** CSS, Bootstrap
+- **Development environment:** local virtual environment
 
 ---
 
 ## ✨ Highlights
 
 - **Dedicated admin panel** for managing bikes, manufacturers, and users
+- **Authentication-based frontend flow** with login/logout state handling
+- **Shopping cart and checkout flow** for logged-in users
+- **Order creation with custom `order_id`**
+- **Payment provider step** simulating payment status changes
 - **Modular architecture** with clear separation of concerns
 - **DTO-based admin workflows** with request/response schemas
 - **Data validation** powered by Pydantic
@@ -40,6 +50,32 @@ Homepage:
 - **Seeded starter data** for easier development and testing
 - **Simple frontend** for presenting store content and validating functionality
 - **Clean project structure** designed for easy extension
+
+---
+
+## 🔐 Authentication & User Flow
+
+The application includes a simple frontend authentication flow:
+- users can **log in** and **log out**
+- the UI adapts depending on whether the user is authenticated
+- the header can show:
+  - **Zaloguj się** for anonymous users
+  - **Wyloguj się** for authenticated users
+  - **Koszyk** or **Checkout** depending on the user’s current state
+
+---
+
+## 🛒 Cart, Checkout & Orders
+
+The store flow is built around a few steps:
+1. **Cart step** — user reviews items in the cart
+2. **Checkout step** — user confirms checkout details and payment method
+3. **Payment provider step** — simulated payment confirmation/cancel/error
+4. **Order creation** — order is created with a generated `order_id`
+
+Orders now use a custom business identifier:
+- `order_id` is a short random string
+- it is intended to be human-friendly and suitable for display in URLs and views
 
 ---
 
@@ -68,9 +104,14 @@ Homepage:
 - Clear separation between HTTP handling and business logic
 
 ### Frontend
-- Public homepage with product presentation  
-- Basic layout with templates and reusable components  
-- Static assets for styling and images  
+- Public homepage with product presentation
+- Authentication-aware header with login/logout state
+- Shopping cart pages
+- Checkout pages
+- Payment provider page
+- Order summary / order flow handling
+- Basic layout with templates and reusable components
+- Static assets for styling and images
 
 ### Additional Components
 - Data validation with Pydantic
@@ -90,16 +131,18 @@ Homepage:
 - `app/`
   - `main.py` — application entrypoint
   - `database/` — database connection setup
-  - `models/` — ORM models for bikes, manufacturers and users
+  - `models/` — ORM models for bikes, manufacturers, users, carts, checkouts, orders, and payment methods
   - `repositories/` — database access layer
   - `routers/` — route definitions
     - `admin/` — admin endpoints
     - `front/` — public-facing endpoints
+    - `render_pages/` — server-rendered pages
   - `schemas/` — Pydantic schemas
     - `admin/` — DTOs for admin operations
     - `front/` — DTOs for public views
   - `services/` — business logic
     - `admin/` — admin-related services
+    - `auth/` — authentication utilities
     - `front/` — frontend-related services
   - `templates/` — Jinja templates
     - `admin/`
@@ -125,7 +168,9 @@ The repository includes migrations for:
 - default users
 - default manufacturers
 - default bikes
-- additional admin-related columns
+- payment methods
+- checkout/order-related changes
+- custom `order_id` support for orders
 
 This makes it easier to run the project locally and keep the database structure consistent.
 
@@ -147,7 +192,5 @@ This makes it easier to run the project locally and keep the database structure 
 
 - Expand automated tests
 - Add filtering, search, and sorting
-- Improve API documentation
-- Enhance frontend responsiveness and UX
 - Add Docker-based deployment
-- Introduce a more advanced admin dashboard
+- Add AI logic/ RAG etc
