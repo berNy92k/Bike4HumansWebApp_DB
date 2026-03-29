@@ -20,7 +20,7 @@ class Order(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     order_id: Mapped[str] = mapped_column(String(11), nullable=False, index=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False, index=True, unique=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False, index=True)
     currency: Mapped[str] = mapped_column(String, default="PLN", nullable=False)
     status: Mapped[str] = mapped_column(String, default=OrderStatus.PENDING.name, nullable=False)
     total_price: Mapped[float] = mapped_column(Float, default=0, nullable=False)

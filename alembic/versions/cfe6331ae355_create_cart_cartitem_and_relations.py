@@ -31,7 +31,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["bike_id"], ["bikes.id"]),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(op.f("ix_cart_items_id"), "cart_items", ["id"], unique=False)
+    op.create_index(op.f("ix_cart_items_id"), "cart_items", ["id"], unique=True)
     op.create_index(op.f("ix_cart_items_cart_id"), "cart_items", ["cart_id"], unique=False)
     op.create_index(op.f("ix_cart_items_bike_id"), "cart_items", ["bike_id"], unique=False)
 
@@ -46,8 +46,8 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["user_id"], ["user.id"]),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(op.f("ix_carts_id"), "carts", ["id"], unique=False)
-    op.create_index(op.f("ix_carts_user_id"), "carts", ["user_id"], unique=True)
+    op.create_index(op.f("ix_carts_id"), "carts", ["id"], unique=True)
+    op.create_index(op.f("ix_carts_user_id"), "carts", ["user_id"], unique=False)
 
 
 def downgrade() -> None:

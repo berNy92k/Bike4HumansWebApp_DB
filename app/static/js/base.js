@@ -200,7 +200,7 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = '/auth/login-page';
+                    window.location.href = '/auth/login';
                 } else {
                     // Handle error
                     const errorData = await response.json();
@@ -247,5 +247,5 @@
         }
     
         // Redirect to the login page
-        window.location.href = '/auth/login-page';
+        window.location.href = '/auth/login';
     };

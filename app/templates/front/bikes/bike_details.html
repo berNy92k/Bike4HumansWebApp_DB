@@ -76,11 +76,13 @@
                     </div>
                 </div>
 
-        <div class="hero__actions">
-            <form id="add-to-cart-form">
-                <input type="hidden" name="bike_id" value="{{ bike.id }}">
-                <button type="submit" class="site-btn site-btn--primary">Dodaj do koszyka</button>
-            </form>
+                <div class="hero__actions">
+                    <form id="add-to-cart-form">
+                        <input type="hidden" name="bike_id" value="{{ bike.id }}">
+                        <button type="submit" class="site-btn site-btn--primary">Dodaj do koszyka</button>
+                    </form>
+                </div>
+            </aside>
         </div>
     </section>
 </div>
@@ -101,7 +103,7 @@
 
         const token = getCookie("access_token");
         if (!token) {
-            window.location.href = "/auth/login-page";
+            window.location.href = "/auth/login";
             return;
         }
 
@@ -124,7 +126,7 @@
         });
 
         if (response.status === 401 || response.status === 403) {
-            window.location.href = "/auth/login-page";
+            window.location.href = "/auth/login";
             return;
         }
 

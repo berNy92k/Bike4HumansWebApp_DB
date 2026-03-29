@@ -23,7 +23,7 @@ class OrderService:
         return "".join(secrets.choice(alphabet) for _ in range(length))
 
     def create_order(self, user_id: int):
-        checkout: Checkout = self.checkout_repository.get_checkout_by_user_id(user_id)
+        checkout: Checkout = self.checkout_repository.get_cart_by_user_id_and_status(user_id, CheckoutStatus.PENDING)
         if not checkout or not checkout.items or len(checkout.items) == 0:
             raise HTTPException(status_code=404, detail="Checkout not found or empty")
 

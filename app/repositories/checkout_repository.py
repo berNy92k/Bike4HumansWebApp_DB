@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.models.checkout import Checkout
+from app.models.checkout import Checkout, CheckoutStatus
 
 
 class CheckoutRepository:
@@ -11,8 +11,11 @@ class CheckoutRepository:
     def get_checkout_by_id(self, checkout_id):
         return self.db.query(Checkout).where(Checkout.id == checkout_id).first()
 
-    def get_checkout_by_user_id(self, user_id: int):
-        return self.db.query(Checkout).where(Checkout.user_id == user_id).first()
+    def get_cart_by_user_id_and_status(self, user_id: int, status: CheckoutStatus):
+        return (self.db.query(Checkout)
+                .where(Checkout.user_id == user_id)
+                .where(Checkout.status == status.name)
+                .first())
 
     def get_checkouts_paginated(self, page: int, size: int):
         query = self.db.query(Checkout).order_by(Checkout.id.desc())

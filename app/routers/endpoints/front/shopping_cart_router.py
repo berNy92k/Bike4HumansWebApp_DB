@@ -26,8 +26,3 @@ async def add_item_to_cart(add_cart_item_dto: AddCartItemDto, logged_user: curre
     service.add_item_to_cart(logged_user.get("user_id"), add_cart_item_dto.bike_id)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-
-@router.delete("/{cart_id}")
-async def delete_cart(cart_id: int, db: db_dependency):
-    print("test: " + str(cart_id))

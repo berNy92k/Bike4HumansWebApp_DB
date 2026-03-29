@@ -27,7 +27,7 @@ async def render_cart_step1(request: Request, db: db_dependency):
     try:
         user: User = await AuthService(db).validate_access(request)
 
-        cart: Cart = CartService(db).get_cart_by_user_id(user.id)
+        cart: Cart = CartService(db).get_cart_by_user_id_and_pending_status(user.id)
 
         return templates.TemplateResponse(
             "front/cart/step1.html",
@@ -45,7 +45,7 @@ async def render_cart_step2(request: Request, db: db_dependency):
     try:
         user: User = await AuthService(db).validate_access(request)
 
-        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+        checkout: Checkout = CheckoutService(db).get_cart_by_user_id_and_status_pending(user.id)
         methods: PaymentMethod = PaymentMethodService(db).get_methods()
 
         return templates.TemplateResponse(
@@ -65,7 +65,7 @@ async def render_payment_provider(request: Request, db: db_dependency):
     try:
         user: User = await AuthService(db).validate_access(request)
 
-        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+        checkout: Checkout = CheckoutService(db).get_cart_by_user_id_and_status_completed(user.id)
         method : PaymentMethod = PaymentMethodService(db).get_method_by_id(checkout.payment_method_id)
 
         return templates.TemplateResponse(
@@ -87,7 +87,7 @@ async def render_payment_result(db: db_dependency, request: Request, payment_sta
     try:
         user: User = await AuthService(db).validate_access(request)
 
-        checkout: Checkout = CheckoutService(db).get_checkout_by_user_id(user.id)
+        checkout: Checkout = CheckoutService(db).get_cart_by_user_id_and_status_pending(user.id)
 
         return templates.TemplateResponse(
             "front/cart/step3.html",

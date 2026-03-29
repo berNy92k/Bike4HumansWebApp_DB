@@ -39,7 +39,7 @@ def upgrade() -> None:
     op.create_table(
         "orders",
         sa.Column("id", sa.Integer(), primary_key=True, index=True),
-        sa.Column("user_id", sa.Integer(), sa.ForeignKey("user.id"), nullable=False, index=True, unique=True),
+        sa.Column("user_id", sa.Integer(), sa.ForeignKey("user.id"), nullable=False, index=True),
         sa.Column("currency", sa.String(), nullable=False, server_default="PLN"),
         sa.Column("status", sa.String(), nullable=False, server_default="PENDING"),
         sa.Column("total_price", sa.Float(), nullable=False, server_default="0"),
